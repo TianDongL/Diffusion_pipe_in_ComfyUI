@@ -1,0 +1,26 @@
+# 默认数据集配置文件
+# 用户需要根据实际数据集路径修改
+
+# 支持的分辨率列表
+resolutions = [512, 768, 1024]
+
+# 宽高比分桶设置
+enable_ar_bucket = true
+min_ar = 0.5
+max_ar = 2.0
+num_ar_buckets = 4
+
+# 帧数分桶 (用于视频训练)
+frame_buckets = [1, 8, 16, 24]
+
+# 数据集目录配置
+# 用户需要修改 path 为实际的数据集路径
+[[directory]]
+path = "./dataset/images"  # 修改为实际的图片/视频目录
+num_repeats = 1
+control_path = ""  # 如果有控制图像，设置此路径
+
+# 可以添加多个数据集目录
+# [[directory]]
+# path = "./dataset/additional_images"
+# num_repeats = 2 

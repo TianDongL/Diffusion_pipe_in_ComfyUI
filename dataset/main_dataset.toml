@@ -1,0 +1,73 @@
+# Resolutions to train on, given as the side length of a square image. You can have multiple sizes here.
+# !!!WARNING!!!: this might work differently to how you think it does. Images are first grouped to aspect ratio
+# buckets, then each image is resized to ALL of the areas specified by the resolutions list. This is a way to do
+# multi-resolution training, i.e. training on multiple total pixel areas at once. Your dataset is effectively duplicated
+# as many times as the length of this list.
+# If you just want to use predetermined (width, height, frames) size buckets, see the example cosmos_dataset.toml
+# file for how you can do that.
+resolutions = [512]
+
+# You can give resolutions as (width, height) pairs also. This doesn't do anything different, it's just
+# another way of specifying the area(s) (i.e. total number of pixels) you want to train on.
+# resolutions = [[1280, 720]]
+
+# Enable aspect ratio bucketing. For the different AR buckets, the final size will be such that
+# the areas match the resolutions you configured above.
+enable_ar_bucket = true
+
+# The aspect ratio and frame bucket settings may be specified for each [[directory]] entry as well.
+# Directory-level settings will override top-level settings.
+
+# Min and max aspect ratios, given as width/height ratio.
+min_ar = 0.5
+max_ar = 2.0
+# Total number of aspect ratio buckets, evenly spaced (in log space) between min_ar and max_ar.
+num_ar_buckets = 7
+
+# Can manually specify ar_buckets instead of using the range-style config above.
+# Each entry can be width/height ratio, or (width, height) pair. But you can't mix them, because of TOML.
+# ar_buckets = [[512, 512], [448, 576]]
+# ar_buckets = [1.0, 1.5]
+
+# For video training, you need to configure frame buckets (similar to aspect ratio buckets). There will always
+# be a frame bucket of 1 for images. Videos will be assigned to the longest frame bucket possible, such that the video
+# is still greater than or equal to the frame bucket length.
+# But videos are never assigned to the image frame bucket (1); if the video is very short it would just be dropped.
+frame_buckets = [1, 33]
+# If you have >24GB VRAM, or multiple GPUs and use pipeline parallelism, or lower the spatial resolution, you could maybe train with longer frame buckets
+# frame_buckets = [1, 33, 65, 97]
+
+# Shuffle tags before caching, 0 to keep original caption (unless shuffle_tags is set to true). Increases caching time a tiny bit for higher values.
+# cache_shuffle_num = 10
+# Delimiter for tags, only used if cache_shuffle_num is not 0. Defaults to ", ".
+# "tag1, tag2, tag3" has ", " as delimiter and will possibly be shuffled like "tag3, tag1, tag2". "tag1;tag2;tag3" has ";" as delimiter and will possibly be shuffled like "tag2;tag1;tag3".
+# cache_shuffle_delimiter = ", "
+
+[[directory]]
+# Path to directory of images/videos, and corresponding caption files. The caption files should match the media file name, but with a .txt extension.
+# A missing caption file will log a warning, but then just train using an empty caption.
+path = '/home/anon/data/images/grayscale'
+
+# You can do masked training, where the mask indicates which parts of the image to train on. The masking is done in the loss function. The mask directory should have mask
+# images with the same names (ignoring the extension) as the training images. E.g. training image 1.jpg could have mask image 1.jpg, 1.png, etc. If a training image doesn't
+# have a corresponding mask, a warning is printed but training proceeds with no mask for that image. In the mask, white means train on this, black means mask it out. Values
+# in between black and white become a weight between 0 and 1, i.e. you can use a suitable value of grey for mask weight of 0.5. In actuality, only the R channel is extracted
+# and converted to the mask weight.
+# The mask_path can point to any directory containing mask images.
+# mask_path = '/home/anon/data/images/grayscale/masks'
+
+# How many repeats for 1 epoch. The dataset will act like it is duplicated this many times.
+# The semantics of this are the same as sd-scripts: num_repeats=1 means one epoch is a single pass over all examples (no duplication).
+num_repeats = 1
+
+# Example of overriding some settings, and using ar_buckets to directly specify ARs.
+# ar_buckets = [[448, 576]]
+# resolutions = [[448, 576]]
+# frame_buckets = [1]
+
+
+# You can list multiple directories.
+
+# [[directory]]
+# path = '/home/anon/data/images/something_else'
+# num_repeats = 5
