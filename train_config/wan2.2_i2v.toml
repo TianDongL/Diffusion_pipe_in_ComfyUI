@@ -1,0 +1,46 @@
+output_dir = "/root/wan2_2_lora/diffusion-pipe/training_runs/lizilow"
+dataset = "/root/wan2_2_lora/diffusion-pipe/configs/dataset.toml"
+epochs = 500
+micro_batch_size_per_gpu = 1
+pipeline_stages = 1
+gradient_accumulation_steps = 4
+gradient_clipping = 1
+warmup_steps = 100
+blocks_to_swap = 15
+eval_every_n_epochs = 5
+eval_before_first_step = true
+eval_micro_batch_size_per_gpu = 1
+eval_gradient_accumulation_steps = 1
+save_every_n_epochs = 3
+checkpoint_every_n_minutes = 60
+activation_checkpointing = true
+save_dtype = "bfloat16"
+caching_batch_size = 1
+video_clip_mode = "multiple_overlapping"
+partition_method = "parameters"
+disable_block_swap_for_eval = false
+eval_datasets = []
+
+[model]
+type = "wan"
+ckpt_path = "/root/wan2_2_lora/diffusion-pipe/models/wan2.2low"
+transformer_path = "/root/wan2_2_lora/diffusion-pipe/models/wan2.2low"
+dtype = "bfloat16"
+transformer_dtype = "bfloat16"
+timestep_sample_method = "logit_normal"
+min_t = 0
+max_t = 0.9
+llm_path = "/root/wan2_2_lora/diffusion-pipe/models/wan2.2low/google/umt5-xxl/umt5_xxl_fp16.safetensors"
+
+[adapter]
+type = "lora"
+rank = 32
+dtype = "bfloat16"
+
+[optimizer]
+type = "AdamW8bitKahan"
+lr = 5e-6
+betas = [ 0.9, 0.99,]
+weight_decay = 0.01
+eps = 1e-8
+gradient_release = false

@@ -1,0 +1,57 @@
+output_dir = "/root/wan2_2_lora/diffusion-pipe/training_runs/qwen_edit"
+dataset = "/root/wan2_2_lora/diffusion-pipe/configs/qwen_dataset.toml"
+epochs = 50
+micro_batch_size_per_gpu = 2
+pipeline_stages = 1
+gradient_accumulation_steps = 2
+gradient_clipping = 1
+warmup_steps = 500
+blocks_to_swap = 20
+eval_every_n_epochs = 1
+eval_before_first_step = true
+eval_micro_batch_size_per_gpu = 1
+eval_gradient_accumulation_steps = 1
+save_every_n_epochs = 1
+checkpoint_every_n_minutes = 120
+activation_checkpointing = true
+save_dtype = "bfloat16"
+caching_batch_size = 1
+partition_method = "parameters"
+disable_block_swap_for_eval = false
+eval_datasets = []
+
+[model]
+type = "qwen_image"
+diffusers_path = "/root/wan2_2_lora/diffusion-pipe/models/qwen_image_edit"
+transformer_path = "/root/wan2_2_lora/diffusion-pipe/models/qwen_image_edit/transformer"
+text_encoder_path = "/root/wan2_2_lora/diffusion-pipe/models/qwen_image_edit/text_encoder"
+vae_path = "/root/wan2_2_lora/diffusion-pipe/models/qwen_image_edit/vae"
+tokenizer_path = "/root/wan2_2_lora/diffusion-pipe/models/qwen_image_edit/tokenizer"
+processor_path = "/root/wan2_2_lora/diffusion-pipe/models/qwen_image_edit/processor"
+dtype = "bfloat16"
+transformer_dtype = "bfloat16"
+timestep_sample_method = "logit_normal"
+
+[adapter]
+type = "lora"
+rank = 128
+dtype = "bfloat16"
+
+[lora]
+type = "lora"
+rank = 128
+dtype = "bfloat16"
+
+[optimizer]
+type = "AdamW8bitKahan"
+lr = 8e-5
+betas = [ 0.9, 0.99,]
+weight_decay = 0.01
+eps = 1e-8
+gradient_release = false
+
+[monitoring]
+enable_wandb = false
+wandb_api_key = ""
+wandb_tracker_name = ""
+wandb_run_name = ""

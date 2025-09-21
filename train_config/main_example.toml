@@ -1,0 +1,182 @@
+# Output path for training runs. Each training run makes a new directory in here.
+output_dir = '/data/diffusion_pipe_training_runs/hunyuan_video_test'
+
+# Dataset config file.
+dataset = 'examples/dataset.toml'
+# You can have separate eval datasets. Give them a name for Tensorboard metrics.
+eval_datasets = [
+#     {name = 'something', config = 'path/to/eval_dataset.toml'},
+# ]
+
+# training settings
+
+# I usually set this to a really high value because I don't know how long I want to train.
+epochs = 1000
+# Maximum number of steps to train.
+max_steps = 5000
+# Batch size of a single forward/backward pass for one GPU.
+micro_batch_size_per_gpu = 1
+# For mixed video / image training, you can have a different batch size for images.
+#image_micro_batch_size_per_gpu = 4
+# Pipeline parallelism degree. A single instance of the model is divided across this many GPUs.
+pipeline_stages = 1
+# Number of micro-batches sent through the pipeline for each training step.
+# If pipeline_stages > 1, a higher GAS means better GPU utilization due to smaller pipeline bubbles (where GPUs aren't overlapping computation).
+gradient_accumulation_steps = 1
+# Grad norm clipping.
+gradient_clipping = 1.0
+# Learning rate warmup.
+warmup_steps = 100
+# Force the learning rate to be this value, regardless of what the optimizer or anything else says.
+# Can be used to change learning rate even when resuming from checkpoint.
+force_constant_lr = 1e-5
+# Can be 'constant' or 'linear'. If unset, will default to 'constant', i.e. no LR scheduler.
+lr_scheduler = 'linear'
+
+# Block swapping is supported for Wan, HunyuanVideo, Flux, and Chroma. This value controls the number
+# of blocks kept offloaded to RAM. Increasing it lowers VRAM use, but has a performance penalty. The
+# exactly performance penalty depends on the model and the type of training you are doing (e.g. images vs video).
+# Block swapping only works for LoRA training, and requires pipeline_stages=1.
+blocks_to_swap = 20
+
+# Use pseudo Huber loss with constant c. Only works on models that use the default loss function.
+pseudo_huber_c = 0.5
+
+# eval settings
+
+eval_every_n_epochs = 1
+# You can also specify eval frequency using either of these.
+#eval_every_n_steps = 100
+#eval_every_n_examples = 1000
+eval_before_first_step = true
+# Might want to set these lower for eval so that less images get dropped (eval dataset size is usually much smaller than training set).
+# Each size bucket of images/videos is rounded down to the nearest multiple of the global batch size, so higher global batch size means
+# more dropped images. Usually doesn't matter for training but the eval set is much smaller so it can matter.
+eval_micro_batch_size_per_gpu = 1
+# Batch size for images when doing mixed image / video training. Will be micro_batch_size_per_gpu if not set.
+#image_eval_micro_batch_size_per_gpu = 4
+eval_gradient_accumulation_steps = 1
+# If using block swap, you can disable it for eval. Eval uses less memory, so depending on block swapping amount you can maybe get away with
+# doing this, and then eval is much faster.
+disable_block_swap_for_eval = true
+
+# misc settings
+
+# Probably want to set this a bit higher if you have a smaller dataset so you don't end up with a million saved models.
+save_every_n_epochs = 2
+# You can also specify save frequency using either of these.
+#save_every_n_steps = 100
+#save_every_n_examples = 1000
+# Can checkpoint the training state every n number of epochs or minutes. Set only one of these. You can resume from checkpoints using the --resume_from_checkpoint flag.
+#checkpoint_every_n_epochs = 1
+checkpoint_every_n_minutes = 120
+# Always set to true unless you have a huge amount of VRAM.
+# This can also be 'unsloth' to reduce VRAM even more, with a slight performance hit.
+activation_checkpointing = true
+# Use reentrant activation checkpointing method (set this in addition to `activation_checkpointing`). Might be required for some models
+# when using pipeline parallelism (pipeline_stages>1). Otherwise recommended to not use it.
+#reentrant_activation_checkpointing = true
+
+# Controls how Deepspeed decides how to divide layers across GPUs. Probably don't change this.
+partition_method = 'parameters'
+# Alternatively you can use 'manual' in combination with partition_split, which specifies the split points for dividing
+# layers between GPUs. For example, with two GPUs, partition_split=[10] puts layers 0-9 on GPU 0, and the rest on GPU 1.
+# With three GPUs, partition_split=[10, 20] puts layers 0-9 on GPU 0, layers 10-19 on GPU 1, and the rest on GPU 2.
+# Length of partition_split must be pipeline_stages-1.
+#partition_split = [N]
+
+# dtype for saving the LoRA or model, if different from training dtype
+save_dtype = 'bfloat16'
+# Batch size for caching latents and text embeddings. Increasing can lead to higher GPU utilization during caching phase but uses more memory.
+caching_batch_size = 1
+
+# Number of parallel processes to use in map() calls when caching the dataset. Defaults to min(8, num_cpu_cores) if unset.
+# If you have a lot of cores and multiple GPUs, raising this can increase throughput of caching, but it may use more memory,
+# especially for video data.
+#map_num_proc = 32
+
+# Use torch.compile on the model. Can speed up training throughput by a decent amount. Not tested on all models.
+#compile = true
+
+# How often deepspeed logs to console.
+steps_per_print = 1
+# How to extract video clips for training from a single input video file.
+# The video file is first assigned to one of the configured frame buckets, but then we must extract one or more clips of exactly the right
+# number of frames for that bucket.
+# single_beginning: one clip starting at the beginning of the video
+# single_middle: one clip from the middle of the video (cutting off the start and end equally)
+# multiple_overlapping: extract the minimum number of clips to cover the full range of the video. They might overlap some.
+# default is single_beginning
+video_clip_mode = 'single_beginning'
+
+# By default, the loss graphs in Tensorboard / WandB have step as the x-axis. You can change it to number of examples seen instead.
+#x_axis_examples = true
+
+# This is how you configure HunyuanVideo. Other models will be different. See docs/supported_models.md for
+# details on the configuration and options for each model.
+[model]
+type = 'hunyuan-video'
+# Can load HunyuanVideo entirely from the ckpt path set up for the official inference scripts.
+#ckpt_path = '/home/anon/HunyuanVideo/ckpts'
+# Or you can load it by pointing to all the ComfyUI files.
+transformer_path = '/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_720_cfgdistill_fp8_e4m3fn.safetensors'
+vae_path = '/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_vae_bf16.safetensors'
+llm_path = '/data2/imagegen_models/hunyuan_video_comfyui/llava-llama-3-8b-text-encoder-tokenizer'
+clip_path = '/data2/imagegen_models/hunyuan_video_comfyui/clip-vit-large-patch14'
+# Base dtype used for all models.
+dtype = 'bfloat16'
+# Hunyuan Video supports fp8 for the transformer when training LoRA.
+transformer_dtype = 'float8'
+# How to sample timesteps to train on. Can be logit_normal or uniform.
+timestep_sample_method = 'logit_normal'
+
+# For models that support full fine tuning, simply delete or comment out the [adapter] table to FFT.
+[adapter]
+type = 'lora'
+rank = 32
+# Dtype for the LoRA weights you are training.
+dtype = 'bfloat16'
+# You can initialize the lora weights from a previously trained lora.
+#init_from_existing = '/data/diffusion_pipe_training_runs/something/epoch50'
+# Experimental. Can fuse LoRAs into the base weights before training. Right now only for Flux.
+#fuse_adapters = [
+#    {path = '/data2/imagegen_models/loras/some_lora.safetensors', weight = 1.0}
+#]
+
+[optimizer]
+# AdamW from the optimi library is a good default since it automatically uses Kahan summation when training bfloat16 weights.
+# Look at train.py for other options. You could also easily edit the file and add your own.
+type = 'adamw_optimi'
+lr = 2e-5
+betas = [0.9, 0.99]
+weight_decay = 0.01
+eps = 1e-8
+
+# Can use this optimizer for a bit less memory usage.
+# [optimizer]
+# type = 'AdamW8bitKahan'
+# lr = 2e-5
+# betas = [0.9, 0.99]
+# weight_decay = 0.01
+# stabilize = false
+
+# Automagic optimizer from AI-Toolkit.
+# In my experience, this gives slightly worse results than AdamW with a properly tuned LR, but you can try it.
+
+# [optimizer]
+# type = 'automagic'
+# weight_decay = 0.01
+
+# Any optimizer not explicitly supported will be dynamically loaded from the pytorch-optimizer library.
+# [optimizer]
+# type = 'Prodigy'
+# lr = 1
+# betas = [0.9, 0.99]
+# weight_decay = 0.01
+
+[monitoring]
+# Set to true and fill in these fields to enable wandb
+enable_wandb = false
+wandb_api_key = ''
+wandb_tracker_name = ''
+wandb_run_name = ''

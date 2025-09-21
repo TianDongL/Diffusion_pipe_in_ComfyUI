@@ -1,0 +1,12 @@
+resolutions = [ 720,]
+enable_ar_bucket = true
+min_ar = 0.5
+max_ar = 2.0
+num_ar_buckets = 4
+frame_buckets = [ 1,]
+[[directory]]
+path = "/root/wan2_2_lora/diffusion-pipe/input/ootd/generated"
+num_repeats = 2
+control_path = "/root/wan2_2_lora/diffusion-pipe/input/ootd/source"
+buckets = [ [ 512, 512,], [ 640, 640,], [ 768, 768,], [ 896, 896,], [ 1024, 1024,],]
+
