@@ -188,3 +188,8 @@ input/test/*.png   # 测试用图片（非核心代码，可选）
 input/test/*.txt   # 测试用文本（非核心代码，可选）
 output/            # 输出目录（动态生成，无需提交）
 *.log              # 日志文件
+
+# Ignore arrow cache files
+*.arrow
+input/test/cache/
+**/cache/
