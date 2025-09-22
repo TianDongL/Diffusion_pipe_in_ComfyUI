@@ -39,17 +39,18 @@ conda crate -n comfyui_DP
 conda activate comfyuui_DP
 cd ~/comfy/ComfyUI/custom_nodes/
 git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
+cd ./Diffusion_pipe_in_ComfyUI
 ```
 
-If you alread cloned it and forgot to do --recurse-submodules:
+如果你没有安装子模块，进行以下步骤
 ```bash
 git submodule init
 git submodule update
 ```
 # 安装依赖
 ```bash
+conda activate comfyuui_DP
 pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
-
 pip install -r requirements.txt
 ```
 
@@ -508,10 +509,6 @@ class CustomDatasetNode:
 - DeepSpeed 团队
 - 各模型原始作者
 
-## 联系方式
-
-- GitHub Issues: [项目地址]
-- 讨论区: [Discord/论坛链接]
 
 ---
 
