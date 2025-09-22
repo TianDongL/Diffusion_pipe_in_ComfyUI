@@ -162,22 +162,29 @@ cython_debug/
 #.idea/
 
 # --------------------------
-# 忽略 Windows 系统元文件
+# 系统/编辑器文件
 # --------------------------
-*:Zone.Identifier  # 忽略所有带 :Zone.Identifier 的文件
-*.Zone.Identifier  # 兼容其他格式的 Zone 文件
+*:Zone.Identifier  # 忽略所有 Windows 元文件（核心！）
+*.Zone.Identifier
+*Zone.Identifier
+**/*Zone.Identifier
+**/**/*Zone.Identifier
+.DS_Store          # Mac 系统文件
+Thumbs.db          # Windows 缩略图文件
 
 # --------------------------
-# 忽略 Python 缓存文件
+# Python 缓存
 # --------------------------
-__pycache__/       # 忽略所有 __pycache__ 目录
-*.pyc              # 忽略所有 .pyc 编译缓存文件
-*.pyo              # 忽略 .pyo 缓存文件
-*.pyd              # 忽略 .pyd 缓存文件
+__pycache__/       # 所有 __pycache__ 目录
+*.pyc              # 所有 .pyc 编译文件
+*.pyo
+*.pyd
 
 # --------------------------
-# （可选）忽略其他潜在冗余文件
+# 项目冗余文件
 # --------------------------
-input/test/        # 若 input/test/ 是测试用图/临时文件，可忽略整个目录
-output/            # 若 output/ 是输出目录，内容动态生成，无需提交
-dataset/*.toml     # 若 dataset/ 下的 .toml 是本地配置，可选择性忽略
+input/test/cache/  # 测试缓存目录（体积大，无需提交）
+input/test/*.png   # 测试用图片（非核心代码，可选）
+input/test/*.txt   # 测试用文本（非核心代码，可选）
+output/            # 输出目录（动态生成，无需提交）
+*.log              # 日志文件
