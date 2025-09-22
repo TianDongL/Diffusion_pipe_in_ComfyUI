@@ -3,6 +3,8 @@
 ## 项目简介
 
 Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 ComfyUI 提供了完整的 Diffusion 模型训练和微调功能。这个项目允许用户在 ComfyUI 的图形界面中配置和启动各种先进 AI 模型的训练，支持 LoRA 和全量微调，涵盖了当前最热门的图像生成和视频生成模型。
+我没有太多时间逐个模型进行测试，发现问题请提交issue
+
 
 ### 核心特性
 
@@ -18,20 +20,17 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 ## 系统要求
 
 ### 硬件要求
-- **GPU**: NVIDIA RTX 3090/4090 或更高（24GB+ VRAM 推荐）
-- **内存**: 32GB+ RAM 推荐
-- **存储**: 100GB+ 可用空间（用于数据集和模型存储）
+- **我不知道，你可以尝试**
 
 ### 软件要求
 - **操作系统**: Linux / Windows 10/11 + WSL2
-- **Python**: 3.8+
-- **CUDA**: 11.8+ 或 12.0+
 - **ComfyUI**: 最新版本
 
 ## 安装指南
 
 ### 安装 
 确保你在Linux或者WSL2系统上拥有ComfyUI，参考https://docs.comfy.org/installation/manual_install
+ps:WSL2上的comfyui十分好用，我甚至想删除我在win上的comfyui
 
 
 ```bash
@@ -39,18 +38,22 @@ conda crate -n comfyui_DP
 conda activate comfyuui_DP
 cd ~/comfy/ComfyUI/custom_nodes/
 git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
-cd ./Diffusion_pipe_in_ComfyUI
 ```
 
-如果你没有安装子模块，进行以下步骤
+- **如果你没有安装子模块，进行以下步骤 **
+
+* 如果你不进行此步骤，训练将无法进行
+
 ```bash
 git submodule init
 git submodule update
 ```
+
 # 安装依赖
 ```bash
 conda activate comfyuui_DP
 pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
+cd ~/comfy/ComfyUI/custom_nodes//Diffusion_pipe_in_ComfyUI
 pip install -r requirements.txt
 ```
 
@@ -196,297 +199,36 @@ LoRA 适配器详细配置：
 #### OutputDirPassthrough（输出目录传递）
 简化路径传递的工具节点。
 
-## 快速开始
+# 快速开始
 
-### 1. 基础 LoRA 训练工作流
+## 🚀 一键导入工作流
 
-1. **准备数据集**
-   ```
-   my_dataset/
-   ├── cute_cat_001.jpg
-   ├── cute_cat_001.txt  # "a cute orange cat sitting on grass"
-   ├── cute_cat_002.jpg
-   └── cute_cat_002.txt
-   ```
+为了让你快速开始，我们提供了预配置的 ComfyUI 工作流文件：
 
-2. **构建节点工作流**
-   ```
-   GeneralDatasetPathNode → GeneralDatasetConfig
-                         ↓
-   FluxModelNode → ModelConfig → GeneralConfig → Train
-                                       ↓
-                              TensorBoardMonitor
-   ```
+***[📋 点击导入完整工作流](./Diffusion_Pipe_In_Comfyui.json)**
 
-3. **配置参数**
-   - 数据集路径: `/path/to/my_dataset`
-   - 模型检查点: `/path/to/flux-dev`
-   - 训练轮数: 100
-   - 学习率: 1e-4
+将此文件拖拽到 ComfyUI 界面中即可导入完整的训练工作流，包含所有必要的节点配置。
 
-4. **启动训练**
-   点击 `Train` 节点的执行按钮开始训练。
+### 📷 工作流界面预览
 
-### 2. 高级多 GPU 训练
+<div align="center">
 
-对于大型模型或数据集：
+![模型加载节点](./img/1.png)
 
-```python
-# 训练配置
-epochs = 500
-micro_batch_size_per_gpu = 1
-number_of_gpus = 2
-pipeline_stages = 2
-gradient_accumulation_steps = 8
-```
+![启动训练及监控](./img/2.png)
+*调试时禁用Train节点*
 
-## 配置文件详解
+![模型配置](./img/3.png)
 
-### 数据集配置 (dataset.toml)
-```toml
-[[image_text]]
-dataset_paths = ["/path/to/dataset"]
-num_repeats = 1
-default_caption_prefix = ""
-resolutions = [[1024, 1024]]
-enable_ar_bucket = true
-min_ar = 0.5
-max_ar = 2.0
-num_ar_buckets = 7
-```
+![数据集配置](./img/4.png)
 
-### 训练配置 (train.toml)
-```toml
-[model]
-type = "flux"
-diffusers_path = "/path/to/flux-dev"
-dtype = "bfloat16"
-transformer_dtype = "float8"
+![工作流总览](./img/5.png)
 
-[adapter]
-type = "lora"
-rank = 16
-alpha = 16
-target_modules = ["to_q", "to_k", "to_v", "to_out.0"]
+![监控选项](./img/6.png)
+*kill port会停止当前端口一切监控进程*
 
-[optimizer]
-type = "adamw"
-lr = 1e-4
-betas = [0.9, 0.999]
-weight_decay = 0.01
+</div>
 
-# 训练设置
-epochs = 100
-micro_batch_size_per_gpu = 2
-gradient_accumulation_steps = 4
-save_every_n_epochs = 10
-```
-
-## 高级功能
-
-### 内存优化策略
-
-#### 块交换 (Block Swapping)
-对于显存不足的情况：
-```python
-blocks_to_swap = 12  # 交换的 transformer 块数量
-```
-
-#### 激活检查点
-减少训练时的内存使用：
-```python
-activation_checkpointing = True
-```
-
-#### 梯度释放
-实验性内存优化：
-```python
-gradient_release = True  # 仅适用于特定优化器
-```
-
-### 数据集优化
-
-#### 缓存策略
-```python
-# 强制重新生成缓存
-regenerate_cache = True
-
-# 信任现有缓存
-trust_cache = True
-
-# 仅生成缓存后退出
-cache_only = True
-```
-
-#### 分辨率分桶
-```python
-# 单一分辨率
-resolutions = [[1024, 1024]]
-
-# 多分辨率训练
-resolutions = [
-    [512, 512],
-    [768, 768], 
-    [1024, 1024],
-    [1280, 720]
-]
-```
-
-### 视频训练特殊配置
-
-#### 帧长度设置
-```python
-# 视频帧数配置
-video_clip_mode = "single_beginning"
-frame_buckets = [16, 24, 32]
-```
-
-#### 条件设置
-```python
-# 图像到视频训练
-first_frame_conditioning_p = 1.0
-```
-
-## 故障排除
-
-### 常见问题
-
-#### 1. WSL2 路径问题
-**问题**: Windows 路径无法在 WSL2 中识别
-**解决**: 使用路径规范化功能，将 `C:\path` 自动转换为 `/mnt/c/path`
-
-#### 2. CUDA 内存不足
-**问题**: `CUDA out of memory`
-**解决方案**:
-- 减小 `micro_batch_size_per_gpu`
-- 启用 `blocks_to_swap`
-- 使用 `float8` 量化
-- 启用 `activation_checkpointing`
-
-#### 3. 数据集加载失败
-**问题**: 找不到图像或文本文件
-**解决方案**:
-- 检查文件路径和权限
-- 确保图像和文本文件配对
-- 使用 `regenerate_cache=True` 重新生成缓存
-
-#### 4. 训练过程中断
-**问题**: 训练突然停止
-**解决方案**:
-- 使用 `resume_from_checkpoint` 恢复训练
-- 检查磁盘空间
-- 监控 GPU 温度
-
-### 调试技巧
-
-#### 启用详细日志
-```bash
-export PYTHONPATH=/path/to/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI
-export CUDA_LAUNCH_BLOCKING=1
-```
-
-#### 内存监控
-```bash
-# 监控 GPU 内存使用
-watch -n 1 nvidia-smi
-
-# 监控系统内存
-htop
-```
-
-#### 验证配置
-使用 `cache_only=True` 验证数据集配置是否正确。
-
-## 最佳实践
-
-### 训练策略
-
-#### 学习率调优
-1. **起始值**: 从较小的学习率开始 (1e-5)
-2. **预热**: 使用 warmup_steps 平缓启动
-3. **监控**: 观察损失曲线调整学习率
-
-#### LoRA 参数选择
-- **rank**: 16-32 适合大多数情况
-- **alpha**: 通常等于 rank
-- **dropout**: 0.1 可防止过拟合
-
-#### 数据集准备
-1. **质量**: 高质量图像和准确标注
-2. **多样性**: 涵盖各种场景和角度
-3. **数量**: 100-1000 张图像适合 LoRA 训练
-
-### 性能优化
-
-#### 硬件配置
-- **24GB GPU**: 适合大多数 LoRA 训练
-- **48GB GPU**: 支持全量微调
-- **多 GPU**: 使用 pipeline_stages 并行
-
-#### 软件配置
-```bash
-# 优化 CUDA 内存分配
-export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-
-# 禁用 P2P (如果有网络问题)
-export NCCL_P2P_DISABLE="1"
-export NCCL_IB_DISABLE="1"
-```
-
-## 扩展开发
-
-### 添加新模型支持
-
-1. **创建模型文件**
-   ```python
-   # models/my_model.py
-   class MyModel:
-       def __init__(self, config):
-           pass
-   ```
-
-2. **注册节点**
-   ```python
-   # diffusion_nodes/model_tools.py
-   class MyModelNode:
-       @classmethod
-       def INPUT_TYPES(cls):
-           return {...}
-   ```
-
-3. **更新映射**
-   ```python
-   # nodes.py
-   NODE_CLASS_MAPPINGS["MyModelNode"] = MyModelNode
-   ```
-
-### 自定义数据集格式
-
-继承基础数据集类并实现自定义逻辑：
-```python
-class CustomDatasetNode:
-    def create_config(self, **kwargs):
-        # 自定义配置逻辑
-        return config
-```
-
-## 更新日志
-
-### 版本 2.0
-- 新增 Qwen-Image 系列模型支持
-- 改进 WSL2 路径处理
-- 优化内存使用策略
-- 新增视频训练功能
-
-### 版本 1.5
-- 新增 Flux 系列模型支持
-- 改进训练监控
-- 优化配置文件生成
-
-### 版本 1.0
-- 基础 SDXL 训练支持
-- ComfyUI 节点集成
-- 基础 LoRA 训练功能
 
 ## 许可证
 
@@ -508,7 +250,6 @@ class CustomDatasetNode:
 - Hugging Face Diffusers
 - DeepSpeed 团队
 - 各模型原始作者
-
 
 ---
 
