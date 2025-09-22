@@ -1,0 +1,21 @@
+{
+  "_class_name": "HYVAE2D",
+  "block_out_channels": [
+    128,
+    256,
+    512,
+    512,
+    1024,
+    1024
+  ],
+  "in_channels": 3,
+  "out_channels": 3,
+  "latent_channels": 64,
+  "layers_per_block": 2,
+  "ffactor_spatial": 32,
+  "sample_size": 384,
+  "sample_tsize": 96,
+  "scaling_factor": 0.75289,
+  "downsample_match_channel": true,
+  "upsample_match_channel": true
+}
