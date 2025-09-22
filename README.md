@@ -9,6 +9,43 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 
 # 快速开始
 
+## 安装指南
+
+### 安装 
+确保你在Linux或者WSL2系统上拥有ComfyUI，参考https://docs.comfy.org/installation/manual_install
+ps:WSL2上的comfyui十分好用，我甚至想删除我在win上的comfyui
+
+
+```bash
+conda crate -n comfyui_DP
+conda activate comfyui_DP
+cd ~/comfy/ComfyUI/custom_nodes/
+git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
+```
+
+* 如果你没有安装子模块，进行以下步骤 
+
+* 如果你不进行此步骤，训练将无法进行
+
+```bash
+git submodule init
+git submodule update
+```
+
+# 安装依赖
+```bash
+conda activate comfyui_DP
+```
+```bash
+pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
+```
+```bash
+cd ~/comfy/ComfyUI/custom_nodes//Diffusion_pipe_in_ComfyUI
+```
+```bash
+pip install -r requirements.txt
+```
+
 ## 🚀 一键导入工作流
 
 为了让你快速开始，我们提供了预配置的 ComfyUI 工作流文件：
@@ -20,7 +57,7 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 ## 请仔细阅读工作流中的提示，这可以帮助你进行数据集的构建
 
 
-### 📷 工作流界面预览
+# 📷 工作流界面预览
 
 <div align="center">
 
@@ -61,68 +98,29 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 - **操作系统**: Linux / Windows 10/11 + WSL2
 - **ComfyUI**: 最新版本
 
-## 安装指南
-
-### 安装 
-确保你在Linux或者WSL2系统上拥有ComfyUI，参考https://docs.comfy.org/installation/manual_install
-ps:WSL2上的comfyui十分好用，我甚至想删除我在win上的comfyui
-
-
-```bash
-conda crate -n comfyui_DP
-conda activate comfyuui_DP
-cd ~/comfy/ComfyUI/custom_nodes/
-git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
-```
-
-- ** 如果你没有安装子模块，进行以下步骤 **
-
-* 如果你不进行此步骤，训练将无法进行
-
-```bash
-git submodule init
-git submodule update
-```
-
-# 安装依赖
-```bash
-conda activate comfyuui_DP
-pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
-cd ~/comfy/ComfyUI/custom_nodes//Diffusion_pipe_in_ComfyUI
-pip install -r requirements.txt
-```
 
 ## 支持的模型
 
 本插件支持超过 20 种最新的 Diffusion 模型，包括：
 
-### 🖼️ 图像生成模型
-| 模型 | LoRA | 全量微调 | FP8/量化 | 描述 |
-|------|------|----------|----------|------|
-| **SDXL** | ✅ | ✅ | ❌ | Stable Diffusion XL |
-| **Flux** | ✅ | ✅ | ✅ | Black Forest Labs Flux |
-| **SD3** | ✅ | ❌ | ✅ | Stable Diffusion 3 |
-| **Lumina2** | ✅ | ✅ | ❌ | 高质量图像生成 |
-| **Qwen-Image** | ✅ | ✅ | ✅ | 阿里通义千问图像模型 |
-| **HiDream** | ✅ | ❌ | ✅ | 高分辨率图像生成 |
-| **Chroma** | ✅ | ✅ | ✅ | 基于 Flux 的改进模型 |
-| **Cosmos** | ✅ | ❌ | ❌ | NVIDIA Cosmos 模型 |
-| **Cosmos-Predict2** | ✅ | ✅ | ✅ | Cosmos 第二代 |
-| **OmniGen2** | ✅ | ❌ | ❌ | 多功能生成模型 |
-
-### 🎬 视频生成模型
-| 模型 | LoRA | 全量微调 | FP8/量化 | 描述 |
-|------|------|----------|----------|------|
-| **LTX-Video** | ✅ | ❌ | ❌ | 文本到视频生成 |
-| **HunyuanVideo** | ✅ | ❌ | ✅ | 腾讯混元视频模型 |
-| **Wan2.1** | ✅ | ✅ | ✅ | 视频生成模型 |
-| **Wan2.2** | ✅ | ✅ | ✅ | 改进版视频生成 |
-
-### 🎨 图像编辑模型
-| 模型 | LoRA | 全量微调 | FP8/量化 | 描述 |
-|------|------|----------|----------|------|
-| **Flux Kontext** | ✅ | ✅ | ✅ | 基于 Flux 的编辑模型 |
-| **Qwen-Image-Edit** | ✅ | ✅ | ✅ | 通义千问图像编辑 |
+| Model          | LoRA | Full Fine Tune | fp8/quantization |
+|----------------|------|----------------|------------------|
+|SDXL            |✅    |✅              |❌                |
+|Flux            |✅    |✅              |✅                |
+|LTX-Video       |✅    |❌              |❌                |
+|HunyuanVideo    |✅    |❌              |✅                |
+|Cosmos          |✅    |❌              |❌                |
+|Lumina Image 2.0|✅    |✅              |❌                | 
+|Wan2.1          |✅    |✅              |✅                |
+|Chroma          |✅    |✅              |✅                |
+|HiDream         |✅    |❌              |✅                |
+|SD3             |✅    |❌              |✅                |
+|Cosmos-Predict2 |✅    |✅              |✅                |
+|OmniGen2        |✅    |❌              |❌                |
+|Flux Kontext    |✅    |✅              |✅                |
+|Wan2.2          |✅    |✅              |✅                |
+|Qwen-Image      |✅    |✅              |✅                |
+|Qwen-Image-Edit |✅    |✅              |✅                |
 
 ## 节点系统详解
 
@@ -136,7 +134,7 @@ pip install -r requirements.txt
 - **数据集重复**: 控制数据使用频率
 - **缓存设置**: 优化数据加载性能
 
-#### GeneralDatasetPathNode（通用数据集路径）
+#### GeneralDatasetPathNode（通用数据集节点）
 处理标准图像-文本对数据集：
 ```
 dataset/
@@ -146,7 +144,7 @@ dataset/
 └── image2.txt
 ```
 
-#### EditModelDatasetPathNode（编辑模型数据集路径）
+#### EditModelDatasetPathNode（编辑模型数据集）
 处理图像编辑数据集：
 ```
 dataset/
@@ -167,7 +165,6 @@ dataset/
 
 ### 🤖 模型配置节点
 
-#### 图像模型节点
 - **SDXLModelNode**: SDXL 模型配置
 - **FluxModelNode**: Flux 模型配置
 - **SD3ModelNode**: SD3 模型配置
@@ -175,14 +172,10 @@ dataset/
 - **HiDreamModelNode**: HiDream 模型配置
 - **ChromaModelNode**: Chroma 模型配置
 - **Lumina2ModelNode**: Lumina2 模型配置
-
-#### 视频模型节点
 - **LTXVideoModelNode**: LTX-Video 配置
 - **HunyuanVideoModelNode**: 混元视频配置
 - **Wan21ModelNode**: Wan2.1 配置
 - **Wan22ModelNode**: Wan2.2 配置
-
-#### 编辑模型节点
 - **FluxKontextModelNode**: Flux Kontext 配置
 - **QwenImageEditModelNode**: 通义千问编辑配置
 
@@ -220,7 +213,7 @@ LoRA 适配器详细配置：
 #### Train（训练启动器）
 启动和控制训练过程：
 - **配置合并**: 自动合并数据集和训练配置
-- **进程管理**: 启动、停止、监控训练
+- **进程管理**: 启动、监控训练
 - **错误处理**: 异常捕获和恢复
 - **日志输出**: 实时训练状态
 
@@ -233,7 +226,6 @@ LoRA 适配器详细配置：
 
 #### OutputDirPassthrough（输出目录传递）
 简化路径传递的工具节点。
-
 
 
 ## 许可证
@@ -253,10 +245,9 @@ LoRA 适配器详细配置：
 
 感谢以下项目和团队：
 - ComfyUI 团队
+- Diffusion_Piped的原作者 @tdrussell
 - Hugging Face Diffusers
 - DeepSpeed 团队
 - 各模型原始作者
 
----
 
-**注意**: 这是一个功能强大的训练工具，需要深入了解机器学习和 Diffusion 模型。建议在使用前充分了解相关概念和风险。
