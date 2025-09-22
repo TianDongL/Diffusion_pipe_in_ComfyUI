@@ -30,39 +30,27 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 
 ## 安装指南
 
-### 1. 安装 ComfyUI
+### 安装 
 确保你在Linux或者WSL2系统上拥有ComfyUI，参考https://docs.comfy.org/installation/manual_install
 
-```bash
-git clone https://github.com/comfyanonymous/ComfyUI.git
-cd ComfyUI
 
-# 安装依赖
-pip install -r requirements.txt
+```bash
+conda crate -n comfyui_DP
+conda activate comfyuui_DP
+cd ~/comfy/ComfyUI/custom_nodes/
+git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
 ```
 
-### 2. 安装 Diffusion-Pipe 节点
+If you alread cloned it and forgot to do --recurse-submodules:
 ```bash
-# 进入 ComfyUI 自定义节点目录
-cd custom_nodes
-
-# 克隆本项目
-git clone https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
-
-# 安装依赖
-cd Diffusion_pipe_in_ComfyUI
-pip install -r requirements.txt
+git submodule init
+git submodule update
 ```
-
-### 3. WSL2 环境配置（Windows 用户）
-确保在 WSL2 环境中正确配置 CUDA 和 GPU 驱动：
-
+# 安装依赖
 ```bash
-# 检查 CUDA 版本
-nvcc --version
+pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
 
-# 检查 GPU 状态
-nvidia-smi
+pip install -r requirements.txt
 ```
 
 ## 支持的模型
