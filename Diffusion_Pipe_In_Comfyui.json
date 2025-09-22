@@ -1,8 +1,8 @@
 {
   "id": "6d5bb5d7-1026-4495-a5dc-bed47fd78a21",
   "revision": 0,
-  "last_node_id": 236,
-  "last_link_id": 309,
+  "last_node_id": 238,
+  "last_link_id": 317,
   "nodes": [
     {
       "id": 104,
@@ -1255,7 +1255,7 @@
         582.6809692382812
       ],
       "flags": {},
-      "order": 35,
+      "order": 34,
       "mode": 0,
       "inputs": [
         {
@@ -1283,15 +1283,15 @@
       "id": 180,
       "type": "PreviewAny",
       "pos": [
-        -1143.4439697265625,
-        -1305.26123046875
+        -1307.6015625,
+        -1278.6888427734375
       ],
       "size": [
         527.1528930664062,
         702.3621215820312
       ],
       "flags": {},
-      "order": 37,
+      "order": 38,
       "mode": 0,
       "inputs": [
         {
@@ -1314,6 +1314,214 @@
       "widgets_values": [],
       "color": "#223",
       "bgcolor": "#335"
+    },
+    {
+      "id": 236,
+      "type": "Note",
+      "pos": [
+        -1713.4700927734375,
+        -420.033935546875
+      ],
+      "size": [
+        329.5334777832031,
+        88
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "do not delete this"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 210,
+      "type": "PreviewAny",
+      "pos": [
+        -1272.2510986328125,
+        -382.4725646972656
+      ],
+      "size": [
+        210,
+        88
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 298
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.57",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 229,
+      "type": "OutputDirPassthrough",
+      "pos": [
+        -1883.011962890625,
+        -386.5487060546875
+      ],
+      "size": [
+        151.74609375,
+        26
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "output_dir",
+          "type": "STRING",
+          "link": 295
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output_dir",
+          "type": "STRING",
+          "links": [
+            311
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "OutputDirPassthrough",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 188,
+      "type": "PreviewAny",
+      "pos": [
+        -1865.4345703125,
+        -1141.1087646484375
+      ],
+      "size": [
+        518.5387573242188,
+        595.182373046875
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 281
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.57",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 220,
+      "type": "Train",
+      "pos": [
+        -1822.174072265625,
+        -1273.9730224609375
+      ],
+      "size": [
+        210,
+        78
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "dataset_config",
+          "type": "DATASET_CONFIG",
+          "link": 278
+        },
+        {
+          "name": "train_config",
+          "type": "TRAIN_CONFIG",
+          "link": 316
+        },
+        {
+          "name": "config_path",
+          "type": "config_path",
+          "link": 317
+        }
+      ],
+      "outputs": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            280
+          ]
+        },
+        {
+          "name": "log_output",
+          "type": "STRING",
+          "links": [
+            281
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "Train",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#322",
+      "bgcolor": "#533"
     },
     {
       "id": 178,
@@ -1358,7 +1566,7 @@
           "type": "TRAIN_CONFIG",
           "links": [
             273,
-            279
+            316
           ]
         },
         {
@@ -1367,6 +1575,13 @@
           "links": [
             272,
             295
+          ]
+        },
+        {
+          "name": "config_path",
+          "type": "config_path",
+          "links": [
+            317
           ]
         }
       ],
@@ -1409,78 +1624,11 @@
       "bgcolor": "#335"
     },
     {
-      "id": 188,
-      "type": "PreviewAny",
-      "pos": [
-        -1719.722900390625,
-        -1189.787109375
-      ],
-      "size": [
-        518.5387573242188,
-        595.182373046875
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 38,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source",
-          "type": "*",
-          "link": 281
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.57",
-        "Node name for S&R": "PreviewAny",
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#223",
-      "bgcolor": "#335"
-    },
-    {
-      "id": 232,
-      "type": "Note",
-      "pos": [
-        -1973.127197265625,
-        -91.37515258789062
-      ],
-      "size": [
-        329.5334777832031,
-        88
-      ],
-      "flags": {},
-      "order": 26,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "你也可以查看你想看的任何历史进程"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 231,
       "type": "PrimitiveString",
       "pos": [
-        -1990.928955078125,
-        48.20596694946289
+        -1868.87451171875,
+        166.96478271484375
       ],
       "size": [
         497.604736328125,
@@ -1516,147 +1664,11 @@
       "bgcolor": "#3f5159"
     },
     {
-      "id": 210,
-      "type": "PreviewAny",
-      "pos": [
-        -1119.7510986328125,
-        -450.5252685546875
-      ],
-      "size": [
-        210,
-        88
-      ],
-      "flags": {},
-      "order": 40,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source",
-          "type": "*",
-          "link": 298
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.57",
-        "Node name for S&R": "PreviewAny",
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
-      "id": 229,
-      "type": "OutputDirPassthrough",
-      "pos": [
-        -1730.511962890625,
-        -454.6014099121094
-      ],
-      "size": [
-        151.74609375,
-        26
-      ],
-      "flags": {},
-      "order": 36,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "output_dir",
-          "type": "STRING",
-          "link": 295
-        }
-      ],
-      "outputs": [
-        {
-          "name": "output_dir",
-          "type": "STRING",
-          "links": [
-            309
-          ]
-        }
-      ],
-      "properties": {
-        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
-        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
-        "Node name for S&R": "OutputDirPassthrough",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
-      "id": 220,
-      "type": "Train",
-      "pos": [
-        -1641.8902587890625,
-        -1295.169921875
-      ],
-      "size": [
-        179.109375,
-        46
-      ],
-      "flags": {},
-      "order": 34,
-      "mode": 4,
-      "inputs": [
-        {
-          "name": "dataset_config",
-          "type": "DATASET_CONFIG",
-          "link": 278
-        },
-        {
-          "name": "train_config",
-          "type": "TRAIN_CONFIG",
-          "link": 279
-        }
-      ],
-      "outputs": [
-        {
-          "name": "status",
-          "type": "STRING",
-          "links": [
-            280
-          ]
-        },
-        {
-          "name": "log_output",
-          "type": "STRING",
-          "links": [
-            281
-          ]
-        }
-      ],
-      "properties": {
-        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
-        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
-        "Node name for S&R": "Train",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
       "id": 233,
       "type": "PreviewAny",
       "pos": [
-        -1143.177734375,
-        -310.1971740722656
+        -1295.677734375,
+        -242.1444854736328
       ],
       "size": [
         368.0374450683594,
@@ -1688,24 +1700,53 @@
       "bgcolor": "#533"
     },
     {
+      "id": 232,
+      "type": "Note",
+      "pos": [
+        -1842.4156494140625,
+        -19.61225128173828
+      ],
+      "size": [
+        405.556884765625,
+        88
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "你也可以查看你想看的任何历史进程\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
       "id": 230,
       "type": "TensorBoardMonitor",
       "pos": [
-        -1717.9813232421875,
-        -329.5761413574219
+        -1870.4813232421875,
+        -261.5234375
       ],
       "size": [
         524.4585571289062,
         150
       ],
       "flags": {},
-      "order": 39,
+      "order": 37,
       "mode": 0,
       "inputs": [
         {
           "name": "output_dir",
           "type": "STRING",
-          "link": 309
+          "link": 311
         }
       ],
       "outputs": [
@@ -1742,40 +1783,11 @@
       "widgets_values": [
         6006,
         "localhost",
-        false,
+        true,
         "start"
       ],
       "color": "#322",
       "bgcolor": "#533"
-    },
-    {
-      "id": 236,
-      "type": "Note",
-      "pos": [
-        -1560.9700927734375,
-        -488.0866394042969
-      ],
-      "size": [
-        329.5334777832031,
-        88
-      ],
-      "flags": {},
-      "order": 28,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "do not delete this"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -1868,14 +1880,6 @@
       "DATASET_CONFIG"
     ],
     [
-      279,
-      178,
-      0,
-      220,
-      1,
-      "TRAIN_CONFIG"
-    ],
-    [
       280,
       220,
       0,
@@ -1916,12 +1920,28 @@
       "*"
     ],
     [
-      309,
+      311,
       229,
       0,
       230,
       0,
       "STRING"
+    ],
+    [
+      316,
+      178,
+      0,
+      220,
+      1,
+      "TRAIN_CONFIG"
+    ],
+    [
+      317,
+      178,
+      2,
+      220,
+      2,
+      "config_path"
     ]
   ],
   "groups": [
@@ -1968,10 +1988,10 @@
       "id": 4,
       "title": "go train",
       "bounding": [
-        -1758.0802001953125,
-        -1356.785400390625,
-        1190,
-        770
+        -1922.23779296875,
+        -1330.2130126953125,
+        1167.73046875,
+        820.6822509765625
       ],
       "color": "#A88",
       "font_size": 24,
@@ -1981,8 +2001,8 @@
       "id": 5,
       "title": "TensorBoard",
       "bounding": [
-        -1760.586181640625,
-        -539.0757446289062,
+        -1913.086181640625,
+        -471.0230712890625,
         1212.814453125,
         819.6329345703125
       ],
@@ -1995,10 +2015,10 @@
   "extra": {
     "ue_links": [],
     "ds": {
-      "scale": 0.9646149645000035,
+      "scale": 0.5989500000000068,
       "offset": [
-        2561.8308058394423,
-        877.7938109170559
+        3511.0199321998407,
+        1379.7267037133672
       ]
     },
     "links_added_by_ue": [],

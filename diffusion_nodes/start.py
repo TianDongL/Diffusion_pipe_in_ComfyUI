@@ -53,6 +53,9 @@ class Train:
                 "train_config": ("TRAIN_CONFIG", {
                     "tooltip": "训练配置（来自GeneralConfig节点）"
                 }),
+                "config_path": ("config_path", {
+                    "tooltip": "配置文件路径（来自GeneralConfig节点）"
+                }),
             },
             "optional": {}
         }
@@ -62,9 +65,9 @@ class Train:
     FUNCTION = "execute"
     CATEGORY = "Diffusion-Pipe/Train"
     
-    def execute(self, dataset_config, train_config):
+    def execute(self, dataset_config, train_config, config_path):
         """ComfyUI节点的执行入口"""
-        return self.start_training(dataset_config, train_config)
+        return self.start_training(dataset_config, train_config, config_path)
     
     def normalize_wsl_path(self, path):
         """规范化WSL2环境下的路径"""
@@ -92,7 +95,7 @@ class Train:
             return path
 
     def create_config_files(self, dataset_config, train_config):
-        """创建临时配置文件"""
+        """创建临时配置文件 - 已弃用，现在使用 config_save_path"""
         try:
             # 创建临时目录
             temp_dir = tempfile.mkdtemp(prefix="diffusion_train_")
@@ -173,7 +176,7 @@ class Train:
         except Exception as e:
             log_queue.put(f"Log reader error: {str(e)}")
 
-    def start_training(self, dataset_config, train_config):
+    def start_training(self, dataset_config, train_config, config_path):
         """启动训练进程"""
         try:
             # 检查是否已经在训练
@@ -199,10 +202,16 @@ class Train:
             if not isinstance(train_config, dict):
                 train_config = {}
             
-            # 创建配置文件
-            config_path, temp_dir = self.create_config_files(dataset_config, train_config)
-            if config_path is None:
-                return "ERROR", f"创建配置文件失败: {temp_dir}"
+            # 检查配置文件路径
+            if not config_path:
+                return "ERROR", "未指定配置文件保存路径 (config_path)"
+            
+            # 规范化配置文件路径
+            config_path = self.normalize_wsl_path(config_path)
+            
+            # 检查配置文件是否存在
+            if not os.path.exists(config_path):
+                return "ERROR", f"配置文件不存在: {config_path}"
             
             # 获取训练脚本路径
             current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -249,7 +258,8 @@ class Train:
             
             # 启动训练进程
             print(f"启动训练命令: {' '.join(cmd)}")
-            print(f"配置文件路径: {config_path}")
+            print(f"使用配置文件: {config_path}")
+            print(f"GPU数量: {num_gpus}")
             
             self.training_process = subprocess.Popen(
                 cmd,
@@ -303,7 +313,7 @@ class Train:
             
             log_output = "\n".join(initial_logs) if initial_logs else "训练已启动，正在初始化..."
             
-            return "TRAINING_STARTED", f"训练成功启动!\nPID: {self.training_process.pid}\n配置文件: {config_path}\n临时目录: {temp_dir}\n\n初始日志:\n{log_output}"
+            return "TRAINING_STARTED", f"训练成功启动!\nPID: {self.training_process.pid}\n配置文件: {config_path}\n\n初始日志:\n{log_output}"
             
         except Exception as e:
             self.is_training = False

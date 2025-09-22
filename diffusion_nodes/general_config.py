@@ -185,8 +185,8 @@ class GeneralConfig:
             }
         }
     
-    RETURN_TYPES = ("TRAIN_CONFIG", "STRING")
-    RETURN_NAMES = ("train_config", "output_dir")
+    RETURN_TYPES = ("TRAIN_CONFIG", "STRING", "config_path")
+    RETURN_NAMES = ("train_config", "output_dir", "config_path")
     FUNCTION = "generate_settings"
     CATEGORY = "Diffusion-Pipe/Config"
 
@@ -198,7 +198,7 @@ class GeneralConfig:
                          eval_gradient_accumulation_steps: int = 1, save_every_n_epochs: int = 1,
                          checkpoint_every_n_minutes: int = 120, caching_batch_size: int = 1,
                          disable_block_swap_for_eval: bool = False, video_clip_mode: str = "none",
-                         eval_datasets: str = "", adapter_config=None) -> Tuple[str]:
+                         eval_datasets: str = "", adapter_config=None) -> Tuple[str, str, str]:
         """生成通用训练设置"""
         try:
             # 处理输出目录路径 - 先使用WSL路径规范化
@@ -431,7 +431,7 @@ class GeneralConfig:
                     display_path = normalized_save_path.replace('\\', '/')
                     logging.info(f"训练配置文件已保存: {display_path}")
                     
-                    return (config_with_path, abs_output_dir)
+                    return (config_with_path, abs_output_dir, normalized_save_path)
                 except Exception as e:
                     error_msg = f"保存训练配置文件失败: {str(e)}"
                     print(error_msg)
@@ -439,11 +439,11 @@ class GeneralConfig:
             else:
                 print("未指定配置保存路径，仅生成配置内容")
             
-            return (train_config, abs_output_dir)
+            return (train_config, abs_output_dir, config_save_path or "")
             
         except Exception as e:
             logging.error(f"通用设置生成失败: {str(e)}")
-            return ("{}", "")
+            return ("{}", "", "")
     
     def _format_as_toml(self, settings: dict) -> str:
         """自定义TOML格式化方法"""
