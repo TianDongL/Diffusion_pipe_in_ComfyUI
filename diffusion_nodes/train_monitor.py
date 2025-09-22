@@ -264,7 +264,7 @@ class TensorBoardMonitor:
             
             # 检查并处理输出目录
             if not os.path.exists(output_dir):
-                print(f"输出目录不存在: {output_dir}")
+                print(f"输出目录不存在: {output_dir}，正在自动创建")
                 return ("",)
             
             # 如果是新训练，无条件等待30秒等待新的训练文件生成
