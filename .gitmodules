@@ -1,0 +1,24 @@
+[submodule "submodules/HunyuanVideo"]
+	path = submodules/HunyuanVideo
+	url = https://github.com/Tencent/HunyuanVideo
+[submodule "submodules/Cosmos"]
+	path = submodules/Cosmos
+	url = https://github.com/NVIDIA/Cosmos
+[submodule "submodules/Lumina_2"]
+	path = submodules/Lumina_2
+	url = https://github.com/Alpha-VLLM/Lumina-Image-2.0
+[submodule "submodules/flow"]
+	path = submodules/flow
+	url = https://github.com/lodestone-rock/flow
+[submodule "submodules/HiDream"]
+	path = submodules/HiDream
+	url = https://github.com/HiDream-ai/HiDream-I1
+[submodule "submodules/LTX_Video"]
+	path = submodules/LTX_Video
+	url = https://github.com/Lightricks/LTX-Video
+[submodule "submodules/HunyuanImage-2.1"]
+	path = submodules/HunyuanImage-2.1
+	url = https://github.com/Tencent-Hunyuan/HunyuanImage-2.1
+[submodule "submodules/OmniGen2"]
+	path = submodules/OmniGen2
+	url = https://github.com/VectorSpaceLab/OmniGen2
