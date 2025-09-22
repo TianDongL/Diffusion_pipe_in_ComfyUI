@@ -4,7 +4,41 @@
 
 Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 ComfyUI 提供了完整的 Diffusion 模型训练和微调功能。这个项目允许用户在 ComfyUI 的图形界面中配置和启动各种先进 AI 模型的训练，支持 LoRA 和全量微调，涵盖了当前最热门的图像生成和视频生成模型。
 
-# 我没有太多时间逐个模型进行测试，发现问题请提交issue
+## 我没有太多时间逐个模型进行测试，发现问题请提交issue
+## 可能会在晚点更新win版本
+
+# 快速开始
+
+## 🚀 一键导入工作流
+
+为了让你快速开始，我们提供了预配置的 ComfyUI 工作流文件：
+
+***[📋 点击导入完整工作流](./Diffusion_Pipe_In_Comfyui.json)***
+
+将此文件拖拽到 ComfyUI 界面中即可导入完整的训练工作流，包含所有必要的节点配置。
+
+## 请仔细阅读工作流中的提示，这可以帮助你进行数据集的构建
+
+
+### 📷 工作流界面预览
+
+<div align="center">
+
+![模型加载节点](./img/1.png)
+
+![启动训练及监控](./img/2.png)
+*调试时禁用Train节点*
+
+![模型配置](./img/3.png)
+
+![数据集配置](./img/4.png)
+
+![工作流总览](./img/5.png)
+
+![监控选项](./img/6.png)
+*kill port会停止当前端口一切监控进程*
+
+</div>
 
 
 ### 核心特性
@@ -21,7 +55,7 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 ## 系统要求
 
 ### 硬件要求
-- **我不知道，你可以尝试**
+- ** 我不知道，你可以尝试 **
 
 ### 软件要求
 - **操作系统**: Linux / Windows 10/11 + WSL2
@@ -41,7 +75,7 @@ cd ~/comfy/ComfyUI/custom_nodes/
 git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
 ```
 
-- **如果你没有安装子模块，进行以下步骤 **
+- ** 如果你没有安装子模块，进行以下步骤 **
 
 * 如果你不进行此步骤，训练将无法进行
 
@@ -200,35 +234,6 @@ LoRA 适配器详细配置：
 #### OutputDirPassthrough（输出目录传递）
 简化路径传递的工具节点。
 
-# 快速开始
-
-## 🚀 一键导入工作流
-
-为了让你快速开始，我们提供了预配置的 ComfyUI 工作流文件：
-
-***[📋 点击导入完整工作流](./Diffusion_Pipe_In_Comfyui.json)**
-
-将此文件拖拽到 ComfyUI 界面中即可导入完整的训练工作流，包含所有必要的节点配置。
-
-### 📷 工作流界面预览
-
-<div align="center">
-
-![模型加载节点](./img/1.png)
-
-![启动训练及监控](./img/2.png)
-*调试时禁用Train节点*
-
-![模型配置](./img/3.png)
-
-![数据集配置](./img/4.png)
-
-![工作流总览](./img/5.png)
-
-![监控选项](./img/6.png)
-*kill port会停止当前端口一切监控进程*
-
-</div>
 
 
 ## 许可证
