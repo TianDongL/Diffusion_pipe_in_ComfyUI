@@ -24,18 +24,18 @@ Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 Comfy
 
 <div align="center">
 
-![模型加载节点](./img/1.png)
+![模型加载节点](./img/11.png)
 
-![启动训练及监控](./img/2.png)
+![启动训练及监控](./img/22.png)
 *调试时禁用Train节点*
 
-![模型配置](./img/3.png)
+![模型配置](./img/33.png)
 
-![数据集配置](./img/4.png)
+![数据集配置](./img/44.png)
 
-![工作流总览](./img/5.png)
+![工作流总览](./img/55.png)
 
-![监控选项](./img/6.png)
+![监控选项](./img/66.png)
 *kill port会停止当前端口一切监控进程*
 
 </div>
