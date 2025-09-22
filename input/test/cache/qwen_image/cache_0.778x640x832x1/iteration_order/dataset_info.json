@@ -1,0 +1,48 @@
+{
+  "builder_name": "generator",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "generator",
+  "dataset_size": 1072,
+  "description": "",
+  "download_checksums": {},
+  "download_size": 0,
+  "features": {
+    "image_spec": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "latents_idx": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "caption": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "caption_number": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 1072,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 1072,
+      "num_examples": 3,
+      "dataset_name": "generator"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
