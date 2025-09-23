@@ -6,7 +6,7 @@ try:
     from .diffusion_nodes.general_config import GeneralConfig
     from .diffusion_nodes.model_config import ModelConfig
     from .diffusion_nodes.dataset_tools import ArBucketsNode
-    from .diffusion_nodes.model_tools import SDXLModelNode,Wan22ModelNode,QwenImageEditModelNode,FluxKontextModelNode,QwenImageModelNode,CosmosPredict2ModelNode,OmniGen2ModelNode, FluxModelNode,SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,HiDreamModelNode,ChromaModelNode,CosmosModelNode,Lumina2ModelNode,Wan21ModelNode
+    from .diffusion_nodes.model_tools import SDXLModelNode,Wan22ModelNode,HunyuanImage21ModelNode,QwenImageEditModelNode,FluxKontextModelNode,QwenImageModelNode,CosmosPredict2ModelNode,OmniGen2ModelNode, FluxModelNode,SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,HiDreamModelNode,ChromaModelNode,CosmosModelNode,Lumina2ModelNode,Wan21ModelNode
     from .diffusion_nodes.model_tools import AdapterConfigNode, OptimizerConfigNode
     from .diffusion_nodes.start import Train
     from .diffusion_nodes.train_monitor import TensorBoardMonitor
@@ -57,6 +57,7 @@ NODE_CLASS_MAPPINGS = {
     "Wan21ModelNode": Wan21ModelNode,
     "ChromaModelNode": ChromaModelNode,
     "HiDreamModelNode": HiDreamModelNode,
+    "HunyuanImage21ModelNode": HunyuanImage21ModelNode,
     
     # 配置生成节点
     "GeneralConfig": GeneralConfig,
@@ -99,6 +100,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "Lumina2ModelNode": "Lumina2模型配置器",
     "Wan21ModelNode": "Wan2.1模型配置器",
     "ChromaModelNode": "Chroma模型配置器",
+    "HunyuanImage21ModelNode": "HunyuanImage21模型配置器",
+    
     # 配置生成节点
     "GeneralConfig": "通用训练设置",
     "ModelConfig": "模型配置",

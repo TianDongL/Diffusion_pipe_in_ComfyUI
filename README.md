@@ -3,8 +3,9 @@
 ## 项目简介
 
 Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 ComfyUI 提供了完整的 Diffusion 模型训练和微调功能。这个项目允许用户在 ComfyUI 的图形界面中配置和启动各种先进 AI 模型的训练，支持 LoRA 和全量微调，涵盖了当前最热门的图像生成和视频生成模型。
+***[📋 查看支持的模型](./docs/supported_models.md)***
 
-## 我没有太多时间逐个模型进行测试，发现问题请提交issue
+### 我没有太多时间逐个模型进行测试，发现问题请提交issue
 
 # 快速开始
 
@@ -49,7 +50,7 @@ pip install -r requirements.txt
 
 为了让你快速开始，我们提供了预配置的 ComfyUI 工作流文件：
 
-***[📋 点击导入完整工作流](./Diffusion_Pipe_In_Comfyui.json)***
+***[📋 点击导入完整工作流](./DiffusionPipeInComfyui.json)***
 
 将此文件拖拽到 ComfyUI 界面中即可导入完整的训练工作流，包含所有必要的节点配置。
 
@@ -91,7 +92,7 @@ pip install -r requirements.txt
 ## 系统要求
 
 ### 硬件要求
-- ** 我不知道，你可以尝试 **
+- * 我不知道，你可以尝试 :-P	
 
 ### 软件要求
 - **操作系统**: Linux / Windows 10/11 + WSL2
@@ -109,7 +110,7 @@ pip install -r requirements.txt
 |LTX-Video       |✅    |❌              |❌                |
 |HunyuanVideo    |✅    |❌              |✅                |
 |Cosmos          |✅    |❌              |❌                |
-|Lumina Image 2.0|✅    |✅              |❌                | 
+|Lumina Image 2.0|✅    |✅              |❌                |
 |Wan2.1          |✅    |✅              |✅                |
 |Chroma          |✅    |✅              |✅                |
 |HiDream         |✅    |❌              |✅                |
@@ -120,6 +121,8 @@ pip install -r requirements.txt
 |Wan2.2          |✅    |✅              |✅                |
 |Qwen-Image      |✅    |✅              |✅                |
 |Qwen-Image-Edit |✅    |✅              |✅                |
+|HunyuanImage-2.1|✅    |✅              |✅                |
+
 
 ## 节点系统详解
 
@@ -177,6 +180,7 @@ dataset/
 - **Wan22ModelNode**: Wan2.2 配置
 - **FluxKontextModelNode**: Flux Kontext 配置
 - **QwenImageEditModelNode**: 通义千问编辑配置
+- **HunyuanImage-2.1**:混元图像模型配置
 
 ### ⚙️ 训练配置节点
 

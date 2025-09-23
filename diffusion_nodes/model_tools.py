@@ -1284,3 +1284,73 @@ class OptimizerConfigNode:
         except Exception as e:
             return ({"error": str(e)},)
 
+
+class HunyuanImage21ModelNode:
+    """HunyuanImage-2.1模型加载节点"""
+    
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "transformer_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Transformer模型文件的完整路径（如：/data/imagegen_models/comfyui-models/hunyuanimage2.1.safetensors）"
+                }),
+                "vae_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "VAE文件的完整路径（如：/data/imagegen_models/comfyui-models/hunyuan_image_2.1_vae_fp16.safetensors）"
+                }),
+                "text_encoder_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Text Encoder文件的完整路径（如：/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors）"
+                }),
+                "byt5_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "ByT5文件的完整路径（如：/data/imagegen_models/comfyui-models/byt5_small_glyphxl_fp16.safetensors）"
+                }),
+            }
+        }
+    
+    RETURN_TYPES = ("model_path",)
+    RETURN_NAMES = ("model_path",)
+    FUNCTION = "get_hunyuan_image21_config"
+    CATEGORY = "Diffusion-Pipe/Model"
+
+    def get_hunyuan_image21_config(self, transformer_path: str, vae_path: str, 
+                                   text_encoder_path: str, byt5_path: str) -> Tuple[dict]:
+        """获取HunyuanImage-2.1模型配置"""
+        try:
+            # 构建HunyuanImage-2.1模型配置
+            config = {
+                "type": "hunyuan_image",
+            }
+            
+            # 处理transformer_path
+            if transformer_path.strip():
+                config["transformer_path"] = normalize_wsl_path(transformer_path.strip())
+            else:
+                return ({"error": "Transformer路径不能为空"},)
+            
+            # 处理vae_path
+            if vae_path.strip():
+                config["vae_path"] = normalize_wsl_path(vae_path.strip())
+            else:
+                return ({"error": "VAE路径不能为空"},)
+            
+            # 处理text_encoder_path
+            if text_encoder_path.strip():
+                config["text_encoder_path"] = normalize_wsl_path(text_encoder_path.strip())
+            else:
+                return ({"error": "Text Encoder路径不能为空"},)
+            
+            # 处理byt5_path
+            if byt5_path.strip():
+                config["byt5_path"] = normalize_wsl_path(byt5_path.strip())
+            else:
+                return ({"error": "ByT5路径不能为空"},)
+            
+            return (config,)
+            
+        except Exception as e:
+            return ({"error": str(e)},)
+

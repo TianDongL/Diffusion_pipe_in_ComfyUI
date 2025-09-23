@@ -17,7 +17,7 @@ eval_micro_batch_size_per_gpu = 1
 eval_gradient_accumulation_steps = 1
 save_every_n_epochs = 1
 checkpoint_every_n_minutes = 120
-dataset = '/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/testdataset.toml'
+dataset = '/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/testdataset1.toml'
 
 [optimizer]
 type = 'AdamW8bitKahan'

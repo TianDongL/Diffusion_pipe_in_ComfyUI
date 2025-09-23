@@ -18,6 +18,7 @@
 |Wan2.2          |✅    |✅              |✅                |
 |Qwen-Image      |✅    |✅              |✅                |
 |Qwen-Image-Edit |✅    |✅              |✅                |
+|HunyuanImage-2.1|✅    |✅              |✅                |
 
 
 ## SDXL
@@ -53,7 +54,7 @@ diffusers_path = '/data2/imagegen_models/FLUX.1-dev'
 #transformer_path = '/data2/imagegen_models/flux-dev-single-files/consolidated_s6700-schnell.safetensors'
 dtype = 'bfloat16'
 # Flux supports fp8 for the transformer when training LoRA.
-transformer_dtype = 'float8'  
+transformer_dtype = 'float8'
 # Resolution-dependent timestep shift towards more noise. Same meaning as sd-scripts.
 flux_shift = true
 # For FLEX.1-alpha, you can bypass the guidance embedding which is the recommended way to train that model.
@@ -396,3 +397,21 @@ Configuring and training Qwen-Image-Edit is the same as Flux-Kontext. See the [e
 The model is taking larger inputs than T2I training, so it is slower and uses more VRAM. I don't know if you can train it on 24GB VRAM. Maybe if you block swap enough.
 
 Qwen-Image-Edit LoRAs are saved in ComfyUI format.
+
+## HunyuanImage-2.1
+Use ComfyUI compatible model files.
+```
+[model]
+type = 'hunyuan_image'
+transformer_path = '/data/imagegen_models/comfyui-models/hunyuanimage2.1.safetensors'
+vae_path = '/data/imagegen_models/comfyui-models/hunyuan_image_2.1_vae_fp16.safetensors'
+text_encoder_path = '/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors'
+byt5_path = '/data/imagegen_models/comfyui-models/byt5_small_glyphxl_fp16.safetensors'
+dtype = 'bfloat16'
+transformer_dtype = 'float8'
+```
+
+### A note on image resolution
+Due to the high spatial compression of the VAE and the architecture of the DiT model, the compute and memory requirements at a certain image resolution are the same as half the image side length for other models. That is, 1024 resolution for Hunyuan is the same compute as 512 for Flux, Qwen, Lumina, etc. You can train at 512 resolution for a speed boost, and it does seem to learn mostly fine from this resolution even though it is relatively low for this model. But depending on the dataset, it may be better to train at 1024+, especially if you are trying to learn unique fine-grained details from your dataset.
+
+HunyuanImage-2.1 LoRAs are saved in ComfyUI format. Notably, this means some of the key names are different from the original model structure. Keep this in mind if you are trying to use the LoRA anywhere but ComfyUI.
