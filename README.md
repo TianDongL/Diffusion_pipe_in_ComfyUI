@@ -1,8 +1,8 @@
- # Diffusion-Pipe ComfyUI 自定义节点
+ # Diffusion-Pipe In ComfyUI 自定义节点
 
 ## 项目简介
 
-Diffusion-Pipe ComfyUI 自定义节点是一个强大的扩展插件，为 ComfyUI 提供了完整的 Diffusion 模型训练和微调功能。这个项目允许用户在 ComfyUI 的图形界面中配置和启动各种先进 AI 模型的训练，支持 LoRA 和全量微调，涵盖了当前最热门的图像生成和视频生成模型。
+Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 ComfyUI 提供了完整的 Diffusion 模型训练和微调功能。这个项目允许用户在 ComfyUI 的图形界面中配置和启动各种先进 AI 模型的训练，支持 LoRA 和全量微调，涵盖了当前最热门的图像生成和视频生成模型。
 ***[📋 查看支持的模型](./docs/supported_models.md)***
 
 ### 我没有太多时间逐个模型进行测试，发现问题请提交issue
@@ -17,7 +17,7 @@ ps:WSL2上的comfyui十分好用，我甚至想删除我在win上的comfyui
 
 
 ```bash
-conda crate -n comfyui_DP
+conda create -n comfyui_DP
 conda activate comfyui_DP
 cd ~/comfy/ComfyUI/custom_nodes/
 git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
@@ -36,11 +36,12 @@ git submodule update
 ```bash
 conda activate comfyui_DP
 ```
+这里是deepspeed的必要依赖
 ```bash
 pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
 ```
 ```bash
-cd ~/comfy/ComfyUI/custom_nodes//Diffusion_pipe_in_ComfyUI
+cd ~/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI
 ```
 ```bash
 pip install -r requirements.txt
@@ -62,13 +63,17 @@ pip install -r requirements.txt
 <div align="center">
 
 ![模型加载节点](./img/11.png)
+模型可以存放在comfyui的模型目录下
 
 ![启动训练及监控](./img/22.png)
 *调试时禁用Train节点*
 
 ![模型配置](./img/33.png)
+模型可以存放在comfyui的模型目录下
 
 ![数据集配置](./img/44.png)
+建议数据集存放在类似于Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\input\test_vid
+建议数据集配置路径类似于Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\dataset\testdataset.toml
 
 ![工作流总览](./img/55.png)
 
@@ -180,7 +185,7 @@ dataset/
 - **Wan22ModelNode**: Wan2.2 配置
 - **FluxKontextModelNode**: Flux Kontext 配置
 - **QwenImageEditModelNode**: 通义千问编辑配置
-- **HunyuanImage-2.1**:混元图像模型配置
+- **HunyuanImage-2.1Node**:混元图像模型配置
 
 ### ⚙️ 训练配置节点
 
