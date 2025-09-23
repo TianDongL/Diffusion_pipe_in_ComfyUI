@@ -18,7 +18,7 @@ class ModelConfig:
                     "tooltip": "基础数据类型"
                 }),
                 "transformer_dtype": (["auto", "bfloat16", "float8","float8_e5m2"], {
-                    "default": "auto",
+                    "default": "bfloat16",
                     "tooltip": "Transformer特定数据类型（支持float8用于LoRA训练）"
                 }),
                 "timestep_sample_method": (["logit_normal", "uniform"], {

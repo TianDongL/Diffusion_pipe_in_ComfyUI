@@ -49,7 +49,7 @@ class SDXLModelNode:
             "required": {
                 "checkpoint_path": ("STRING", {
                     "default": "",
-                    "tooltip": "SDXL checkpoint文件的完整路径（如：/data/models/sdxl_base.safetensors）"
+                    "tooltip": "SDXL checkpoint文件的完整路径"
                 }),
                 "dtype": (["bfloat16", "float16", "float32"], {
                     "default": "bfloat16",
@@ -146,10 +146,6 @@ class FluxModelNode:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "diffusers_path": ("STRING", {
-                    "default": "",
-                    "tooltip": "Flux diffusers模型文件夹的完整路径（如：/data/models/FLUX.1-dev）"
-                }),
                 "dtype": (["bfloat16", "float16", "float32"], {
                     "default": "bfloat16",
                     "tooltip": "基础数据类型"
@@ -164,6 +160,10 @@ class FluxModelNode:
                 }),
             },
             "optional": {
+                "diffusers_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Flux diffusers模型文件夹的完整路径"
+                }),
                 "use_transformer_file": ("BOOLEAN", {
                     "default": False,
                     "tooltip": "是否使用单独的transformer文件（BFL格式）"
@@ -184,24 +184,23 @@ class FluxModelNode:
     FUNCTION = "get_flux_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_flux_config(self, diffusers_path: str, dtype: str, transformer_dtype: str, 
-                       flux_shift: bool, use_transformer_file: bool = False,
+    def get_flux_config(self, dtype: str, transformer_dtype: str, 
+                       flux_shift: bool, diffusers_path: str = "", use_transformer_file: bool = False,
                        transformer_path: str = "", bypass_guidance_embedding: bool = False) -> Tuple[dict]:
         """获取Flux模型配置"""
         try:
-            if not diffusers_path.strip():
-                return ({"error": "diffusers_path不能为空"},)
-            
-            # WSL2环境路径处理
-            normalized_diffusers_path = normalize_wsl_path(diffusers_path.strip())
-            
             # 构建Flux模型配置
             config = {
                 "type": "flux",
-                "diffusers_path": normalized_diffusers_path,
                 "dtype": dtype,
                 "flux_shift": flux_shift,
             }
+            
+            # 添加diffusers_path（仅当提供时）
+            if diffusers_path and diffusers_path.strip():
+                # WSL2环境路径处理
+                normalized_diffusers_path = normalize_wsl_path(diffusers_path.strip())
+                config["diffusers_path"] = normalized_diffusers_path
             
             # 添加transformer_dtype（仅当非auto时）
             if transformer_dtype != "auto":
@@ -250,7 +249,7 @@ class LTXVideoModelNode:
                     "default": 1,
                     "min": 0.0,
                     "max": 1.0,
-                    "step": 0.1,
+                    "step": 0.01,
                     "tooltip": "使用第一帧作为条件的概率（i2v训练）"
                 }),
             }
@@ -1000,7 +999,7 @@ class QwenImageModelNode:
                 }),
                 "tokenizer_path": ("STRING", {
                     "default": "",
-                    "tooltip": "Tokenizer文件夹的完整路径，我也不知道要不要填，反正我不填"
+                    "tooltip": "Tokenizer文件夹的完整路径"
                 }),
                 "vae_path": ("STRING", {
                     "default": "",
@@ -1192,7 +1191,7 @@ class OptimizerConfigNode:
         return {
             "required": {
                 "optimizer_type": (["adamw_optimi", "AdamW8bitKahan", "automagic", "Prodigy"], {
-                    "default": "adamw_optimi",
+                    "default": "AdamW8bitKahan",
                     "tooltip": "优化器类型选择"
                 }),
             },

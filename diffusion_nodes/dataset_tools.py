@@ -42,7 +42,7 @@ class GeneralDatasetPathNode:
         return {
             "required": {
                 "dataset_path": ("STRING", {
-                    "default": "/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input",
+                    "default": "",
                     "multiline": False,
                     "tooltip": "数据集文件夹路径"
                 }),
@@ -80,7 +80,7 @@ class ArBucketsNode:
                 "ar_buckets": ("STRING", {
                     "default": "[[512, 512], [448, 576]]",
                     "multiline": False,
-                    "tooltip": "宽高比分桶配置，例如:[[512, 512], [448, 576]]，可选"
+                    "tooltip": "宽高比分桶配置，可选"
                 }),
             }
         }
@@ -122,12 +122,12 @@ class EditModelDatasetPathNode:
         return {
             "required": {
                 "target_path": ("STRING", {
-                    "default": "/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/target",
+                    "default": "",
                     "multiline": False,
                     "tooltip": "生成图像路径 - 模型要学习生成的图像"
                 }),
                 "control_path": ("STRING", {
-                    "default": "/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/control",
+                    "default": "",
                     "multiline": False,
                     "tooltip": "原图像路径 - 与目标图像对应的控制图像"
                 }),
@@ -174,9 +174,9 @@ class FrameBucketsNode:
         return {
             "required": {
                 "frame_buckets": ("STRING", {
-                    "default": "[1, 33, 65, 97]",
+                    "default": "[1, 33, 81, 97]",
                     "multiline": False,
-                    "tooltip": "帧数分桶配置，专用于视频模型训练，格式：[1, 33, 65, 97]"
+                    "tooltip": "帧数分桶配置，专用于视频模型训练，格式：[1, 33, 81, 97]"
                 }),
             }
         }
