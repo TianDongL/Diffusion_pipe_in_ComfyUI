@@ -1,5 +1,7 @@
  # Diffusion-Pipe In ComfyUI 自定义节点
 
+[English](./READMEenglish.md) | 中文
+
 ## 项目简介
 
 Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 ComfyUI 提供了完整的 Diffusion 模型训练和微调功能。这个项目允许用户在 ComfyUI 的图形界面中配置和启动各种先进 AI 模型的训练，支持 LoRA 和全量微调，涵盖了当前最热门的图像生成和视频生成模型。
