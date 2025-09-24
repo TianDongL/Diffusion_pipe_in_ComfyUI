@@ -1,0 +1,38 @@
+{
+  "settingsCategories": {
+    "DiffusionPipe": "扩散管道",
+    "Training": "训练",
+    "Dataset": "数据集",
+    "Model": "模型",
+    "Monitoring": "监控"
+  },
+  "categories": {
+    "Diffusion Pipe/Dataset": "数据集配置",
+    "Diffusion Pipe/Model": "模型配置", 
+    "Diffusion Pipe/Training": "训练配置",
+    "Diffusion Pipe/Monitor": "训练监控",
+    "Diffusion Pipe/Utils": "实用工具"
+  },
+  "common": {
+    "path": "路径",
+    "directory": "目录",
+    "file": "文件",
+    "config": "配置",
+    "training": "训练",
+    "dataset": "数据集",
+    "model": "模型",
+    "optimizer": "优化器",
+    "batch_size": "批次大小",
+    "learning_rate": "学习率",
+    "epochs": "训练轮数",
+    "resolution": "分辨率",
+    "enable": "启用",
+    "disable": "禁用",
+    "auto": "自动",
+    "manual": "手动",
+    "default": "默认",
+    "custom": "自定义",
+    "advanced": "高级",
+    "basic": "基础"
+  }
+} 

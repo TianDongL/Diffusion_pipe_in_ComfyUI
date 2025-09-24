@@ -1,0 +1,743 @@
+{
+  "GeneralDatasetConfig": {
+    "display_name": "General Dataset Config",
+    "description": "Configure core parameters for training datasets",
+    "inputs": {
+      "input_path": {
+        "name": "Input Path",
+        "tooltip": "Dataset input path, required, choose different nodes based on different training purposes"
+      },
+      "resolution": {
+        "name": "Resolution",
+        "tooltip": "Training resolution, supports single value [512] or width-height pair [1280, 720]"
+      },
+      "enable_bucket": {
+        "name": "Enable Bucket",
+        "tooltip": "Enable aspect ratio bucketing to handle images of different ratios"
+      },
+      "min_bucket_reso": {
+        "name": "Min Bucket Resolution",
+        "tooltip": "Minimum bucket resolution"
+      },
+      "max_bucket_reso": {
+        "name": "Max Bucket Resolution", 
+        "tooltip": "Maximum bucket resolution"
+      },
+      "bucket_reso_steps": {
+        "name": "Bucket Resolution Steps",
+        "tooltip": "Bucket resolution step size"
+      },
+      "bucket_no_upscale": {
+        "name": "Bucket No Upscale",
+        "tooltip": "Disable upscaling in bucketing"
+      },
+      "dataset_repeats": {
+        "name": "Dataset Repeats",
+        "tooltip": "Number of times to repeat the dataset"
+      },
+      "shuffle_caption": {
+        "name": "Shuffle Caption",
+        "tooltip": "Shuffle caption order"
+      },
+      "keep_tokens": {
+        "name": "Keep Tokens",
+        "tooltip": "Number of tokens to keep at the beginning of caption"
+      },
+      "cache_latents": {
+        "name": "Cache Latents",
+        "tooltip": "Cache latent representations to disk for faster loading"
+      },
+      "cache_latents_to_disk": {
+        "name": "Cache Latents to Disk",
+        "tooltip": "Save cached latents to disk"
+      },
+      "vae_batch_size": {
+        "name": "VAE Batch Size",
+        "tooltip": "VAE encoding batch size"
+      },
+      "cache_text_encoder_outputs": {
+        "name": "Cache Text Encoder Outputs",
+        "tooltip": "Cache text encoder outputs"
+      },
+      "cache_text_encoder_outputs_to_disk": {
+        "name": "Cache Text Encoder Outputs to Disk", 
+        "tooltip": "Save cached text encoder outputs to disk"
+      },
+      "text_encoder_batch_size": {
+        "name": "Text Encoder Batch Size",
+        "tooltip": "Text encoder batch size"
+      },
+      "caption_extension": {
+        "name": "Caption Extension",
+        "tooltip": "Caption file extension"
+      },
+      "max_data_loader_n_workers": {
+        "name": "Max Data Loader Workers",
+        "tooltip": "Maximum number of data loader workers"
+      },
+      "persistent_data_loader_workers": {
+        "name": "Persistent Data Loader Workers",
+        "tooltip": "Keep data loader workers persistent"
+      },
+      "seed": {
+        "name": "Seed",
+        "tooltip": "Random seed for reproducible results"
+      },
+      "max_bucket_reso": {
+        "name": "Max Bucket Resolution",
+        "tooltip": "Maximum bucket resolution for aspect ratio bucketing"
+      },
+      "min_bucket_reso": {
+        "name": "Min Bucket Resolution", 
+        "tooltip": "Minimum bucket resolution for aspect ratio bucketing"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Dataset Config",
+        "tooltip": "Generated dataset configuration"
+      }
+    }
+  },
+  "GeneralDatasetPathNode": {
+    "display_name": "General Dataset Path",
+    "description": "Handle standard image-text pair datasets",
+    "inputs": {
+      "input_path": {
+        "name": "Input Path",
+        "tooltip": "Path to dataset directory containing image-text pairs"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Input Path",
+        "tooltip": "Processed dataset input path"
+      }
+    }
+  },
+  "EditModelDatasetPathNode": {
+    "display_name": "Edit Model Dataset Path",
+    "description": "Handle image editing datasets with instruction files",
+    "inputs": {
+      "input_path": {
+        "name": "Input Path",
+        "tooltip": "Path to editing dataset directory"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Input Path", 
+        "tooltip": "Processed editing dataset input path"
+      }
+    }
+  },
+  "FrameBucketsNode": {
+    "display_name": "Frame Buckets Config",
+    "description": "Frame count configuration for video training",
+    "inputs": {
+      "frame_buckets": {
+        "name": "Frame Buckets",
+        "tooltip": "Frame count buckets for video training, e.g., [8, 16, 24]"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Frame Buckets",
+        "tooltip": "Configured frame buckets"
+      }
+    }
+  },
+  "ArBucketsNode": {
+    "display_name": "Aspect Ratio Buckets Config",
+    "description": "Custom aspect ratio bucketing strategy",
+    "inputs": {
+      "ar_buckets": {
+        "name": "Aspect Ratio Buckets",
+        "tooltip": "Custom aspect ratio buckets, e.g., [[512, 768], [768, 512]]"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "AR Buckets",
+        "tooltip": "Configured aspect ratio buckets"
+      }
+    }
+  },
+  "GeneralConfig": {
+    "display_name": "General Training Settings",
+    "description": "Core training parameter configuration",
+    "inputs": {
+      "optimizer_config": {
+        "name": "Optimizer Config",
+        "tooltip": "Optimizer configuration"
+      },
+      "model_config": {
+        "name": "Model Config", 
+        "tooltip": "Model configuration (from model config node)"
+      },
+      "dataset_config": {
+        "name": "Dataset Config",
+        "tooltip": "Dataset configuration (from dataset config node)"
+      },
+      "epochs": {
+        "name": "Epochs",
+        "tooltip": "Number of training epochs"
+      },
+      "micro_batch_size_per_gpu": {
+        "name": "Micro Batch Size Per GPU",
+        "tooltip": "Micro batch size per GPU"
+      },
+      "number_of_gpus": {
+        "name": "Number of GPUs",
+        "tooltip": "Number of GPUs to use"
+      },
+      "pipeline_stages": {
+        "name": "Pipeline Stages",
+        "tooltip": "Number of pipeline parallel stages, should match number of GPUs"
+      },
+      "gradient_accumulation_steps": {
+        "name": "Gradient Accumulation Steps",
+        "tooltip": "Number of gradient accumulation steps, 0 for auto calculation"
+      },
+      "gradient_clipping": {
+        "name": "Gradient Clipping",
+        "tooltip": "Gradient clipping threshold, 0 to disable"
+      },
+      "warmup_steps": {
+        "name": "Warmup Steps",
+        "tooltip": "Number of learning rate warmup steps"
+      },
+      "blocks_to_swap": {
+        "name": "Blocks to Swap",
+        "tooltip": "Number of blocks to swap for memory optimization"
+      },
+      "cpu_offload_checkpointing": {
+        "name": "CPU Offload Checkpointing",
+        "tooltip": "Enable CPU offload checkpointing"
+      },
+      "save_every_n_epochs": {
+        "name": "Save Every N Epochs",
+        "tooltip": "Save checkpoint every N epochs"
+      },
+      "save_state": {
+        "name": "Save State",
+        "tooltip": "Save training state"
+      },
+      "resume": {
+        "name": "Resume",
+        "tooltip": "Resume from checkpoint"
+      },
+      "output_dir": {
+        "name": "Output Directory",
+        "tooltip": "Output directory for saving models"
+      },
+      "output_name": {
+        "name": "Output Name",
+        "tooltip": "Output model name"
+      },
+      "mixed_precision": {
+        "name": "Mixed Precision",
+        "tooltip": "Mixed precision training mode",
+        "options": {
+          "no": "No Mixed Precision",
+          "fp16": "FP16",
+          "bf16": "BF16"
+        }
+      },
+      "full_bf16": {
+        "name": "Full BF16",
+        "tooltip": "Use full BF16 precision"
+      },
+      "fp8_base": {
+        "name": "FP8 Base",
+        "tooltip": "Use FP8 base precision"
+      },
+      "deepspeed_config_file": {
+        "name": "DeepSpeed Config File",
+        "tooltip": "DeepSpeed configuration file path"
+      },
+      "zero_terminal": {
+        "name": "Zero Terminal",
+        "tooltip": "Enable ZeRO terminal logging"
+      },
+      "log_with": {
+        "name": "Log With",
+        "tooltip": "Logging backend",
+        "options": {
+          "tensorboard": "TensorBoard",
+          "wandb": "Weights & Biases",
+          "none": "No Logging"
+        }
+      },
+      "log_tracker_name": {
+        "name": "Log Tracker Name",
+        "tooltip": "Name for logging tracker"
+      },
+      "log_tracker_config": {
+        "name": "Log Tracker Config",
+        "tooltip": "Configuration for logging tracker"
+      },
+      "logging_dir": {
+        "name": "Logging Directory",
+        "tooltip": "Directory for storing logs"
+      },
+      "wandb_api_key": {
+        "name": "Wandb API Key",
+        "tooltip": "Weights & Biases API key"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "General Config",
+        "tooltip": "Generated general training configuration"
+      }
+    }
+  },
+  "ModelConfig": {
+    "display_name": "Model Configuration",
+    "description": "Model-specific configuration settings",
+    "inputs": {
+      "model_config": {
+        "name": "Model Config",
+        "tooltip": "Base model configuration from model node"
+      },
+      "adapter_config": {
+        "name": "Adapter Config", 
+        "tooltip": "LoRA adapter configuration"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Complete model configuration"
+      }
+    }
+  },
+  "AdapterConfigNode": {
+    "display_name": "Adapter Configuration",
+    "description": "Detailed LoRA adapter configuration",
+    "inputs": {
+      "adapter_type": {
+        "name": "Adapter Type",
+        "tooltip": "Type of adapter to use",
+        "options": {
+          "lora": "LoRA",
+          "loha": "LoHa",
+          "lokr": "LoKr"
+        }
+      },
+      "rank": {
+        "name": "Rank",
+        "tooltip": "LoRA rank (dimension)"
+      },
+      "alpha": {
+        "name": "Alpha", 
+        "tooltip": "LoRA alpha parameter"
+      },
+      "target_modules": {
+        "name": "Target Modules",
+        "tooltip": "Target modules to apply LoRA"
+      },
+      "dropout": {
+        "name": "Dropout",
+        "tooltip": "LoRA dropout rate"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Adapter Config",
+        "tooltip": "Generated adapter configuration"
+      }
+    }
+  },
+  "OptimizerConfigNode": {
+    "display_name": "Optimizer Configuration", 
+    "description": "Detailed optimizer settings",
+    "inputs": {
+      "optimizer_type": {
+        "name": "Optimizer Type",
+        "tooltip": "Type of optimizer to use",
+        "options": {
+          "AdamW": "AdamW",
+          "AdamW8bit": "AdamW 8bit",
+          "Lion": "Lion",
+          "Adafactor": "Adafactor"
+        }
+      },
+      "learning_rate": {
+        "name": "Learning Rate",
+        "tooltip": "Base learning rate"
+      },
+      "lr_scheduler": {
+        "name": "LR Scheduler",
+        "tooltip": "Learning rate scheduler",
+        "options": {
+          "linear": "Linear",
+          "cosine": "Cosine",
+          "cosine_with_restarts": "Cosine with Restarts",
+          "polynomial": "Polynomial",
+          "constant": "Constant",
+          "constant_with_warmup": "Constant with Warmup"
+        }
+      },
+      "lr_warmup_steps": {
+        "name": "LR Warmup Steps",
+        "tooltip": "Learning rate warmup steps"
+      },
+      "weight_decay": {
+        "name": "Weight Decay",
+        "tooltip": "Weight decay for regularization"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Optimizer Config",
+        "tooltip": "Generated optimizer configuration"
+      }
+    }
+  },
+  "Train": {
+    "display_name": "Training Launcher",
+    "description": "Launch and control training process",
+    "inputs": {
+      "general_config": {
+        "name": "General Config",
+        "tooltip": "General training configuration"
+      },
+      "enable_training": {
+        "name": "Enable Training",
+        "tooltip": "Enable/disable training execution"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Training Status",
+        "tooltip": "Training execution status"
+      }
+    }
+  },
+  "TensorBoardMonitor": {
+    "display_name": "TensorBoard Monitor",
+    "description": "Real-time training monitoring with TensorBoard",
+    "inputs": {
+      "logging_dir": {
+        "name": "Logging Directory",
+        "tooltip": "Directory containing TensorBoard logs"
+      },
+      "port": {
+        "name": "Port",
+        "tooltip": "Port for TensorBoard web interface"
+      },
+      "host": {
+        "name": "Host",
+        "tooltip": "Host address for TensorBoard"
+      },
+      "auto_start": {
+        "name": "Auto Start",
+        "tooltip": "Automatically start TensorBoard"
+      },
+      "kill_port": {
+        "name": "Kill Port",
+        "tooltip": "Kill all processes on the specified port"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Monitor Status",
+        "tooltip": "TensorBoard monitoring status"
+      }
+    }
+  },
+  "OutputDirPassthrough": {
+    "display_name": "Output Directory Passthrough",
+    "description": "Utility node to simplify path passing",
+    "inputs": {
+      "output_dir": {
+        "name": "Output Directory",
+        "tooltip": "Directory path to pass through"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Output Directory",
+        "tooltip": "Passed through directory path"
+      }
+    }
+  },
+  "SDXLModelNode": {
+    "display_name": "SDXL Model Config",
+    "description": "SDXL model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to SDXL model"
+      },
+      "vae": {
+        "name": "VAE Path",
+        "tooltip": "Path to VAE model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "SDXL model configuration"
+      }
+    }
+  },
+  "FluxModelNode": {
+    "display_name": "Flux Model Config",
+    "description": "Flux model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path", 
+        "tooltip": "Path to Flux model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Flux model configuration"
+      }
+    }
+  },
+  "SD3ModelNode": {
+    "display_name": "SD3 Model Config",
+    "description": "Stable Diffusion 3 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to SD3 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "SD3 model configuration"
+      }
+    }
+  },
+  "LTXVideoModelNode": {
+    "display_name": "LTX-Video Model Config",
+    "description": "LTX-Video model configuration for video generation training",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to LTX-Video model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "LTX-Video model configuration"
+      }
+    }
+  },
+  "HunyuanVideoModelNode": {
+    "display_name": "Hunyuan Video Model Config",
+    "description": "Hunyuan Video model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Hunyuan Video model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Hunyuan Video model configuration"
+      }
+    }
+  },
+  "QwenImageModelNode": {
+    "display_name": "Qwen Image Model Config",
+    "description": "Qwen image model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Qwen image model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Qwen image model configuration"
+      }
+    }
+  },
+  "QwenImageEditModelNode": {
+    "display_name": "Qwen Image Edit Model Config",
+    "description": "Qwen image editing model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Qwen image edit model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Qwen image edit model configuration"
+      }
+    }
+  },
+  "ChromaModelNode": {
+    "display_name": "Chroma Model Config",
+    "description": "Chroma model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Chroma model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Chroma model configuration"
+      }
+    }
+  },
+  "HiDreamModelNode": {
+    "display_name": "HiDream Model Config",
+    "description": "HiDream model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to HiDream model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "HiDream model configuration"
+      }
+    }
+  },
+  "Lumina2ModelNode": {
+    "display_name": "Lumina2 Model Config",
+    "description": "Lumina Image 2.0 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Lumina2 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Lumina2 model configuration"
+      }
+    }
+  },
+  "Wan21ModelNode": {
+    "display_name": "Wan2.1 Model Config",
+    "description": "Wan2.1 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Wan2.1 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Wan2.1 model configuration"
+      }
+    }
+  },
+  "Wan22ModelNode": {
+    "display_name": "Wan2.2 Model Config",
+    "description": "Wan2.2 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Wan2.2 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Wan2.2 model configuration"
+      }
+    }
+  },
+  "FluxKontextModelNode": {
+    "display_name": "Flux Kontext Model Config",
+    "description": "Flux Kontext model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Flux Kontext model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Flux Kontext model configuration"
+      }
+    }
+  },
+  "CosmosModelNode": {
+    "display_name": "Cosmos Model Config",
+    "description": "Cosmos model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Cosmos model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Cosmos model configuration"
+      }
+    }
+  },
+  "CosmosPredict2ModelNode": {
+    "display_name": "Cosmos Predict2 Model Config",
+    "description": "Cosmos Predict2 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Cosmos Predict2 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Cosmos Predict2 model configuration"
+      }
+    }
+  },
+  "OmniGen2ModelNode": {
+    "display_name": "OmniGen2 Model Config",
+    "description": "OmniGen2 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to OmniGen2 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "OmniGen2 model configuration"
+      }
+    }
+  },
+  "HunyuanImage21ModelNode": {
+    "display_name": "Hunyuan Image 2.1 Model Config",
+    "description": "Hunyuan Image 2.1 model configuration",
+    "inputs": {
+      "pretrained_model_name_or_path": {
+        "name": "Model Path",
+        "tooltip": "Path to Hunyuan Image 2.1 model"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Config",
+        "tooltip": "Hunyuan Image 2.1 model configuration"
+      }
+    }
+  }
+} 
