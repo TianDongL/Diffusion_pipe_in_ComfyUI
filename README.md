@@ -1,6 +1,6 @@
 # Diffusion-Pipe In ComfyUI Custom Nodes
 
- *查看中文简介[Chinese](./READMEChinese.md)*
+ *查看[中文](./READMEChinese.md)简介*
 
 ## Project Overview
 
