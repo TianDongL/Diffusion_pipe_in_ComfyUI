@@ -1,6 +1,6 @@
  # Diffusion-Pipe In ComfyUI 自定义节点
 
-*click to see [中文](./READMEChinese.md)*
+*click to see [English](./README.md)*
 
 ## 项目简介
 
