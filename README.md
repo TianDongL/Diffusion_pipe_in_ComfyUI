@@ -66,22 +66,22 @@ Drag this file into the ComfyUI interface to import the complete training workfl
 
 <div align="center">
 
-![Model Loading Nodes](./img/11.png)
+![Model Loading Nodes](./img/1.png)
 Models can be stored in the ComfyUI model directory
 
-![Start Training and Monitoring](./img/22.png)
+![Start Training ](./img/2.png)
 *Disable Train node when debugging*
 
-![Model Configuration](./img/33.png)
+![Model Configuration](./img/3.png)
 Models can be stored in the ComfyUI model directory
 
-![Dataset Configuration](./img/44.png)
+![Dataset Configuration](./img/4.png)
 Recommend storing datasets in paths like Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\input\test_vid
 Recommend dataset configuration paths like Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\dataset\testdataset.toml
 
 ![Workflow Overview](./img/55.png)
 
-![Monitoring Options](./img/66.png)
+![Monitoring ](./img/6.png)
 *kill port will stop all monitoring processes on the current port*
 
 </div>
