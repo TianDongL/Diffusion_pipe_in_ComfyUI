@@ -156,10 +156,11 @@ dataset/
 Handle image editing datasets:
 ```
 dataset/
-├── edit_instructions.jsonl
 ├── source_images/
 └── target_images/
 ```
+❗source_images&target_images must have the same name
+
 
 #### FrameBucketsNode (Frame Bucket Configuration)
 Frame count configuration for video training:
