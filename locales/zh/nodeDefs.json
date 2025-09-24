@@ -1,163 +1,7 @@
 {
-  "GeneralDatasetConfig": {
-    "display_name": "通用数据集配置",
-    "description": "配置训练数据集的核心参数",
-    "inputs": {
-      "input_path": {
-        "name": "输入路径",
-        "tooltip": "数据集输入路径，必选，根据不同训练目的，选择不同节点"
-      },
-      "resolution": {
-        "name": "分辨率",
-        "tooltip": "训练分辨率，支持单值 [512] 或宽高对 [1280, 720]"
-      },
-      "enable_bucket": {
-        "name": "启用分桶",
-        "tooltip": "启用宽高比分桶以处理不同比例的图像"
-      },
-      "min_bucket_reso": {
-        "name": "最小分桶分辨率",
-        "tooltip": "最小分桶分辨率"
-      },
-      "max_bucket_reso": {
-        "name": "最大分桶分辨率",
-        "tooltip": "最大分桶分辨率"
-      },
-      "bucket_reso_steps": {
-        "name": "分桶分辨率步长",
-        "tooltip": "分桶分辨率步长大小"
-      },
-      "bucket_no_upscale": {
-        "name": "分桶禁用放大",
-        "tooltip": "在分桶中禁用放大"
-      },
-      "dataset_repeats": {
-        "name": "数据集重复",
-        "tooltip": "数据集重复次数"
-      },
-      "shuffle_caption": {
-        "name": "打乱标题",
-        "tooltip": "打乱标题顺序"
-      },
-      "keep_tokens": {
-        "name": "保持标记",
-        "tooltip": "在标题开头保持的标记数量"
-      },
-      "cache_latents": {
-        "name": "缓存潜在表示",
-        "tooltip": "将潜在表示缓存到磁盘以加快加载速度"
-      },
-      "cache_latents_to_disk": {
-        "name": "缓存潜在表示到磁盘",
-        "tooltip": "将缓存的潜在表示保存到磁盘"
-      },
-      "vae_batch_size": {
-        "name": "VAE批次大小",
-        "tooltip": "VAE编码批次大小"
-      },
-      "cache_text_encoder_outputs": {
-        "name": "缓存文本编码器输出",
-        "tooltip": "缓存文本编码器输出"
-      },
-      "cache_text_encoder_outputs_to_disk": {
-        "name": "缓存文本编码器输出到磁盘",
-        "tooltip": "将缓存的文本编码器输出保存到磁盘"
-      },
-      "text_encoder_batch_size": {
-        "name": "文本编码器批次大小",
-        "tooltip": "文本编码器批次大小"
-      },
-      "caption_extension": {
-        "name": "标题扩展名",
-        "tooltip": "标题文件扩展名"
-      },
-      "max_data_loader_n_workers": {
-        "name": "最大数据加载器工作进程",
-        "tooltip": "数据加载器最大工作进程数"
-      },
-      "persistent_data_loader_workers": {
-        "name": "持久数据加载器工作进程",
-        "tooltip": "保持数据加载器工作进程持久化"
-      },
-      "seed": {
-        "name": "随机种子",
-        "tooltip": "用于可重现结果的随机种子"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "数据集配置",
-        "tooltip": "生成的数据集配置"
-      }
-    }
-  },
-  "GeneralDatasetPathNode": {
-    "display_name": "通用数据集路径",
-    "description": "处理标准图像-文本对数据集",
-    "inputs": {
-      "input_path": {
-        "name": "输入路径",
-        "tooltip": "包含图像-文本对的数据集目录路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "输入路径",
-        "tooltip": "处理后的数据集输入路径"
-      }
-    }
-  },
-  "EditModelDatasetPathNode": {
-    "display_name": "编辑模型数据集路径",
-    "description": "处理带有指令文件的图像编辑数据集",
-    "inputs": {
-      "input_path": {
-        "name": "输入路径",
-        "tooltip": "编辑数据集目录路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "输入路径",
-        "tooltip": "处理后的编辑数据集输入路径"
-      }
-    }
-  },
-  "FrameBucketsNode": {
-    "display_name": "帧数分桶配置",
-    "description": "视频训练的帧数配置",
-    "inputs": {
-      "frame_buckets": {
-        "name": "帧数分桶",
-        "tooltip": "视频训练的帧数分桶，例如 [8, 16, 24]"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "帧数分桶",
-        "tooltip": "配置的帧数分桶"
-      }
-    }
-  },
-  "ArBucketsNode": {
-    "display_name": "宽高比分桶配置",
-    "description": "自定义宽高比分桶策略",
-    "inputs": {
-      "ar_buckets": {
-        "name": "宽高比分桶",
-        "tooltip": "自定义宽高比分桶，例如 [[512, 768], [768, 512]]"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "宽高比分桶",
-        "tooltip": "配置的宽高比分桶"
-      }
-    }
-  },
   "GeneralConfig": {
-    "display_name": "通用训练设置",
-    "description": "核心训练参数配置",
+    "display_name": "通用训练配置",
+    "description": "通用训练设置节点 - 配置训练过程中的通用参数",
     "inputs": {
       "optimizer_config": {
         "name": "优化器配置",
@@ -181,11 +25,11 @@
       },
       "number_of_gpus": {
         "name": "GPU数量",
-        "tooltip": "使用的GPU数量"
+        "tooltip": "GPU 数量"
       },
       "pipeline_stages": {
-        "name": "管道阶段数",
-        "tooltip": "管道并行阶段数，应与GPU数量匹配"
+        "name": "管道并行阶段数",
+        "tooltip": "管道并行阶段数，将模型拆分到的 GPU 数量，应与 GPU 数量匹配"
       },
       "gradient_accumulation_steps": {
         "name": "梯度累积步数",
@@ -193,7 +37,7 @@
       },
       "gradient_clipping": {
         "name": "梯度裁剪",
-        "tooltip": "梯度裁剪阈值，0表示禁用"
+        "tooltip": "梯度裁剪阈值，0表示不裁剪"
       },
       "warmup_steps": {
         "name": "预热步数",
@@ -201,138 +45,555 @@
       },
       "blocks_to_swap": {
         "name": "交换块数",
-        "tooltip": "用于内存优化的交换块数"
+        "tooltip": "要交换的块数量"
       },
-      "cpu_offload_checkpointing": {
-        "name": "CPU卸载检查点",
-        "tooltip": "启用CPU卸载检查点"
+      "activation_checkpointing": {
+        "name": "激活检查点",
+        "tooltip": "激活检查点，节省显存，通常启用"
       },
-      "save_every_n_epochs": {
-        "name": "每N轮保存",
-        "tooltip": "每N轮保存检查点"
+      "save_dtype": {
+        "name": "保存数据类型",
+        "tooltip": "保存模型时的数据类型"
       },
-      "save_state": {
-        "name": "保存状态",
-        "tooltip": "保存训练状态"
-      },
-      "resume": {
-        "name": "恢复训练",
-        "tooltip": "从检查点恢复"
+      "partition_method": {
+        "name": "分区方法",
+        "tooltip": "分区方法"
       },
       "output_dir": {
         "name": "输出目录",
-        "tooltip": "保存模型的输出目录"
+        "tooltip": "训练输出目录路径，指向你的~\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\output"
       },
-      "output_name": {
-        "name": "输出名称",
-        "tooltip": "输出模型名称"
-      },
-      "mixed_precision": {
-        "name": "混合精度",
-        "tooltip": "混合精度训练模式",
-        "options": {
-          "no": "无混合精度",
-          "fp16": "FP16",
-          "bf16": "BF16"
-        }
-      },
-      "full_bf16": {
-        "name": "完整BF16",
-        "tooltip": "使用完整BF16精度"
-      },
-      "fp8_base": {
-        "name": "FP8基础",
-        "tooltip": "使用FP8基础精度"
-      },
-      "deepspeed_config_file": {
-        "name": "DeepSpeed配置文件",
-        "tooltip": "DeepSpeed配置文件路径"
-      },
-      "zero_terminal": {
-        "name": "零终端",
-        "tooltip": "启用ZeRO终端日志"
-      },
-      "log_with": {
-        "name": "日志后端",
-        "tooltip": "日志记录后端",
-        "options": {
-          "tensorboard": "TensorBoard",
-          "wandb": "Weights & Biases",
-          "none": "无日志"
-        }
-      },
-      "log_tracker_name": {
-        "name": "日志跟踪器名称",
-        "tooltip": "日志跟踪器的名称"
-      },
-      "log_tracker_config": {
-        "name": "日志跟踪器配置",
-        "tooltip": "日志跟踪器的配置"
-      },
-      "logging_dir": {
-        "name": "日志目录",
-        "tooltip": "存储日志的目录"
-      },
-      "wandb_api_key": {
-        "name": "Wandb API密钥",
-        "tooltip": "Weights & Biases API密钥"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "通用配置",
-        "tooltip": "生成的通用训练配置"
-      }
-    }
-  },
-  "ModelConfig": {
-    "display_name": "模型配置",
-    "description": "模型特定配置设置",
-    "inputs": {
-      "model_config": {
-        "name": "模型配置",
-        "tooltip": "来自模型节点的基础模型配置"
+      "config_save_path": {
+        "name": "配置保存路径",
+        "tooltip": "训练配置文件保存路径"
       },
       "adapter_config": {
         "name": "适配器配置",
-        "tooltip": "LoRA适配器配置"
+        "tooltip": "适配器配置（可选，用于LoRA等适配器训练）"
+      },
+      "eval_every_n_epochs": {
+        "name": "评估频率",
+        "tooltip": "每N个epoch评估一次，0表示不评估"
+      },
+      "eval_before_first_step": {
+        "name": "首步前评估",
+        "tooltip": "是否在第一步之前评估"
+      },
+      "eval_micro_batch_size_per_gpu": {
+        "name": "评估微批次大小",
+        "tooltip": "评估时每个GPU的微批次大小"
+      },
+      "eval_gradient_accumulation_steps": {
+        "name": "评估梯度累积步数",
+        "tooltip": "评估时的梯度累积步数"
+      },
+      "save_every_n_epochs": {
+        "name": "保存频率",
+        "tooltip": "每N个epoch保存一次，0表示禁用"
+      },
+      "checkpoint_every_n_minutes": {
+        "name": "检查点保存间隔",
+        "tooltip": "每N分钟保存检查点，0表示禁用"
+      },
+      "caching_batch_size": {
+        "name": "缓存批次大小",
+        "tooltip": "预缓存时的批次大小，影响内存使用"
+      },
+      "disable_block_swap_for_eval": {
+        "name": "评估时禁用块交换",
+        "tooltip": "评估时是否禁用块交换"
+      },
+      "video_clip_mode": {
+        "name": "视频剪辑模式",
+        "tooltip": "仅适用于视频模型训练。视频帧提取模式 - none:不使用视频模式, single_beginning:从视频开头提取一个片段, single_middle:从视频中间提取一个片段, multiple_overlapping:提取多个可能重叠的片段覆盖整个视频"
+      },
+      "eval_datasets": {
+        "name": "评估数据集",
+        "tooltip": "评估数据集列表，每行一个数据集名称或路径。留空则使用默认的空列表。支持相对路径和绝对路径。"
       }
     },
     "outputs": {
       "0": {
-        "name": "模型配置",
-        "tooltip": "完整的模型配置"
+        "name": "训练配置",
+        "tooltip": "生成的训练配置"
+      },
+      "1": {
+        "name": "输出目录",
+        "tooltip": "训练输出目录路径"
+      },
+      "2": {
+        "name": "配置路径",
+        "tooltip": "配置文件保存路径"
+      }
+    }
+  },
+  "SDXLModelNode": {
+    "display_name": "SDXL模型",
+    "description": "SDXL模型加载节点",
+    "inputs": {
+      "checkpoint_path": {
+        "name": "模型路径",
+        "tooltip": "SDXL checkpoint文件的完整路径"
+      },
+      "dtype": {
+        "name": "数据类型",
+        "tooltip": "模型数据类型"
+      },
+      "v_pred": {
+        "name": "V预测模式",
+        "tooltip": "启用v-prediction模式（如NoobAI vpred模型）"
+      },
+      "min_snr_gamma": {
+        "name": "最小信噪比",
+        "tooltip": "最小信噪比gamma值（0为禁用）"
+      },
+      "debiased_estimation_loss": {
+        "name": "去偏估计损失",
+        "tooltip": "启用去偏估计损失"
+      },
+      "unet_lr": {
+        "name": "UNet学习率",
+        "tooltip": "UNet学习率"
+      },
+      "text_encoder_1_lr": {
+        "name": "文本编码器1学习率",
+        "tooltip": "Text Encoder 1学习率"
+      },
+      "text_encoder_2_lr": {
+        "name": "文本编码器2学习率",
+        "tooltip": "Text Encoder 2学习率"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "SDXL模型配置"
+      }
+    }
+  },
+  "FluxModelNode": {
+    "display_name": "Flux模型",
+    "description": "Flux模型加载节点",
+    "inputs": {
+      "dtype": {
+        "name": "基础数据类型",
+        "tooltip": "基础数据类型"
+      },
+      "transformer_dtype": {
+        "name": "Transformer数据类型",
+        "tooltip": "Transformer数据类型（支持float8用于LoRA训练）"
+      },
+      "flux_shift": {
+        "name": "Flux偏移",
+        "tooltip": "分辨率相关的时间步偏移，向更多噪声偏移"
+      },
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "Flux diffusers模型文件夹的完整路径"
+      },
+      "use_transformer_file": {
+        "name": "使用独立Transformer文件",
+        "tooltip": "是否使用单独的transformer文件（BFL格式）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "transformer文件的完整路径（当启用单独的transformer文件时需要如/data2/imagegen_models/flux-dev-single-files/consolidated_s6700-schnell.safetensors）"
+      },
+      "bypass_guidance_embedding": {
+        "name": "绕过引导嵌入",
+        "tooltip": "绕过guidance embedding（FLEX.1-alpha启用）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Flux模型配置"
+      }
+    }
+  },
+  "LTXVideoModelNode": {
+    "display_name": "LTX-Video模型",
+    "description": "LTX-Video模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "LTX-Video diffusers模型文件夹的完整路径（如：/data/models/LTX-Video）"
+      },
+      "use_single_file": {
+        "name": "使用单文件",
+        "tooltip": "是否使用单个模型文件（.safetensors）"
+      },
+      "single_file_path": {
+        "name": "单文件路径",
+        "tooltip": "单个模型文件的完整路径（如：/data2/imagegen_models/LTX-Video/ltx-video-2b-v0.9.1.safetensors）"
+      },
+      "first_frame_conditioning_p": {
+        "name": "首帧条件概率",
+        "tooltip": "使用第一帧作为条件的概率（i2v训练）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "LTX-Video模型配置"
+      }
+    }
+  },
+  "HunyuanVideoModelNode": {
+    "display_name": "混元视频模型",
+    "description": "HunyuanVideo模型加载节点",
+    "inputs": {
+      "ckpt_path": {
+        "name": "检查点路径",
+        "tooltip": "HunyuanVideo官方推理脚本的ckpt路径（如：/home/anon/HunyuanVideo/ckpts）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件的完整路径（如：/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_720_cfgdistill_fp8_e4m3fn.safetensors），不填则加载官方推理脚本ckpt"
+      },
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件或文件夹的完整路径，不填则加载官方推理脚本ckpt"
+      },
+      "llm_path": {
+        "name": "LLM路径",
+        "tooltip": "LLM文件夹的完整路径，不填则加载官方推理脚本ckpt"
+      },
+      "clip_path": {
+        "name": "CLIP路径",
+        "tooltip": "CLIP文件或文件夹的完整路径，不填则加载官方推理脚本ckpt"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "混元视频模型配置"
+      }
+    }
+  },
+  "CosmosModelNode": {
+    "display_name": "Cosmos模型",
+    "description": "Cosmos模型加载节点",
+    "inputs": {
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件的完整路径（如：/data2/imagegen_models/cosmos/cosmos-1.0-diffusion-7b-text2world.pt）"
+      },
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件的完整路径"
+      },
+      "text_encoder_path": {
+        "name": "文本编码器路径",
+        "tooltip": "Text Encoder文件的完整路径"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Cosmos模型配置"
+      }
+    }
+  },
+  "Lumina2ModelNode": {
+    "display_name": "Lumina 2模型",
+    "description": "Lumina 2模型加载节点",
+    "inputs": {
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件的完整路径（如：/data2/imagegen_models/lumina-2-single-files/lumina_2_model_bf16.safetensors）"
+      },
+      "llm_path": {
+        "name": "LLM路径",
+        "tooltip": "LLM文件或文件夹的完整路径"
+      },
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件的完整路径"
+      },
+      "lumina_shift": {
+        "name": "Lumina偏移",
+        "tooltip": "启用Lumina shift（分辨率相关的时间步偏移）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Lumina 2模型配置"
+      }
+    }
+  },
+  "Wan21ModelNode": {
+    "display_name": "万相2.1模型",
+    "description": "Wan2.1模型加载节点",
+    "inputs": {
+      "ckpt_path": {
+        "name": "检查点路径",
+        "tooltip": "Wan2.1模型checkpoint目录的完整路径，必填，至少需要包含模型所需的config文件（/data2/imagegen_models/Wan2.1-T2V-1.3B）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "你也可以选用safetensors格式的Transformer的模型文件（如：/data2/imagegen_models/wan_comfyui/wan2.1_t2v_1.3B_bf16.safetensors）"
+      },
+      "llm_path": {
+        "name": "LLM路径",
+        "tooltip": "可选：LLM文件路径（如：/data2/imagegen_models/wan_comfyui/wrapper/umt5-xxl-enc-bf16.safetensors）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "万相2.1模型配置"
+      }
+    }
+  },
+  "ChromaModelNode": {
+    "display_name": "Chroma模型",
+    "description": "Chroma模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "Flux diffusers模型文件夹的完整路径（用于加载VAE和text encoder，如：/data/models/FLUX.1-dev）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Chroma单模型文件的完整路径（如：/data2/imagegen_models/chroma/chroma-unlocked-v10.safetensors）"
+      },
+      "flux_shift": {
+        "name": "Flux偏移",
+        "tooltip": "分辨率相关的时间步偏移，向更多噪声偏移"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Chroma模型配置"
+      }
+    }
+  },
+  "HiDreamModelNode": {
+    "display_name": "HiDream模型",
+    "description": "HiDream模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "HiDream diffusers模型文件夹的完整路径（如：/data/models/HiDream-I1-Full）"
+      },
+      "llama3_path": {
+        "name": "Llama3路径",
+        "tooltip": "Llama3模型文件夹的完整路径（如：/data/models/llama3）"
+      },
+      "llama3_4bit": {
+        "name": "Llama3 4位量化",
+        "tooltip": "启用Llama3 4bit量化"
+      },
+      "max_llama3_sequence_length": {
+        "name": "Llama3最大序列长度",
+        "tooltip": "Llama3最大序列长度"
+      },
+      "flux_shift": {
+        "name": "Flux偏移",
+        "tooltip": "使用分辨率相关的时间步偏移（类似Flux）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "HiDream模型配置"
+      }
+    }
+  },
+  "SD3ModelNode": {
+    "display_name": "SD3模型",
+    "description": "Stable Diffusion 3模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "SD3 diffusers模型文件夹的完整路径（需要完整的Diffusers文件夹，如：/data/models/stable-diffusion-3-medium-diffusers）"
+      },
+      "flux_shift": {
+        "name": "Flux偏移",
+        "tooltip": "使用分辨率相关的时间步偏移（类似Flux）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "SD3模型配置"
+      }
+    }
+  },
+  "CosmosPredict2ModelNode": {
+    "display_name": "Cosmos Predict2模型",
+    "description": "Cosmos Predict2模型加载节点",
+    "inputs": {
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件路径（如：/data2/imagegen_models/Cosmos-Predict2-2B-Text2Image/model.pt）"
+      },
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件的完整路径（建议使用万相的vae，如：/data/models/wan_2.1_vae.safetensors）"
+      },
+      "t5_path": {
+        "name": "T5路径",
+        "tooltip": "T5模型文件的完整路径（注意！使用旧版T5模型文件，如：/data2/imagegen_models/comfyui-models/oldt5_xxl_fp16.safetensors）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Cosmos Predict2模型配置"
+      }
+    }
+  },
+  "OmniGen2ModelNode": {
+    "display_name": "OmniGen2模型",
+    "description": "OmniGen2模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "OmniGen2 diffusers模型文件夹的完整路径（需要完整的官方checkpoint目录，如：/data/models/OmniGen-v1）"
+      },
+      "flux_shift": {
+        "name": "Flux偏移",
+        "tooltip": "使用分辨率相关的时间步偏移（类似Flux），默认禁用"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "OmniGen2模型配置"
+      }
+    }
+  },
+  "FluxKontextModelNode": {
+    "display_name": "Flux Kontext模型",
+    "description": "Flux Kontext模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "Flux Dev diffusers模型文件夹的完整路径（如：/data/models/FLUX.1-dev，用于加载VAE和text encoder）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Flux Kontext单模型文件的完整路径（如：/data2/imagegen_models/flux-dev-single-files/flux1-kontext-dev.safetensors），可选填写以节省空间"
+      },
+      "flux_shift": {
+        "name": "Flux偏移",
+        "tooltip": "分辨率相关的时间步偏移，向更多噪声偏移"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Flux Kontext模型配置"
+      }
+    }
+  },
+  "Wan22ModelNode": {
+    "display_name": "万相2.2模型",
+    "description": "Wan2.2模型加载节点",
+    "inputs": {
+      "ckpt_path": {
+        "name": "检查点路径",
+        "tooltip": "Wan2.2模型checkpoint目录的完整路径，必填，至少需要包含VAE和config文件（如：/data/imagegen_models/Wan2.2-T2V-A14B）"
+      },
+      "min_t": {
+        "name": "最小时间步",
+        "tooltip": "最小时间步范围，用于控制训练的噪声范围（低噪声模型：0，高噪声模型：0.875）"
+      },
+      "max_t": {
+        "name": "最大时间步",
+        "tooltip": "最大时间步范围，用于控制训练的噪声范围（低噪声模型：0.875，高噪声模型：1）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型路径，可指向子文件夹（如：/data/imagegen_models/Wan2.2-T2V-A14B/low_noise_model）或你的ComfyUI文件下的模型（如：/data/imagegen_models/comfyui-models/wan2.2_t2v_low_noise_14B_fp16.safetensors）"
+      },
+      "llm_path": {
+        "name": "LLM路径",
+        "tooltip": "可选：LLM文件路径，用于你的ComfyUI文件下的模型加载（如：/data2/imagegen_models/comfyui-models/umt5_xxl_fp16.safetensors）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "万相2.2模型配置"
+      }
+    }
+  },
+  "QwenImageModelNode": {
+    "display_name": "通义千问图像模型",
+    "description": "Qwen-Image模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "Qwen-Image diffusers模型文件夹的完整路径（如：/data/models/Qwen-Image）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件的完整路径（如：/data/imagegen_models/comfyui-models/qwen_image_bf16.safetensors）"
+      },
+      "text_encoder_path": {
+        "name": "文本编码器路径",
+        "tooltip": "Text Encoder文件的完整路径，如'/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors"
+      },
+      "tokenizer_path": {
+        "name": "分词器路径",
+        "tooltip": "Tokenizer文件夹的完整路径"
+      },
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件的完整路径（如：/data/imagegen_models/Qwen-Image/vae/diffusion_pytorch_model.safetensors）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "通义千问图像模型配置"
+      }
+    }
+  },
+  "QwenImageEditModelNode": {
+    "display_name": "通义千问图像编辑模型",
+    "description": "Qwen-Image-Edit模型加载节点",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "Qwen-Image或Qwen-Image-Edit diffusers模型文件夹的完整路径（如：/data/models/Qwen-Image-Edit）"
+      },
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件的完整路径（如：/data/imagegen_models/comfyui-models/qwen_image_edit_bf16.safetensors），仅在使用Qwen-Image diffusers文件夹时需要填写"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "通义千问图像编辑模型配置"
       }
     }
   },
   "AdapterConfigNode": {
     "display_name": "适配器配置",
-    "description": "详细的LoRA适配器配置",
+    "description": "适配器配置节点 - 配置LoRA等适配器参数",
     "inputs": {
       "adapter_type": {
         "name": "适配器类型",
-        "tooltip": "使用的适配器类型",
-        "options": {
-          "lora": "LoRA",
-          "loha": "LoHa",
-          "lokr": "LoKr"
-        }
+        "tooltip": "适配器类型，选择lora启用LoRA训练，选择none进行全量微调"
       },
       "rank": {
-        "name": "秩",
-        "tooltip": "LoRA秩（维度）"
+        "name": "LoRA秩",
+        "tooltip": "LoRA的秩（rank），控制LoRA的参数量和表达能力，必须是16的倍数"
       },
-      "alpha": {
-        "name": "Alpha",
-        "tooltip": "LoRA alpha参数"
+      "dtype": {
+        "name": "数据类型",
+        "tooltip": "LoRA权重的数据类型"
       },
-      "target_modules": {
-        "name": "目标模块",
-        "tooltip": "应用LoRA的目标模块"
-      },
-      "dropout": {
-        "name": "丢弃率",
-        "tooltip": "LoRA丢弃率"
+      "init_from_existing": {
+        "name": "从现有权重初始化",
+        "tooltip": "从已有的LoRA权重初始化（可选，填写完整路径如：/data/diffusion_pipe_training_runs/something/epoch50）"
       }
     },
     "outputs": {
@@ -344,41 +605,31 @@
   },
   "OptimizerConfigNode": {
     "display_name": "优化器配置",
-    "description": "详细的优化器设置",
+    "description": "优化器配置节点 - 支持多种优化器类型：AdamW, AdamW8bitKahan, Automagic, Prodigy等",
     "inputs": {
       "optimizer_type": {
         "name": "优化器类型",
-        "tooltip": "使用的优化器类型",
-        "options": {
-          "AdamW": "AdamW",
-          "AdamW8bit": "AdamW 8位",
-          "Lion": "Lion",
-          "Adafactor": "Adafactor"
-        }
+        "tooltip": "优化器类型选择"
       },
-      "learning_rate": {
+      "lr": {
         "name": "学习率",
-        "tooltip": "基础学习率"
+        "tooltip": "学习率"
       },
-      "lr_scheduler": {
-        "name": "学习率调度器",
-        "tooltip": "学习率调度器",
-        "options": {
-          "linear": "线性",
-          "cosine": "余弦",
-          "cosine_with_restarts": "带重启的余弦",
-          "polynomial": "多项式",
-          "constant": "常数",
-          "constant_with_warmup": "带预热的常数"
-        }
+      "beta1": {
+        "name": "Beta1",
+        "tooltip": "Adam优化器的beta1参数"
       },
-      "lr_warmup_steps": {
-        "name": "学习率预热步数",
-        "tooltip": "学习率预热步数"
+      "beta2": {
+        "name": "Beta2",
+        "tooltip": "Adam优化器的beta2参数"
       },
       "weight_decay": {
         "name": "权重衰减",
-        "tooltip": "用于正则化的权重衰减"
+        "tooltip": "权重衰减系数"
+      },
+      "eps": {
+        "name": "数值稳定参数",
+        "tooltip": "Adam 的数值稳定性参数"
       }
     },
     "outputs": {
@@ -388,347 +639,259 @@
       }
     }
   },
-  "Train": {
-    "display_name": "训练启动器",
-    "description": "启动和控制训练过程",
+  "HunyuanImage21ModelNode": {
+    "display_name": "混元图像2.1模型",
+    "description": "HunyuanImage-2.1模型加载节点",
     "inputs": {
-      "general_config": {
-        "name": "通用配置",
-        "tooltip": "通用训练配置"
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "Transformer模型文件的完整路径（如：/data/imagegen_models/comfyui-models/hunyuanimage2.1.safetensors）"
       },
-      "enable_training": {
-        "name": "启用训练",
-        "tooltip": "启用/禁用训练执行"
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件的完整路径（如：/data/imagegen_models/comfyui-models/hunyuan_image_2.1_vae_fp16.safetensors）"
+      },
+      "text_encoder_path": {
+        "name": "文本编码器路径",
+        "tooltip": "Text Encoder文件的完整路径（如：/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors）"
+      },
+      "byt5_path": {
+        "name": "ByT5路径",
+        "tooltip": "ByT5文件的完整路径（如：/data/imagegen_models/comfyui-models/byt5_small_glyphxl_fp16.safetensors）"
       }
     },
     "outputs": {
       "0": {
-        "name": "训练状态",
-        "tooltip": "训练执行状态"
+        "name": "模型路径",
+        "tooltip": "混元图像2.1模型配置"
+      }
+    }
+  },
+  "Train": {
+    "display_name": "开始训练",
+    "description": "训练启动节点 - 使用配置文件启动lora模型训练",
+    "inputs": {
+      "dataset_config": {
+        "name": "数据集配置",
+        "tooltip": "数据集配置（来自GeneralDatasetConfig节点）"
+      },
+      "train_config": {
+        "name": "训练配置",
+        "tooltip": "训练配置（来自GeneralConfig节点）"
+      },
+      "config_path": {
+        "name": "配置文件路径",
+        "tooltip": "配置文件路径（来自GeneralConfig节点）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "状态",
+        "tooltip": "训练状态信息"
+      },
+      "1": {
+        "name": "日志输出",
+        "tooltip": "训练过程的日志输出"
       }
     }
   },
   "TensorBoardMonitor": {
-    "display_name": "TensorBoard监控器",
-    "description": "使用TensorBoard进行实时训练监控",
+    "display_name": "TensorBoard监控",
+    "description": "TensorBoard监控节点 - 启动和管理TensorBoard服务以可视化训练过程",
     "inputs": {
-      "logging_dir": {
-        "name": "日志目录",
-        "tooltip": "包含TensorBoard日志的目录"
+      "output_dir": {
+        "name": "输出目录",
+        "tooltip": "训练输出目录（来自通用训练设置）"
       },
       "port": {
         "name": "端口",
-        "tooltip": "TensorBoard Web界面端口"
+        "tooltip": "TensorBoard服务端口"
       },
       "host": {
-        "name": "主机",
-        "tooltip": "TensorBoard的主机地址"
+        "name": "主机地址",
+        "tooltip": "TensorBoard服务主机地址"
       },
-      "auto_start": {
-        "name": "自动启动",
-        "tooltip": "自动启动TensorBoard"
+      "is_new_training": {
+        "name": "是否新训练",
+        "tooltip": "是否开启新训练（开启时会延迟30秒等待训练文件生成）"
       },
-      "kill_port": {
-        "name": "终止端口",
-        "tooltip": "终止指定端口上的所有进程"
+      "action": {
+        "name": "操作类型",
+        "tooltip": "操作类型：启动/停止/查看状态/强制清理端口"
       }
     },
     "outputs": {
       "0": {
-        "name": "监控状态",
-        "tooltip": "TensorBoard监控状态"
+        "name": "访问地址",
+        "tooltip": "TensorBoard服务的访问URL"
+      },
+      "1": {
+        "name": "状态信息",
+        "tooltip": "TensorBoard服务的当前状态"
       }
     }
   },
   "OutputDirPassthrough": {
     "display_name": "输出目录传递",
-    "description": "简化路径传递的工具节点",
+    "description": "输出目录传递节点 - 简单传递输出目录路径，用于拓扑排序控制",
     "inputs": {
       "output_dir": {
         "name": "输出目录",
-        "tooltip": "要传递的目录路径"
+        "tooltip": "训练输出目录（来自通用训练设置）"
       }
     },
     "outputs": {
       "0": {
         "name": "输出目录",
-        "tooltip": "传递的目录路径"
+        "tooltip": "传递的输出目录路径"
       }
     }
   },
-  "SDXLModelNode": {
-    "display_name": "SDXL模型配置器",
-    "description": "SDXL模型配置",
+  "ModelConfig": {
+    "display_name": "模型配置",
+    "description": "模型配置节点 - 配置训练时的模型参数",
     "inputs": {
-      "pretrained_model_name_or_path": {
+      "model_path": {
         "name": "模型路径",
-        "tooltip": "SDXL模型路径"
+        "tooltip": "模型路径，根据不同的模型，选择不同的模型路径，具体查看注释"
       },
-      "vae": {
-        "name": "VAE路径",
-        "tooltip": "VAE模型路径"
+      "dtype": {
+        "name": "基础数据类型",
+        "tooltip": "基础数据类型"
+      },
+      "transformer_dtype": {
+        "name": "Transformer数据类型",
+        "tooltip": "Transformer特定数据类型（支持float8用于LoRA训练）"
+      },
+      "timestep_sample_method": {
+        "name": "时间步采样方法",
+        "tooltip": "时间步采样方法，通常为logit_normal"
       }
     },
     "outputs": {
       "0": {
         "name": "模型配置",
-        "tooltip": "SDXL模型配置"
+        "tooltip": "生成的模型配置"
       }
     }
   },
-  "FluxModelNode": {
-    "display_name": "Flux模型配置器",
-    "description": "Flux模型配置",
+  "GeneralDatasetConfig": {
+    "display_name": "通用数据集配置",
+    "description": "通用数据集配置节点 - 用于配置训练数据集的各种参数",
     "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Flux模型路径"
+      "input_path": {
+        "name": "输入路径",
+        "tooltip": "数据集输入路径，必选，根据不同训练目的，选择不同节点"
+      },
+      "resolutions": {
+        "name": "训练分辨率",
+        "tooltip": "训练分辨率，可以是单个数值（正方形）或 [宽度, 高度] 对,例如: [1280, 720]"
+      },
+      "enable_ar_bucket": {
+        "name": "启用宽高比分桶",
+        "tooltip": "是否启用宽高比分桶设置"
+      },
+      "min_ar": {
+        "name": "最小宽高比",
+        "tooltip": "最小宽高比"
+      },
+      "max_ar": {
+        "name": "最大宽高比",
+        "tooltip": "最大宽高比"
+      },
+      "num_ar_buckets": {
+        "name": "宽高比分桶数量",
+        "tooltip": "宽高比分桶数量"
+      },
+      "num_repeats": {
+        "name": "数据集重复次数",
+        "tooltip": "数据集重复次数，用于增加训练数据的有效使用次数"
+      },
+      "output_path": {
+        "name": "输出路径",
+        "tooltip": "配置文件保存路径"
+      },
+      "frame_buckets": {
+        "name": "帧分桶",
+        "tooltip": "帧分桶设置，例如: [1, 33] 或 [1, 33, 65, 97]，专用与视频模型训练"
+      },
+      "ar_buckets": {
+        "name": "宽高比分桶",
+        "tooltip": "宽高比分桶设置，例如:[[512, 512], [448, 576]]"
       }
     },
     "outputs": {
       "0": {
-        "name": "模型配置",
-        "tooltip": "Flux模型配置"
+        "name": "数据集配置",
+        "tooltip": "生成的数据集配置"
       }
     }
   },
-  "SD3ModelNode": {
-    "display_name": "SD3模型配置器",
-    "description": "Stable Diffusion 3模型配置",
+  "GeneralDatasetPathNode": {
+    "display_name": "通用数据集路径",
+    "description": "连接通用数据集配置节点的额外参数",
     "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "SD3模型路径"
+      "dataset_path": {
+        "name": "数据集路径",
+        "tooltip": "数据集文件夹路径"
       }
     },
     "outputs": {
       "0": {
-        "name": "模型配置",
-        "tooltip": "SD3模型配置"
+        "name": "输入路径",
+        "tooltip": "返回的数据集路径"
       }
     }
   },
-  "LTXVideoModelNode": {
-    "display_name": "LTX-Video模型配置器",
-    "description": "用于视频生成训练的LTX-Video模型配置",
+  "ArBucketsNode": {
+    "display_name": "宽高比分桶配置",
+    "description": "用于配置训练数据集的宽高比分桶设置",
     "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "LTX-Video模型路径"
+      "ar_buckets": {
+        "name": "宽高比分桶",
+        "tooltip": "宽高比分桶配置，格式：[[512, 512], [448, 576]]"
       }
     },
     "outputs": {
       "0": {
-        "name": "模型配置",
-        "tooltip": "LTX-Video模型配置"
+        "name": "宽高比分桶",
+        "tooltip": "处理后的宽高比分桶配置"
       }
     }
   },
-  "HunyuanVideoModelNode": {
-    "display_name": "HunyuanVideo模型配置器",
-    "description": "混元视频模型配置",
+  "EditModelDatasetPathNode": {
+    "display_name": "编辑模型数据集路径",
+    "description": "配置编辑模型的目标路径和控制路径",
     "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "混元视频模型路径"
+      "target_path": {
+        "name": "目标路径",
+        "tooltip": "生成图像路径 - 模型要学习生成的图像"
+      },
+      "control_path": {
+        "name": "控制路径",
+        "tooltip": "原图像路径 - 与目标图像对应的控制图像"
       }
     },
     "outputs": {
       "0": {
-        "name": "模型配置",
-        "tooltip": "混元视频模型配置"
+        "name": "输入路径",
+        "tooltip": "返回的编辑模型数据集路径配置"
       }
     }
   },
-  "QwenImageModelNode": {
-    "display_name": "Qwen-Image模型配置器",
-    "description": "通义千问图像模型配置",
+  "FrameBucketsNode": {
+    "display_name": "帧桶配置",
+    "description": "用于配置视频训练中的帧数分桶设置",
     "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "通义千问图像模型路径"
+      "frame_buckets": {
+        "name": "帧数分桶",
+        "tooltip": "帧数分桶配置，专用于视频模型训练，格式：[1, 33, 81, 97]"
       }
     },
     "outputs": {
       "0": {
-        "name": "模型配置",
-        "tooltip": "通义千问图像模型配置"
-      }
-    }
-  },
-  "QwenImageEditModelNode": {
-    "display_name": "Qwen-Image-Edit模型配置器",
-    "description": "通义千问图像编辑模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "通义千问图像编辑模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "通义千问图像编辑模型配置"
-      }
-    }
-  },
-  "ChromaModelNode": {
-    "display_name": "Chroma模型配置器",
-    "description": "Chroma模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Chroma模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Chroma模型配置"
-      }
-    }
-  },
-  "HiDreamModelNode": {
-    "display_name": "HiDream模型配置器",
-    "description": "HiDream模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "HiDream模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "HiDream模型配置"
-      }
-    }
-  },
-  "Lumina2ModelNode": {
-    "display_name": "Lumina2模型配置器",
-    "description": "Lumina Image 2.0模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Lumina2模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Lumina2模型配置"
-      }
-    }
-  },
-  "Wan21ModelNode": {
-    "display_name": "Wan2.1模型配置器",
-    "description": "Wan2.1模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Wan2.1模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Wan2.1模型配置"
-      }
-    }
-  },
-  "Wan22ModelNode": {
-    "display_name": "Wan2.2模型配置器",
-    "description": "Wan2.2模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Wan2.2模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Wan2.2模型配置"
-      }
-    }
-  },
-  "FluxKontextModelNode": {
-    "display_name": "Flux Kontext模型配置器",
-    "description": "Flux Kontext模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Flux Kontext模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Flux Kontext模型配置"
-      }
-    }
-  },
-  "CosmosModelNode": {
-    "display_name": "Cosmos模型配置器",
-    "description": "Cosmos模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Cosmos模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Cosmos模型配置"
-      }
-    }
-  },
-  "CosmosPredict2ModelNode": {
-    "display_name": "Cosmos Predict2模型配置器",
-    "description": "Cosmos Predict2模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "Cosmos Predict2模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "Cosmos Predict2模型配置"
-      }
-    }
-  },
-  "OmniGen2ModelNode": {
-    "display_name": "OmniGen2模型配置器",
-    "description": "OmniGen2模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "OmniGen2模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "OmniGen2模型配置"
-      }
-    }
-  },
-  "HunyuanImage21ModelNode": {
-    "display_name": "HunyuanImage21模型配置器",
-    "description": "混元图像2.1模型配置",
-    "inputs": {
-      "pretrained_model_name_or_path": {
-        "name": "模型路径",
-        "tooltip": "混元图像2.1模型路径"
-      }
-    },
-    "outputs": {
-      "0": {
-        "name": "模型配置",
-        "tooltip": "混元图像2.1模型配置"
+        "name": "帧桶配置",
+        "tooltip": "处理后的帧桶配置"
       }
     }
   }

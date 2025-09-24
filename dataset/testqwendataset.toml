@@ -4,7 +4,6 @@ min_ar = 0.5
 max_ar = 2.0
 num_ar_buckets = 7
 ar_buckets = [[512, 512]]
-frame_buckets = [1, 33]
 [[directory]]
-path = '/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test_vid'
+path = '/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test'
 num_repeats = 1
