@@ -164,7 +164,7 @@ dataset/
 ├── source_images/
 └── target_images/
 ```
-source_images和target_images必须有相同的文件名
+source_images 和 target_images必须有相同的文件名
 
 #### FrameBucketsNode（帧数分桶配置）
 视频训练的帧数配置：

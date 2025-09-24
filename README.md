@@ -159,7 +159,7 @@ dataset/
 ├── source_images/
 └── target_images/
 ```
-❗source_images&target_images must have the same name
+❗source_images & target_images must have the same name
 
 
 #### FrameBucketsNode (Frame Bucket Configuration)
