@@ -1,6 +1,6 @@
 # Diffusion-Pipe In ComfyUI Custom Nodes
 
- *查看[中文](./READMEChinese.md)简介*
+ *查看[中文](./READMEChinese.md)*
 
 ## Project Overview
 
@@ -23,8 +23,16 @@ ps: ComfyUI on WSL2 works so well that I even want to delete my ComfyUI on Windo
 
 ```bash
 conda create -n comfyui_DP
+```
+```bash
 conda activate comfyui_DP
+```
+
+```bash
 cd ~/comfy/ComfyUI/custom_nodes/
+```
+
+```bash
 git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
 ```
 

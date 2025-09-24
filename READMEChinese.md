@@ -24,8 +24,16 @@ ps:WSL2上的comfyui十分好用，我甚至想删除我在win上的comfyui
 
 ```bash
 conda create -n comfyui_DP
+```
+```bash
 conda activate comfyui_DP
+```
+
+```bash
 cd ~/comfy/ComfyUI/custom_nodes/
+```
+
+```bash
 git clone --recurse-submodules https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI.git
 ```
 
@@ -55,7 +63,7 @@ pip install -r requirements.txt
 
 ## 🚀 一键导入工作流
 
-为了让你快速开始，我们提供了预配置的 ComfyUI 工作流文件：
+为了让你快速开始，我提供了预配置的 ComfyUI 工作流文件：
 
 ***[📋 点击导入完整工作流](./DiffusionPipeInComfyUI.json)***
 
