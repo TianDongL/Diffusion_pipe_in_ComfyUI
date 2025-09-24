@@ -172,17 +172,12 @@ cython_debug/
 .DS_Store          # Mac 系统文件
 Thumbs.db          # Windows 缩略图文件
 
-# --------------------------
-# Python 缓存
-# --------------------------
 __pycache__/       # 所有 __pycache__ 目录
 *.pyc              # 所有 .pyc 编译文件
 *.pyo
 *.pyd
 
-# --------------------------
-# 项目冗余文件
-# --------------------------
+input/
 input/test/cache/  # 测试缓存目录（体积大，无需提交）
 input/test/*.png   # 测试用图片（非核心代码，可选）
 input/test/*.txt   # 测试用文本（非核心代码，可选）
@@ -191,5 +186,4 @@ output/            # 输出目录（动态生成，无需提交）
 
 # Ignore arrow cache files
 *.arrow
-input/test/cache/
 **/cache/
