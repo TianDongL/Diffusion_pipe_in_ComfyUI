@@ -100,7 +100,7 @@ class GeneralConfig:
                 "blocks_to_swap": ("INT", {
                     "default": 20, 
                     "min": 0, 
-                    "max": 100,
+                    "max": 40,
                     "tooltip": "要交换的块数量"
                 }),
                 "activation_checkpointing": ("BOOLEAN", {
