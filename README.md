@@ -49,7 +49,7 @@ git submodule update
 ```bash
 conda activate comfyui_DP
 ```
-Here are the necessary dependencies for deepspeed
+Here are the necessary dependencies for deepspeed, first install PyTorch. It is not listed in the requirements document because some GPUs sometimes require different versions of PyTorch or CUDA, and you may have to find a combination that suits your hardware.
 ```bash
 pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
 ```
