@@ -1,0 +1,44 @@
+epochs = 50
+micro_batch_size_per_gpu = 2
+number_of_gpus = 1
+pipeline_stages = 1
+warmup_steps = 500
+blocks_to_swap = 20
+activation_checkpointing = true
+save_dtype = 'bfloat16'
+caching_batch_size = 1
+partition_method = 'parameters'
+output_dir = '/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/output/1'
+disable_block_swap_for_eval = false
+video_clip_mode = 'multiple_overlapping'
+eval_datasets = []
+eval_every_n_epochs = 1
+eval_before_first_step = true
+eval_micro_batch_size_per_gpu = 1
+eval_gradient_accumulation_steps = 1
+save_every_n_epochs = 1
+checkpoint_every_n_minutes = 120
+dataset = '/home/ly/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/testdataset.toml'
+
+[optimizer]
+type = 'AdamW8bitKahan'
+lr = 2e-5
+betas = [ 0.9, 0.99,]
+weight_decay = 0.01
+gradient_release = false
+
+[model]
+type = 'wan'
+ckpt_path = '/home/ly/comfy/ComfyUI/models/checkpoints/Wan2.2-I2V-A14B'
+transformer_path = '/home/ly/comfy/ComfyUI/models/checkpoints/wan2.2_i2v_low_noise_14B_fp16.safetensors'
+llm_path = '/home/ly/comfy/ComfyUI/models/checkpoints/umt5-xxl-enc-bf16.safetensors'
+min_t = 0.0
+max_t = 0.9
+dtype = 'bfloat16'
+timestep_sample_method = 'logit_normal'
+transformer_dtype = 'float8'
+
+[adapter]
+type = 'lora'
+rank = 16
+dtype = 'bfloat16'
