@@ -51,10 +51,7 @@ class SDXLModelNode:
                     "default": "",
                     "tooltip": "SDXL checkpoint文件的完整路径"
                 }),
-                "dtype": (["bfloat16", "float16", "float32"], {
-                    "default": "bfloat16",
-                    "tooltip": "模型数据类型"
-                }),
+
             },
             "optional": {
                 "v_pred": ("BOOLEAN", {
@@ -101,7 +98,7 @@ class SDXLModelNode:
     FUNCTION = "get_sdxl_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_sdxl_config(self, checkpoint_path: str, dtype: str, v_pred: bool = False, 
+    def get_sdxl_config(self, checkpoint_path: str, v_pred: bool = False, 
                        min_snr_gamma: float = 0.0, debiased_estimation_loss: bool = False,
                        unet_lr: float = 4e-5, text_encoder_1_lr: float = 2e-5, 
                        text_encoder_2_lr: float = 2e-5) -> Tuple[dict]:
@@ -117,7 +114,6 @@ class SDXLModelNode:
             config = {
                 "type": "sdxl",
                 "checkpoint_path": normalized_path,
-                "dtype": dtype,
                 "unet_lr": unet_lr,
                 "text_encoder_1_lr": text_encoder_1_lr,
                 "text_encoder_2_lr": text_encoder_2_lr,
