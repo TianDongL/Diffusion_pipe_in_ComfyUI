@@ -145,28 +145,10 @@ class FluxModelNode:
     @classmethod
     def INPUT_TYPES(cls):
         return {
-            "required": {
-                "dtype": (["bfloat16", "float16", "float32"], {
-                    "default": "bfloat16",
-                    "tooltip": "基础数据类型"
-                }),
-                "transformer_dtype": (["auto", "bfloat16", "float8"], {
-                    "default": "auto",
-                    "tooltip": "Transformer数据类型（支持float8用于LoRA训练）"
-                }),
-                "flux_shift": ("BOOLEAN", {
-                    "default": True,
-                    "tooltip": "分辨率相关的时间步偏移，向更多噪声偏移"
-                }),
-            },
             "optional": {
                 "diffusers_path": ("STRING", {
                     "default": "",
                     "tooltip": "Flux diffusers模型文件夹的完整路径"
-                }),
-                "use_transformer_file": ("BOOLEAN", {
-                    "default": False,
-                    "tooltip": "是否使用单独的transformer文件（BFL格式）"
                 }),
                 "transformer_path": ("STRING", {
                     "default": "",
@@ -176,6 +158,10 @@ class FluxModelNode:
                     "default": False,
                     "tooltip": "绕过guidance embedding（FLEX.1-alpha启用）"
                 }),
+                "flux_shift": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "启用flux_shift"
+                }),
             }
         }
     
@@ -184,15 +170,12 @@ class FluxModelNode:
     FUNCTION = "get_flux_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_flux_config(self, dtype: str, transformer_dtype: str, 
-                       flux_shift: bool, diffusers_path: str = "", use_transformer_file: bool = False,
-                       transformer_path: str = "", bypass_guidance_embedding: bool = False) -> Tuple[dict]:
+    def get_flux_config(self, flux_shift: bool, diffusers_path: str = "", transformer_path: str = "", bypass_guidance_embedding: bool = False) -> Tuple[dict]:
         """获取Flux模型配置"""
         try:
             # 构建Flux模型配置
             config = {
                 "type": "flux",
-                "dtype": dtype,
                 "flux_shift": flux_shift,
             }
             
@@ -201,13 +184,9 @@ class FluxModelNode:
                 # WSL2环境路径处理
                 normalized_diffusers_path = normalize_wsl_path(diffusers_path.strip())
                 config["diffusers_path"] = normalized_diffusers_path
-            
-            # 添加transformer_dtype（仅当非auto时）
-            if transformer_dtype != "auto":
-                config["transformer_dtype"] = transformer_dtype
-            
+                        
             # 处理可选的transformer文件
-            if use_transformer_file and transformer_path.strip():
+            if transformer_path and transformer_path.strip():
                 # WSL2环境路径处理：将Windows路径转换为WSL路径
                 abs_transformer_path = normalize_wsl_path(transformer_path.strip())
                 config["transformer_path"] = abs_transformer_path
