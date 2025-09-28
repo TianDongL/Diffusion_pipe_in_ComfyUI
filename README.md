@@ -22,7 +22,7 @@ Make sure you have ComfyUI on Linux or WSL2 system, refer to https://docs.comfy.
 ps: ComfyUI on WSL2 works so well that I even want to delete my ComfyUI on Windows
 
 ```bash
-conda create -n comfyui_DP
+conda create -n comfyui_DP python=3.12
 ```
 ```bash
 conda activate comfyui_DP

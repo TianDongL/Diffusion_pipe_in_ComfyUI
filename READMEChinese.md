@@ -23,7 +23,7 @@ ps:WSL2上的comfyui十分好用，我甚至想删除我在win上的comfyui
 
 
 ```bash
-conda create -n comfyui_DP
+conda create -n comfyui_DP python=3.12
 ```
 ```bash
 conda activate comfyui_DP
