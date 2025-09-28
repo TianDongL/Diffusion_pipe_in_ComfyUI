@@ -682,6 +682,10 @@
       "config_path": {
         "name": "Config Path",
         "tooltip": "Configuration file path (from GeneralConfig node)"
+      },
+      "resume_from_checkpoint": {
+        "name": "Resume From Checkpoint",
+        "tooltip": "Resume training from specified checkpoint, e.g. '20250928_03-05-30' or leave empty for new training"
       }
     },
     "outputs": {
@@ -892,6 +896,70 @@
       "0": {
         "name": "Frame Buckets",
         "tooltip": "Processed frame buckets configuration"
+      }
+    }
+  },
+  "AdvancedTrainConfig": {
+    "display_name": "Advanced Training Config",
+    "description": "Advanced training configuration node - contains parameters from main_example.toml not mapped in GeneralConfig",
+    "inputs": {
+      "max_steps": {
+        "name": "Max Steps",
+        "tooltip": "Maximum training steps, 0 means no limit (use epochs)"
+      },
+      "force_constant_lr": {
+        "name": "Force Constant LR",
+        "tooltip": "Force use constant learning rate, 0.0 means not used"
+      },
+      "lr_scheduler": {
+        "name": "LR Scheduler",
+        "tooltip": "Learning rate scheduler type"
+      },
+      "pseudo_huber_c": {
+        "name": "Pseudo Huber C",
+        "tooltip": "Pseudo Huber loss constant c, 0.0 means not used, only applies to models with default loss function"
+      },
+      "map_num_proc": {
+        "name": "Map Num Proc",
+        "tooltip": "Number of parallel processes when caching dataset, 0 means use default, increasing this can improve throughput if you have many cores and multiple GPUs"
+      },
+      "compile": {
+        "name": "Compile",
+        "tooltip": "Use torch.compile to compile model for training acceleration, not tested on all models"
+      },
+      "steps_per_print": {
+        "name": "Steps Per Print",
+        "tooltip": "Print log every N steps"
+      },
+      "x_axis_examples": {
+        "name": "X Axis Examples",
+        "tooltip": "Use number of examples as X-axis in TensorBoard/WandB instead of steps"
+      },
+      "save_every_n_steps": {
+        "name": "Save Every N Steps",
+        "tooltip": "Save model every N steps, 0 means disabled, different from save_every_n_epochs, this is step-based saving"
+      },
+      "eval_every_n_steps": {
+        "name": "Eval Every N Steps",
+        "tooltip": "Evaluate every N steps, 0 means disabled, different from eval_every_n_epochs, this is step-based evaluation"
+      },
+      "checkpoint_every_n_epochs": {
+        "name": "Checkpoint Every N Epochs",
+        "tooltip": "Save checkpoint every N epochs, 0 means disabled, recommended to enable to avoid losing training progress"
+      },
+      "partition_split": {
+        "name": "Partition Split",
+        "tooltip": "Manual partition split points, e.g. '10,20' means layers 0-9 on GPU0, 10-19 on GPU1, rest on GPU2"
+      },
+      "reentrant_activation_checkpointing": {
+        "name": "Reentrant Activation Checkpointing",
+        "tooltip": "Use reentrant activation checkpointing method, enable when using distributed training (pipeline_stages>1)"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Advanced Config",
+        "tooltip": "Advanced training configuration"
       }
     }
   }

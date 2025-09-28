@@ -4,6 +4,7 @@ try:
     from .diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
     from .diffusion_nodes.dataset_tools import GeneralDatasetPathNode, EditModelDatasetPathNode, FrameBucketsNode
     from .diffusion_nodes.general_config import GeneralConfig
+    from .diffusion_nodes.advanced_train_config import AdvancedTrainConfig
     from .diffusion_nodes.model_config import ModelConfig
     from .diffusion_nodes.dataset_tools import ArBucketsNode
     from .diffusion_nodes.model_tools import SDXLModelNode,Wan22ModelNode,HunyuanImage21ModelNode,QwenImageEditModelNode,FluxKontextModelNode,QwenImageModelNode,CosmosPredict2ModelNode,OmniGen2ModelNode, FluxModelNode,SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,HiDreamModelNode,ChromaModelNode,CosmosModelNode,Lumina2ModelNode,Wan21ModelNode
@@ -22,6 +23,7 @@ except ImportError:
     from diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
     from diffusion_nodes.dataset_tools import GeneralDatasetPathNode, EditModelDatasetPathNode, FrameBucketsNode
     from diffusion_nodes.general_config import GeneralConfig
+    from diffusion_nodes.advanced_train_config import AdvancedTrainConfig
     from diffusion_nodes.model_config import ModelConfig
     from diffusion_nodes.dataset_tools import ArBucketsNode
     from diffusion_nodes.model_tools import SDXLModelNode,Wan22ModelNode,QwenImageEditModelNode,FluxKontextModelNode,QwenImageModelNode,CosmosPredict2ModelNode,OmniGen2ModelNode, FluxModelNode,SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,HiDreamModelNode,ChromaModelNode,CosmosModelNode,Lumina2ModelNode,Wan21ModelNode
@@ -61,6 +63,7 @@ NODE_CLASS_MAPPINGS = {
     
     # 配置生成节点
     "GeneralConfig": GeneralConfig,
+    "AdvancedTrainConfig": AdvancedTrainConfig,
     "ModelConfig": ModelConfig,
     "AdapterConfigNode": AdapterConfigNode,
     "OptimizerConfigNode": OptimizerConfigNode,
@@ -104,6 +107,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     
     # 配置生成节点
     "GeneralConfig": "通用训练设置",
+    "AdvancedTrainConfig": "高级训练配置",
     "ModelConfig": "模型配置",
     "AdapterConfigNode": "适配器配置",
     "OptimizerConfigNode": "优化器配置",

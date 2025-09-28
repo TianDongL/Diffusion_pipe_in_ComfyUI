@@ -682,6 +682,10 @@
       "config_path": {
         "name": "配置文件路径",
         "tooltip": "配置文件路径（来自GeneralConfig节点）"
+      },
+      "resume_from_checkpoint": {
+        "name": "从检查点恢复",
+        "tooltip": "从指定检查点继续训练，例如：'20250928_03-05-30' 或留空表示开始新训练"
       }
     },
     "outputs": {
@@ -892,6 +896,70 @@
       "0": {
         "name": "帧桶配置",
         "tooltip": "处理后的帧桶配置"
+      }
+    }
+  },
+  "AdvancedTrainConfig": {
+    "display_name": "高级训练配置",
+    "description": "高级训练配置节点 - 包含main_example.toml中未在GeneralConfig映射的参数",
+    "inputs": {
+      "max_steps": {
+        "name": "最大步数",
+        "tooltip": "最大训练步数，0表示不限制（使用epochs）"
+      },
+      "force_constant_lr": {
+        "name": "强制恒定学习率",
+        "tooltip": "强制使用恒定学习率，0.0表示不使用"
+      },
+      "lr_scheduler": {
+        "name": "学习率调度器",
+        "tooltip": "学习率调度器类型"
+      },
+      "pseudo_huber_c": {
+        "name": "伪Huber损失常数",
+        "tooltip": "伪Huber损失常数c，0.0表示不使用，仅适用于默认损失函数的模型"
+      },
+      "map_num_proc": {
+        "name": "并行进程数",
+        "tooltip": "缓存数据集时的并行进程数，0表示使用默认值，如果你有很多内核和多个GPU，提高这一点可以提高吞吐量"
+      },
+      "compile": {
+        "name": "编译模型",
+        "tooltip": "使用torch.compile编译模型以加速训练，没有在所有模型上测试过"
+      },
+      "steps_per_print": {
+        "name": "打印间隔步数",
+        "tooltip": "每N步打印一次日志"
+      },
+      "x_axis_examples": {
+        "name": "X轴使用样本数",
+        "tooltip": "在TensorBoard/WandB中使用样本数作为X轴而非步数"
+      },
+      "save_every_n_steps": {
+        "name": "每N步保存",
+        "tooltip": "每N步保存一次模型，0表示禁用，不同于save_every_n_epochs，这个是基于步数保存"
+      },
+      "eval_every_n_steps": {
+        "name": "每N步评估",
+        "tooltip": "每N步评估一次，0表示禁用，不同于eval_every_n_epochs，这个是基于步数评估"
+      },
+      "checkpoint_every_n_epochs": {
+        "name": "每N轮保存检查点",
+        "tooltip": "每N个epoch保存检查点，0表示禁用,建议启用，否则可能丢失部分训练进度"
+      },
+      "partition_split": {
+        "name": "分区分割点",
+        "tooltip": "手动分区分割点，如'10,20'表示层0-9在GPU0，10-19在GPU1，其余在GPU2"
+      },
+      "reentrant_activation_checkpointing": {
+        "name": "可重入激活检查点",
+        "tooltip": "使用可重入激活检查点方法,当使用分布式训练时启用（pipelinestage>1）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "高级配置",
+        "tooltip": "高级训练配置"
       }
     }
   }

@@ -57,7 +57,12 @@ class Train:
                     "tooltip": "配置文件路径（来自GeneralConfig节点）"
                 }),
             },
-            "optional": {}
+            "optional": {
+                "resume_from_checkpoint": ("STRING", {
+                    "default": "",
+                    "tooltip": "从指定检查点继续训练，例如：'20250212_07-06-40' 或留空表示不从检查点恢复"
+                }),
+            }
         }
     
     RETURN_TYPES = ("STRING", "STRING")
@@ -65,9 +70,9 @@ class Train:
     FUNCTION = "execute"
     CATEGORY = "Diffusion-Pipe/Train"
     
-    def execute(self, dataset_config, train_config, config_path):
+    def execute(self, dataset_config, train_config, config_path, resume_from_checkpoint=""):
         """ComfyUI节点的执行入口"""
-        return self.start_training(dataset_config, train_config, config_path)
+        return self.start_training(dataset_config, train_config, config_path, resume_from_checkpoint)
     
     def normalize_wsl_path(self, path):
         """规范化WSL2环境下的路径"""
@@ -176,7 +181,7 @@ class Train:
         except Exception as e:
             log_queue.put(f"Log reader error: {str(e)}")
 
-    def start_training(self, dataset_config, train_config, config_path):
+    def start_training(self, dataset_config, train_config, config_path, resume_from_checkpoint=""):
         """启动训练进程"""
         try:
             # 检查是否已经在训练
@@ -241,6 +246,41 @@ class Train:
             if 'master_port' in train_config:
                 cmd.extend(["--master_port", str(train_config['master_port'])])
             
+            # 添加从检查点恢复训练的参数
+            if resume_from_checkpoint and resume_from_checkpoint.strip():
+                cmd.extend(["--resume_from_checkpoint", resume_from_checkpoint.strip()])
+            
+            # 处理高级配置中的命令行参数
+            train_cmd_args = train_config.get('_train_cmd_args', {})
+            if train_cmd_args:
+                # resume_from_checkpoint 参数
+                if 'resume_from_checkpoint' in train_cmd_args:
+                    resume_value = train_cmd_args['resume_from_checkpoint']
+                    if isinstance(resume_value, bool) and resume_value:
+                        cmd.append("--resume_from_checkpoint")
+                    elif isinstance(resume_value, str):
+                        cmd.extend(["--resume_from_checkpoint", resume_value])
+                
+                # 布尔型参数
+                bool_args = ['reset_dataloader', 'regenerate_cache', 'cache_only', 
+                           'trust_cache', 'i_know_what_i_am_doing']
+                for arg in bool_args:
+                    if train_cmd_args.get(arg, False):
+                        cmd.append(f"--{arg}")
+                
+                # master_port 参数（如果高级配置中有，优先使用）
+                if 'master_port' in train_cmd_args:
+                    # 移除之前添加的master_port参数
+                    if "--master_port" in cmd:
+                        idx = cmd.index("--master_port")
+                        cmd.pop(idx)  # 移除 --master_port
+                        cmd.pop(idx)  # 移除 端口值
+                    cmd.extend(["--master_port", str(train_cmd_args['master_port'])])
+                
+                # dump_dataset 参数
+                if 'dump_dataset' in train_cmd_args:
+                    cmd.extend(["--dump_dataset", str(train_cmd_args['dump_dataset'])])
+            
             # 设置环境变量
             env = os.environ.copy()
             
@@ -260,6 +300,8 @@ class Train:
             print(f"启动训练命令: {' '.join(cmd)}")
             print(f"使用配置文件: {config_path}")
             print(f"GPU数量: {num_gpus}")
+            if resume_from_checkpoint and resume_from_checkpoint.strip():
+                print(f"从检查点恢复训练: {resume_from_checkpoint.strip()}")
             
             self.training_process = subprocess.Popen(
                 cmd,
@@ -313,7 +355,9 @@ class Train:
             
             log_output = "\n".join(initial_logs) if initial_logs else "训练已启动，正在初始化..."
             
-            return "TRAINING_STARTED", f"训练成功启动!\nPID: {self.training_process.pid}\n配置文件: {config_path}\n\n初始日志:\n{log_output}"
+            resume_info = f"\n从检查点恢复: {resume_from_checkpoint.strip()}" if resume_from_checkpoint and resume_from_checkpoint.strip() else ""
+            
+            return "TRAINING_STARTED", f"训练成功启动!\nPID: {self.training_process.pid}\n配置文件: {config_path}{resume_info}\n\n初始日志:\n{log_output}"
             
         except Exception as e:
             self.is_training = False

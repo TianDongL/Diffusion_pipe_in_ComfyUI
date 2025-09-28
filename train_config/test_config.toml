@@ -18,6 +18,7 @@ eval_gradient_accumulation_steps = 1
 save_every_n_epochs = 1
 checkpoint_every_n_minutes = 120
 dataset = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/testdataset.toml'
+checkpoint_every_n_epochs = 1
 
 [optimizer]
 type = 'AdamW8bitKahan'
@@ -27,10 +28,8 @@ weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = 'flux'
-flux_shift = true
-diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/FLUX1-dev'
-bypass_guidance_embedding = true
+type = 'qwen_image'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'float8'

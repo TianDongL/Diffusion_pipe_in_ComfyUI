@@ -11,7 +11,6 @@ def normalize_wsl_path(path):
     if not path:
         return path
         
-    # 如果是Windows驱动器路径格式 (如 Z:\path 或 C:\path)
     if len(path) >= 3 and path[1] == ':' and path[2] in ['\\', '/']:
         drive_letter = path[0].lower()
         rest_path = path[3:].replace('\\', '/')
@@ -129,6 +128,9 @@ class GeneralConfig:
                 "adapter_config": ("ADAPTER_CONFIG", {
                     "tooltip": "适配器配置（可选，用于LoRA等适配器训练）"
                 }),
+                "advanced_config": ("ADVANCED_TRAIN_CONFIG", {
+                    "tooltip": "高级训练配置（可选，来自AdvancedTrainConfig节点）"
+                }),
                 "eval_every_n_epochs": ("INT", {
                     "default": 1, 
                     "min": 0, 
@@ -198,7 +200,7 @@ class GeneralConfig:
                          eval_gradient_accumulation_steps: int = 1, save_every_n_epochs: int = 1,
                          checkpoint_every_n_minutes: int = 120, caching_batch_size: int = 1,
                          disable_block_swap_for_eval: bool = False, video_clip_mode: str = "none",
-                         eval_datasets: str = "", adapter_config=None) -> Tuple[str, str, str]:
+                         eval_datasets: str = "", adapter_config=None, advanced_config=None) -> Tuple[str, str, str]:
         """生成通用训练设置"""
         try:
             # 处理输出目录路径 - 先使用WSL路径规范化
@@ -389,6 +391,28 @@ class GeneralConfig:
                     logging.warning(f"无法解析适配器配置: {str(e)}")
             else:
                 logging.info("未提供适配器配置，将进行全量微调")
+            
+            # 合并高级配置（如果提供）
+            if advanced_config:
+                try:
+                    # 如果advanced_config是字符串，尝试解析为JSON
+                    if isinstance(advanced_config, str):
+                        advanced_dict = json.loads(advanced_config)
+                    else:
+                        advanced_dict = advanced_config
+                    
+                    # 将高级配置合并到设置中
+                    if isinstance(advanced_dict, dict):
+                        # 规范化高级配置中的路径
+                        normalized_advanced_dict = self._normalize_paths_in_dict(advanced_dict)
+                        settings.update(normalized_advanced_dict)
+                        logging.info(f"成功合并高级配置，包含 {len(normalized_advanced_dict)} 个参数")
+                    else:
+                        logging.warning("高级配置不是有效的字典格式")
+                except (json.JSONDecodeError, TypeError) as e:
+                    logging.warning(f"无法解析高级配置: {str(e)}")
+            else:
+                logging.info("未提供高级配置，使用默认设置")
             
             # 最终规范化所有路径为正斜杠格式
             settings = self._normalize_paths_in_dict(settings)
