@@ -1,0 +1,36 @@
+epochs = 50
+micro_batch_size_per_gpu = 1
+number_of_gpus = 1
+pipeline_stages = 1
+warmup_steps = 0
+blocks_to_swap = 0
+activation_checkpointing = true
+save_dtype = 'bfloat16'
+caching_batch_size = 1
+partition_method = 'parameters'
+output_dir = '/home/TIANDONG/comfy/ComfyUI/output/123'
+disable_block_swap_for_eval = true
+eval_datasets = []
+save_every_n_epochs = 1
+checkpoint_every_n_minutes = 120
+dataset = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml'
+checkpoint_every_n_epochs = 1
+
+[optimizer]
+type = 'AdamW8bitKahan'
+lr = 2e-5
+betas = [ 0.9, 0.99,]
+weight_decay = 0.01
+gradient_release = false
+
+[model]
+type = 'qwen_image'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
+dtype = 'bfloat16'
+timestep_sample_method = 'logit_normal'
+transformer_dtype = 'float8'
+
+[adapter]
+type = 'lora'
+rank = 16
+dtype = 'bfloat16'

@@ -10,8 +10,6 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 
 ***[📋 View Supported Models](./docs/supported_models.md)***
 
-### I don't have much time to test each model individually, please submit an issue if you find any problems
-
 # Quick Start
 
 ## Installation Guide

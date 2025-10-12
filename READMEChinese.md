@@ -10,7 +10,6 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 ***[📋 查看支持的模型](./docs/supported_models.md)***
 
-### 我没有太多时间逐个模型进行测试，发现问题请提交issue
 
 # 快速开始
 

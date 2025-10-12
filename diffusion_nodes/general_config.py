@@ -44,6 +44,10 @@ class GeneralConfig:
     def INPUT_TYPES(cls):
         return {
             "required": {
+                "output_folder_name": ("STRING", {
+                    "default": "training_output",
+                    "tooltip": "输出文件夹名称，将自动创建在 @output/ 目录下"
+                }),
                 "optimizer_config": ("OPTIMIZER_CONFIG", {
                     "tooltip": "优化器配置"
                 }),
@@ -113,15 +117,6 @@ class GeneralConfig:
                 "partition_method": (["parameters", "uniform", "memory"], {
                     "default": "parameters",
                     "tooltip": "分区方法"
-                }),
-                "output_dir": ("STRING", {
-                    "default": "\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\output",
-                    "tooltip": "训练输出目录路径，指向你的~\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\output"
-                }),
-                "config_save_path": ("STRING", {
-                    "default": "/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/train_config/trainconfig.toml",
-                    "multiline": False,
-                    "tooltip": "训练配置文件保存路径"
                 }),
             },
             "optional": {
@@ -195,7 +190,7 @@ class GeneralConfig:
     def generate_settings(self, optimizer_config, model_config, dataset_config, epochs: int, micro_batch_size_per_gpu: int, number_of_gpus: int, 
                          pipeline_stages: int, gradient_accumulation_steps: int, gradient_clipping: int, 
                          warmup_steps: int, blocks_to_swap: int, activation_checkpointing: bool, save_dtype: str,
-                         partition_method: str, output_dir: str, config_save_path: str, eval_every_n_epochs: int = 1, 
+                         partition_method: str, output_folder_name: str, eval_every_n_epochs: int = 1, 
                          eval_before_first_step: bool = True, eval_micro_batch_size_per_gpu: int = 1,
                          eval_gradient_accumulation_steps: int = 1, save_every_n_epochs: int = 1,
                          checkpoint_every_n_minutes: int = 120, caching_batch_size: int = 1,
@@ -203,25 +198,27 @@ class GeneralConfig:
                          eval_datasets: str = "", adapter_config=None, advanced_config=None) -> Tuple[str, str, str]:
         """生成通用训练设置"""
         try:
-            # 处理输出目录路径 - 先使用WSL路径规范化
-            normalized_output_dir = normalize_wsl_path(output_dir)
+            # 自动构建输出目录路径：@output/用户输入的文件夹名
+            # 获取ComfyUI根目录
+            comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+            comfyui_root = os.path.abspath(comfyui_root)
             
-            if normalized_output_dir == "/output" or normalized_output_dir.startswith("/output/"):
-                # 默认输出路径：转换为相对于ComfyUI根目录的绝对路径
-                comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
-                comfyui_root = os.path.abspath(comfyui_root)
-                abs_output_dir = os.path.join(comfyui_root, normalized_output_dir.lstrip("/"))
-                abs_output_dir = os.path.normpath(abs_output_dir)
-            else:
-                # 用户提供的完整路径，直接使用已规范化的路径
-                if os.path.isabs(normalized_output_dir):
-                    abs_output_dir = os.path.normpath(os.path.expanduser(normalized_output_dir))
-                else:
-                    # 相对路径，相对于当前工作目录
-                    abs_output_dir = os.path.normpath(os.path.abspath(os.path.expanduser(normalized_output_dir)))
+            # 构建输出路径：ComfyUI根目录/output/用户输入的文件夹名
+            abs_output_dir = os.path.join(comfyui_root, "output", output_folder_name)
+            abs_output_dir = os.path.normpath(abs_output_dir)
+            
+            # 确保输出目录存在
+            os.makedirs(abs_output_dir, exist_ok=True)
             
             # 将输出目录路径转换为正斜杠格式（用于配置文件）
             config_output_dir = abs_output_dir.replace('\\', '/')
+            
+            # 自动构建配置文件保存路径
+            config_save_path = os.path.join(os.path.dirname(__file__), "..", "train_config", "trainconfig.toml")
+            config_save_path = os.path.normpath(config_save_path)
+            
+            # 确保配置文件目录存在
+            os.makedirs(os.path.dirname(config_save_path), exist_ok=True)
             
             # 构建设置字典
             settings = {

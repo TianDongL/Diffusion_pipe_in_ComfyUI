@@ -91,12 +91,6 @@ class GeneralDatasetConfig:
                     "tooltip": "数据集重复次数，用于增加训练数据的有效使用次数"
                 }),
                 
-                # 输出路径设置
-                "output_path": ("STRING", {
-                    "default": "D:/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml",
-                    "multiline": False,
-                    "tooltip": "配置文件保存路径"
-                }),
             },
             "optional": {
                 # 帧分桶设置（视频训练） 
@@ -115,7 +109,7 @@ class GeneralDatasetConfig:
     CATEGORY = "Diffusion-Pipe/dataset"
     
     def generate_config(self, input_path, resolutions, enable_ar_bucket, min_ar, max_ar, 
-                       num_ar_buckets, num_repeats, output_path, frame_buckets=None, ar_buckets=None):
+                       num_ar_buckets, num_repeats, frame_buckets=None, ar_buckets=None):
         """
         生成数据集配置文件内容
         """
@@ -202,6 +196,13 @@ class GeneralDatasetConfig:
                 ])
             
             config_content = "\n".join(config_lines)
+            
+            # 自动构建配置文件保存路径
+            output_path = os.path.join(os.path.dirname(__file__), "..", "dataset", "dataset.toml")
+            output_path = os.path.normpath(output_path)
+            
+            # 确保配置文件目录存在
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
             
             # 保存配置文件
             if output_path:
