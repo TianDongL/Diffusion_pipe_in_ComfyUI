@@ -182,6 +182,7 @@ class GeneralDatasetConfig:
                 normalized_dataset_path = normalize_wsl_path(dataset_path) if dataset_path else "/path/to/target/images"
                 normalized_control_path = normalize_wsl_path(control_path) if control_path else "/path/to/control/images"
                 config_lines.extend([
+                    "[[directory]]",
                     f"path = '{normalized_dataset_path}'",
                     f"control_path = '{normalized_control_path}'",
                 ])
