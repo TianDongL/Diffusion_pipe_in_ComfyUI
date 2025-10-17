@@ -1,24 +1,25 @@
-epochs = 50
+epochs = 100
 micro_batch_size_per_gpu = 1
 number_of_gpus = 1
 pipeline_stages = 1
-warmup_steps = 0
-blocks_to_swap = 20
+warmup_steps = 500
+blocks_to_swap = 5
 activation_checkpointing = true
 save_dtype = 'bfloat16'
 caching_batch_size = 1
 partition_method = 'parameters'
-output_dir = '/home/TIANDONG/comfy/ComfyUI/output/123'
+output_dir = '/home/TIANDONG/comfy/ComfyUI/output/chanyi'
 disable_block_swap_for_eval = true
 eval_datasets = []
-save_every_n_epochs = 1
+gradient_accumulation_steps = 4
+save_every_n_epochs = 2
 checkpoint_every_n_minutes = 120
 dataset = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml'
-checkpoint_every_n_epochs = 1
+lr_scheduler = 'linear'
 
 [optimizer]
 type = 'AdamW8bitKahan'
-lr = 2e-5
+lr = 0.0001
 betas = [ 0.9, 0.99,]
 weight_decay = 0.01
 gradient_release = false
@@ -28,9 +29,9 @@ type = 'qwen_image'
 diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
-transformer_dtype = 'float8'
+transformer_dtype = 'bfloat16'
 
 [adapter]
 type = 'lora'
-rank = 16
+rank = 32
 dtype = 'bfloat16'

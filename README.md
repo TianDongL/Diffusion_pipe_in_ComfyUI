@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 To get you started quickly, we provide pre-configured ComfyUI workflow files:
 
-***[📋 Click to Import Complete Workflow](./DiffusionPipeInComfyUI.json)***
+***[📋 Click to Import Complete Workflow](./example_workflows/DiffusionPipeInComfyUI.json)***
 
 Drag this file into the ComfyUI interface to import the complete training workflow, including all necessary node configurations.
 
