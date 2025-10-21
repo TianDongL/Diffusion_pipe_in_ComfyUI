@@ -164,22 +164,94 @@ class Train:
             return None, str(e)
 
     def log_reader(self, process, log_queue):
-        """读取训练进程的输出日志"""
+        import select
+        import sys
+        
         try:
-            for line in iter(process.stdout.readline, b''):
-                if line:
-                    decoded_line = line.decode('utf-8', errors='ignore').strip()
-                    log_queue.put(decoded_line)
-                    print(f"[Training] {decoded_line}")
-            
-            for line in iter(process.stderr.readline, b''):
-                if line:
-                    decoded_line = line.decode('utf-8', errors='ignore').strip()
-                    log_queue.put(f"ERROR: {decoded_line}")
-                    print(f"[Training Error] {decoded_line}")
+            while True:
+                if process.poll() is not None:
+                    self._read_remaining_output(process, log_queue)
+                    break
+                
+                if hasattr(select, 'select'):
+                    try:
+                        readable, _, _ = select.select(
+                            [process.stdout, process.stderr], [], [], 0.1
+                        )
+                        
+                        for stream in readable:
+                            line = stream.readline()
+                            if line:
+                                decoded_line = line.decode('utf-8', errors='ignore').rstrip()
+                                if stream == process.stderr:
+                                    log_queue.put(f"ERROR: {decoded_line}")
+                                    sys.stderr.write(f"{decoded_line}\n")
+                                    sys.stderr.flush()
+                                else:
+                                    log_queue.put(decoded_line)
+                                    # 完整输出子进程的 stdout 到父进程的 stdout
+                                    print(decoded_line, flush=True)
+                    except (ValueError, OSError) as e:
+                        break
+                else:
+                    # Windows系统回退到交替读取
+                    self._read_alternate(process, log_queue)
                     
         except Exception as e:
-            log_queue.put(f"Log reader error: {str(e)}")
+            error_msg = f"Log reader error: {str(e)}"
+            log_queue.put(error_msg)
+            sys.stderr.write(f"{error_msg}\n")
+            sys.stderr.flush()
+    
+    def _read_remaining_output(self, process, log_queue):
+        """读取进程结束后剩余的所有输出"""
+        import sys
+        
+        try:
+            if process.stdout:
+                for line in process.stdout:
+                    if line:
+                        decoded_line = line.decode('utf-8', errors='ignore').rstrip()
+                        log_queue.put(decoded_line)
+                        print(decoded_line, flush=True)
+            
+            if process.stderr:
+                for line in process.stderr:
+                    if line:
+                        decoded_line = line.decode('utf-8', errors='ignore').rstrip()
+                        log_queue.put(f"ERROR: {decoded_line}")
+                        sys.stderr.write(f"{decoded_line}\n")
+                        sys.stderr.flush()
+        except Exception as e:
+            sys.stderr.write(f"Error reading remaining output: {str(e)}\n")
+            sys.stderr.flush()
+    
+    def _read_alternate(self, process, log_queue):
+        """在不支持select的系统上交替读取stdout和stderr"""
+        import sys
+        
+        try:
+            if process.stdout:
+                line = process.stdout.readline()
+                if line:
+                    decoded_line = line.decode('utf-8', errors='ignore').rstrip()
+                    log_queue.put(decoded_line)
+                    # 完整输出子进程的 stdout 到父进程的 stdout
+                    print(decoded_line, flush=True)
+            
+            if process.stderr:
+                line = process.stderr.readline()
+                if line:
+                    decoded_line = line.decode('utf-8', errors='ignore').rstrip()
+                    log_queue.put(f"ERROR: {decoded_line}")
+                    # 完整输出子进程的 stderr 到父进程的 stderr
+                    sys.stderr.write(f"{decoded_line}\n")
+                    sys.stderr.flush()
+                    
+            time.sleep(0.1)
+        except Exception as e:
+            sys.stderr.write(f"Error in alternate read: {str(e)}\n")
+            sys.stderr.flush()
 
     def start_training(self, dataset_config, train_config, config_path, resume_from_checkpoint=""):
         """启动训练进程"""
@@ -288,6 +360,9 @@ class Train:
             env['NCCL_P2P_DISABLE'] = "1"
             env['NCCL_IB_DISABLE'] = "1"
             
+            # 禁用Python输出缓冲，确保日志实时输出
+            env['PYTHONUNBUFFERED'] = "1"
+            
             # 如果是多GPU训练，设置相关环境变量
             if num_gpus > 1:
                 env['WORLD_SIZE'] = str(num_gpus)
@@ -335,6 +410,7 @@ class Train:
                     stderr_output = self.training_process.stderr.read().decode('utf-8', errors='ignore')
                     if stderr_output:
                         error_msg += f"\n错误信息: {stderr_output}"
+                        print(stderr_output, flush=True)
                 except:
                     pass
                 
