@@ -686,6 +686,30 @@
       "resume_from_checkpoint": {
         "name": "Resume From Checkpoint",
         "tooltip": "Resume training from specified checkpoint, e.g. '20250928_03-05-30' or leave empty for new training"
+      },
+      "reset_dataloader": {
+        "name": "Reset Dataloader",
+        "tooltip": "Reset dataloader state when resuming from checkpoint"
+      },
+      "regenerate_cache": {
+        "name": "Regenerate Cache",
+        "tooltip": "Force regenerate cache files"
+      },
+      "cache_only": {
+        "name": "Cache Only",
+        "tooltip": "Only generate cache then exit, do not train"
+      },
+      "trust_cache": {
+        "name": "Trust Cache",
+        "tooltip": "Trust existing cache without validation"
+      },
+      "i_know_what_i_am_doing": {
+        "name": "I Know What I Am Doing",
+        "tooltip": "Skip certain safety checks (use only when you know what you're doing)"
+      },
+      "dump_dataset": {
+        "name": "Dump Dataset",
+        "tooltip": "Export dataset to specified path (for debugging)"
       }
     },
     "outputs": {

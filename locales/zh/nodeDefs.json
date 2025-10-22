@@ -686,6 +686,30 @@
       "resume_from_checkpoint": {
         "name": "从检查点恢复",
         "tooltip": "从指定检查点继续训练，例如：'20250928_03-05-30' 或留空表示开始新训练"
+      },
+      "reset_dataloader": {
+        "name": "重置数据加载器",
+        "tooltip": "重置数据加载器状态（在从检查点恢复时使用）"
+      },
+      "regenerate_cache": {
+        "name": "重新生成缓存",
+        "tooltip": "强制重新生成缓存文件"
+      },
+      "cache_only": {
+        "name": "仅生成缓存",
+        "tooltip": "仅生成缓存然后退出，不进行训练"
+      },
+      "trust_cache": {
+        "name": "信任缓存",
+        "tooltip": "信任现有缓存，不进行验证"
+      },
+      "i_know_what_i_am_doing": {
+        "name": "我知道自己在做什么",
+        "tooltip": "跳过某些安全检查（仅在你知道自己在做什么时使用）"
+      },
+      "dump_dataset": {
+        "name": "导出数据集",
+        "tooltip": "导出数据集到指定路径（用于调试）"
       }
     },
     "outputs": {

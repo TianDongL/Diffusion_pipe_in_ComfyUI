@@ -11,12 +11,9 @@ import signal
 import queue
 from pathlib import Path
 
-# 尝试导入配置解析器
 try:
-    # 相对导入 (在 ComfyUI 中作为包导入时)
     from ..utils.config_parser import ConfigParser
 except ImportError:
-    # 绝对导入 (直接运行时)
     import os
     import sys
     current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +22,6 @@ except ImportError:
     try:
         from utils.config_parser import ConfigParser
     except ImportError:
-        # 如果找不到配置解析器，创建一个简单的替代
         class ConfigParser:
             @staticmethod
             def merge_configs(dataset_config, train_config):
@@ -62,6 +58,30 @@ class Train:
                     "default": "",
                     "tooltip": "从指定检查点继续训练，例如：'20250212_07-06-40' 或留空表示不从检查点恢复"
                 }),
+                "reset_dataloader": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "重置数据加载器状态（在从检查点恢复时使用）"
+                }),
+                "regenerate_cache": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "强制重新生成缓存文件"
+                }),
+                "cache_only": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "仅生成缓存然后退出，不进行训练"
+                }),
+                "trust_cache": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "信任现有缓存，不进行验证"
+                }),
+                "i_know_what_i_am_doing": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "跳过某些安全检查（仅在你知道自己在做什么时使用）"
+                }),
+                "dump_dataset": ("STRING", {
+                    "default": "",
+                    "tooltip": "导出数据集到指定路径（用于调试）"
+                }),
             }
         }
     
@@ -70,9 +90,18 @@ class Train:
     FUNCTION = "execute"
     CATEGORY = "Diffusion-Pipe/Train"
     
-    def execute(self, dataset_config, train_config, config_path, resume_from_checkpoint=""):
+    def execute(self, dataset_config, train_config, config_path, 
+                resume_from_checkpoint="", reset_dataloader=False, 
+                regenerate_cache=False, cache_only=False, 
+                trust_cache=False, i_know_what_i_am_doing=False,
+                dump_dataset=""):
         """ComfyUI节点的执行入口"""
-        return self.start_training(dataset_config, train_config, config_path, resume_from_checkpoint)
+        return self.start_training(
+            dataset_config, train_config, config_path, 
+            resume_from_checkpoint, reset_dataloader, 
+            regenerate_cache, cache_only, trust_cache, 
+            i_know_what_i_am_doing, dump_dataset
+        )
     
     def normalize_wsl_path(self, path):
         """规范化WSL2环境下的路径"""
@@ -84,85 +113,16 @@ class Train:
             drive_letter = path[0].lower()
             rest_path = path[3:].replace('\\', '/')
             
-            # 特殊处理Z:驱动器 - 通常映射到WSL根目录
             if drive_letter == 'z':
-                # Z盘通常映射到WSL的根目录，直接返回Linux路径
                 return f'/{rest_path}'
             else:
                 return f'/mnt/{drive_letter}/{rest_path}'
         
-        # 如果已经是Linux路径格式
         elif path.startswith('/'):
             return path.replace('\\', '/')
         
-        # 相对路径处理
         else:
             return path
-
-    def create_config_files(self, dataset_config, train_config):
-        """创建临时配置文件 - 已弃用，现在使用 config_save_path"""
-        try:
-            # 创建临时目录
-            temp_dir = tempfile.mkdtemp(prefix="diffusion_train_")
-            
-            # 检查并处理dataset_config类型
-            if isinstance(dataset_config, str):
-                # 如果是字符串，尝试解析为JSON或TOML
-                try:
-                    dataset_config = json.loads(dataset_config)
-                except json.JSONDecodeError:
-                    try:
-                        dataset_config = toml.loads(dataset_config)
-                    except Exception:
-                        # 如果都解析失败，创建一个基本的配置
-                        dataset_config = {"path": dataset_config}
-            elif not isinstance(dataset_config, dict):
-                return None, f"dataset_config类型不正确: {type(dataset_config)}, 应该是字典或字符串"
-            
-            # 检查并处理train_config类型
-            if isinstance(train_config, str):
-                # 如果是字符串，尝试解析为JSON或TOML
-                try:
-                    train_config = json.loads(train_config)
-                except json.JSONDecodeError:
-                    try:
-                        train_config = toml.loads(train_config)
-                    except Exception:
-                        return None, f"无法解析train_config字符串: {train_config}"
-            elif not isinstance(train_config, dict):
-                return None, f"train_config类型不正确: {type(train_config)}, 应该是字典或字符串"
-            
-            # 创建数据集配置文件
-            dataset_config_path = os.path.join(temp_dir, "dataset_config.toml")
-            with open(dataset_config_path, 'w', encoding='utf-8') as f:
-                # 规范化路径
-                normalized_dataset_config = {}
-                for key, value in dataset_config.items():
-                    if isinstance(value, str) and ('path' in key.lower() or 'dir' in key.lower()):
-                        normalized_dataset_config[key] = self.normalize_wsl_path(value)
-                    else:
-                        normalized_dataset_config[key] = value
-                toml.dump(normalized_dataset_config, f)
-            
-            # 创建训练配置文件
-            train_config_copy = train_config.copy()
-            
-            # 规范化训练配置中的路径
-            if 'output_dir' in train_config_copy:
-                train_config_copy['output_dir'] = self.normalize_wsl_path(train_config_copy['output_dir'])
-            
-            # 设置数据集配置路径
-            train_config_copy['dataset'] = dataset_config_path
-            
-            train_config_path = os.path.join(temp_dir, "train_config.toml")
-            with open(train_config_path, 'w', encoding='utf-8') as f:
-                toml.dump(train_config_copy, f)
-            
-            return train_config_path, temp_dir
-            
-        except Exception as e:
-            return None, str(e)
-
     def log_reader(self, process, log_queue):
         import select
         import sys
@@ -189,12 +149,10 @@ class Train:
                                     sys.stderr.flush()
                                 else:
                                     log_queue.put(decoded_line)
-                                    # 完整输出子进程的 stdout 到父进程的 stdout
                                     print(decoded_line, flush=True)
                     except (ValueError, OSError) as e:
                         break
                 else:
-                    # Windows系统回退到交替读取
                     self._read_alternate(process, log_queue)
                     
         except Exception as e:
@@ -204,7 +162,6 @@ class Train:
             sys.stderr.flush()
     
     def _read_remaining_output(self, process, log_queue):
-        """读取进程结束后剩余的所有输出"""
         import sys
         
         try:
@@ -227,7 +184,6 @@ class Train:
             sys.stderr.flush()
     
     def _read_alternate(self, process, log_queue):
-        """在不支持select的系统上交替读取stdout和stderr"""
         import sys
         
         try:
@@ -236,7 +192,6 @@ class Train:
                 if line:
                     decoded_line = line.decode('utf-8', errors='ignore').rstrip()
                     log_queue.put(decoded_line)
-                    # 完整输出子进程的 stdout 到父进程的 stdout
                     print(decoded_line, flush=True)
             
             if process.stderr:
@@ -244,7 +199,6 @@ class Train:
                 if line:
                     decoded_line = line.decode('utf-8', errors='ignore').rstrip()
                     log_queue.put(f"ERROR: {decoded_line}")
-                    # 完整输出子进程的 stderr 到父进程的 stderr
                     sys.stderr.write(f"{decoded_line}\n")
                     sys.stderr.flush()
                     
@@ -253,51 +207,44 @@ class Train:
             sys.stderr.write(f"Error in alternate read: {str(e)}\n")
             sys.stderr.flush()
 
-    def start_training(self, dataset_config, train_config, config_path, resume_from_checkpoint=""):
+    def start_training(self, dataset_config, train_config, config_path, 
+                      resume_from_checkpoint="", reset_dataloader=False, 
+                      regenerate_cache=False, cache_only=False, 
+                      trust_cache=False, i_know_what_i_am_doing=False,
+                      dump_dataset=""):
         """启动训练进程"""
         try:
-            # 检查是否已经在训练
             if self.is_training and self.training_process and self.training_process.poll() is None:
                 return "ALREADY_RUNNING", "训练已在进行中，请等待当前训练完成"
             
-            # 预处理train_config，确保它是字典类型
             if isinstance(train_config, str):
                 try:
-                    # 尝试解析为JSON
                     import json
                     train_config = json.loads(train_config)
                 except json.JSONDecodeError:
                     try:
-                        # 尝试解析为TOML
                         import toml
                         train_config = toml.loads(train_config)
                     except:
-                        # 如果都失败，创建基础配置
                         train_config = {}
             
-            # 确保train_config是字典类型
             if not isinstance(train_config, dict):
                 train_config = {}
             
-            # 检查配置文件路径
             if not config_path:
                 return "ERROR", "未指定配置文件保存路径 (config_path)"
             
-            # 规范化配置文件路径
             config_path = self.normalize_wsl_path(config_path)
             
-            # 检查配置文件是否存在
             if not os.path.exists(config_path):
                 return "ERROR", f"配置文件不存在: {config_path}"
             
-            # 获取训练脚本路径
             current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             train_script = os.path.join(current_dir, "train.py")
             
             if not os.path.exists(train_script):
                 return "ERROR", f"找不到训练脚本: {train_script}"
             
-            # 构建训练命令 - 使用 DeepSpeed 启动
             num_gpus = train_config.get('number_of_gpus', 1)
             
             cmd = [
@@ -308,50 +255,53 @@ class Train:
                 "--config", config_path
             ]
             
-            # 如果配置中指定了其他参数，添加到命令中
-            if train_config.get('regenerate_cache', False):
-                cmd.append("--regenerate_cache")
-            
-            if train_config.get('trust_cache', False):
-                cmd.append("--trust_cache")
-                
-            if 'master_port' in train_config:
-                cmd.extend(["--master_port", str(train_config['master_port'])])
-            
-            # 添加从检查点恢复训练的参数
-            if resume_from_checkpoint and resume_from_checkpoint.strip():
-                cmd.extend(["--resume_from_checkpoint", resume_from_checkpoint.strip()])
-            
-            # 处理高级配置中的命令行参数
             train_cmd_args = train_config.get('_train_cmd_args', {})
-            if train_cmd_args:
-                # resume_from_checkpoint 参数
-                if 'resume_from_checkpoint' in train_cmd_args:
-                    resume_value = train_cmd_args['resume_from_checkpoint']
-                    if isinstance(resume_value, bool) and resume_value:
-                        cmd.append("--resume_from_checkpoint")
-                    elif isinstance(resume_value, str):
-                        cmd.extend(["--resume_from_checkpoint", resume_value])
-                
-                # 布尔型参数
-                bool_args = ['reset_dataloader', 'regenerate_cache', 'cache_only', 
-                           'trust_cache', 'i_know_what_i_am_doing']
-                for arg in bool_args:
-                    if train_cmd_args.get(arg, False):
-                        cmd.append(f"--{arg}")
-                
-                # master_port 参数（如果高级配置中有，优先使用）
-                if 'master_port' in train_cmd_args:
-                    # 移除之前添加的master_port参数
-                    if "--master_port" in cmd:
-                        idx = cmd.index("--master_port")
-                        cmd.pop(idx)  # 移除 --master_port
-                        cmd.pop(idx)  # 移除 端口值
-                    cmd.extend(["--master_port", str(train_cmd_args['master_port'])])
-                
-                # dump_dataset 参数
-                if 'dump_dataset' in train_cmd_args:
-                    cmd.extend(["--dump_dataset", str(train_cmd_args['dump_dataset'])])
+            
+            # 1. 处理布尔型参数
+            bool_params = {
+                'reset_dataloader': reset_dataloader,
+                'regenerate_cache': regenerate_cache,
+                'cache_only': cache_only,
+                'trust_cache': trust_cache,
+                'i_know_what_i_am_doing': i_know_what_i_am_doing
+            }
+            
+            for arg_name, node_value in bool_params.items():
+                if node_value:  # 节点参数为True
+                    cmd.append(f"--{arg_name}")
+                elif arg_name in train_cmd_args and train_cmd_args.get(arg_name, False):
+                    cmd.append(f"--{arg_name}")
+                elif train_config.get(arg_name, False):
+                    cmd.append(f"--{arg_name}")
+            
+            final_master_port = None
+            if 'master_port' in train_cmd_args:
+                final_master_port = train_cmd_args['master_port']
+            elif 'master_port' in train_config:
+                final_master_port = train_config['master_port']
+            
+            if final_master_port is not None:
+                cmd.extend(["--master_port", str(final_master_port)])
+            
+            final_dump_dataset = dump_dataset  
+            if 'dump_dataset' in train_cmd_args and train_cmd_args['dump_dataset']:
+                final_dump_dataset = train_cmd_args['dump_dataset']
+            elif 'dump_dataset' in train_config and train_config['dump_dataset']:
+                final_dump_dataset = train_config['dump_dataset']
+            
+            if final_dump_dataset and final_dump_dataset.strip():
+                cmd.extend(["--dump_dataset", final_dump_dataset.strip()])
+            
+            final_resume = resume_from_checkpoint 
+            if 'resume_from_checkpoint' in train_cmd_args:
+                resume_value = train_cmd_args['resume_from_checkpoint']
+                if isinstance(resume_value, bool) and resume_value:
+                    final_resume = "latest"  
+                elif isinstance(resume_value, str):
+                    final_resume = resume_value
+            
+            if final_resume and final_resume.strip():
+                cmd.extend(["--resume_from_checkpoint", final_resume.strip()])
             
             # 设置环境变量
             env = os.environ.copy()
