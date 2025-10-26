@@ -986,5 +986,53 @@
         "tooltip": "高级训练配置"
       }
     }
+  },
+  "EvalDatasetConfig": {
+    "display_name": "评估数据集配置",
+    "description": "评估数据集配置节点 - 用于配置评估数据集的各种参数",
+    "inputs": {
+      "input_path": {
+        "name": "输入路径",
+        "tooltip": "评估数据集输入路径，必选，根据不同训练目的，选择不同路径"
+      },
+      "resolutions": {
+        "name": "评估分辨率",
+        "tooltip": "评估分辨率，可以是单个数值（正方形）或 [宽度, 高度] 对，例如: [1280, 720]"
+      },
+      "enable_ar_bucket": {
+        "name": "启用宽高比分桶",
+        "tooltip": "是否启用宽高比分桶设置"
+      },
+      "min_ar": {
+        "name": "最小宽高比",
+        "tooltip": "最小宽高比"
+      },
+      "max_ar": {
+        "name": "最大宽高比",
+        "tooltip": "最大宽高比"
+      },
+      "num_ar_buckets": {
+        "name": "宽高比分桶数量",
+        "tooltip": "宽高比分桶数量"
+      },
+      "num_repeats": {
+        "name": "评估数据集重复次数",
+        "tooltip": "评估数据集重复次数"
+      },
+      "frame_buckets": {
+        "name": "帧分桶",
+        "tooltip": "帧分桶设置，例如: [1, 33] 或 [1, 33, 65, 97]，专用于视频模型训练"
+      },
+      "ar_buckets": {
+        "name": "宽高比分桶",
+        "tooltip": "宽高比分桶设置，例如:[[512, 512], [448, 576]]"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "评估数据集配置",
+        "tooltip": "生成的评估数据集配置"
+      }
+    }
   }
 } 

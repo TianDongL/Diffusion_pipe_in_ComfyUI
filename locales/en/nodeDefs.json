@@ -986,5 +986,53 @@
         "tooltip": "Advanced training configuration"
       }
     }
+  },
+  "EvalDatasetConfig": {
+    "display_name": "Eval Dataset Config",
+    "description": "Evaluation dataset configuration node - configure various parameters for evaluation dataset",
+    "inputs": {
+      "input_path": {
+        "name": "Input Path",
+        "tooltip": "Evaluation dataset input path, required, choose different nodes based on different training purposes"
+      },
+      "resolutions": {
+        "name": "Resolutions",
+        "tooltip": "Evaluation resolutions, can be a single value (square) or [width, height] pair, e.g.: [1280, 720]"
+      },
+      "enable_ar_bucket": {
+        "name": "Enable AR Bucket",
+        "tooltip": "Whether to enable aspect ratio bucketing settings"
+      },
+      "min_ar": {
+        "name": "Min AR",
+        "tooltip": "Minimum aspect ratio"
+      },
+      "max_ar": {
+        "name": "Max AR",
+        "tooltip": "Maximum aspect ratio"
+      },
+      "num_ar_buckets": {
+        "name": "Num AR Buckets",
+        "tooltip": "Number of aspect ratio buckets"
+      },
+      "num_repeats": {
+        "name": "Eval Dataset Repeats",
+        "tooltip": "Evaluation dataset repeat count"
+      },
+      "frame_buckets": {
+        "name": "Frame Buckets",
+        "tooltip": "Frame bucket settings, e.g.: [1, 33] or [1, 33, 65, 97], dedicated for video model training"
+      },
+      "ar_buckets": {
+        "name": "AR Buckets",
+        "tooltip": "Aspect ratio bucket settings, e.g.: [[512, 512], [448, 576]]"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Eval Dataset Config",
+        "tooltip": "Generated evaluation dataset configuration"
+      }
+    }
   }
 } 
