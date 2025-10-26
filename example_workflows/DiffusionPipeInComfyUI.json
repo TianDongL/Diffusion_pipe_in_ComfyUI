@@ -1,15 +1,15 @@
 {
   "id": "6d5bb5d7-1026-4495-a5dc-bed47fd78a21",
   "revision": 0,
-  "last_node_id": 285,
-  "last_link_id": 399,
+  "last_node_id": 293,
+  "last_link_id": 422,
   "nodes": [
     {
       "id": 146,
       "type": "HiDreamModelNode",
       "pos": [
-        -2131.632568359375,
-        -2813.61865234375
+        -2148.69482421875,
+        -2352.927734375
       ],
       "size": [
         470,
@@ -51,8 +51,8 @@
       "id": 134,
       "type": "LTXVideoModelNode",
       "pos": [
-        -3526.18896484375,
-        -2956.0810546875
+        -3543.251220703125,
+        -2495.39013671875
       ],
       "size": [
         690.213134765625,
@@ -90,58 +90,18 @@
       "bgcolor": "#3f5159"
     },
     {
-      "id": 231,
-      "type": "PrimitiveString",
-      "pos": [
-        -1883.1405029296875,
-        17.2293758392334
-      ],
-      "size": [
-        497.604736328125,
-        58
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": []
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.59",
-        "Node name for S&R": "PrimitiveString",
-        "ue_properties": {
-          "widget_ue_connectable": {
-            "value": true
-          },
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "Z:\\root\\wan2_2_lora\\diffusion-pipe\\training_runs\\qwen_edit"
-      ],
-      "color": "#2a363b",
-      "bgcolor": "#3f5159"
-    },
-    {
       "id": 149,
       "type": "CosmosPredict2ModelNode",
       "pos": [
-        -3526.02294921875,
-        -2627.000732421875
+        -3543.085205078125,
+        -2166.309814453125
       ],
       "size": [
         643.4683227539062,
         106
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -174,15 +134,15 @@
       "id": 144,
       "type": "ChromaModelNode",
       "pos": [
-        -2797.96533203125,
-        -2964.46533203125
+        -2815.027587890625,
+        -2503.7744140625
       ],
       "size": [
         664.3506469726562,
         106
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -215,7 +175,7 @@
       "id": 90,
       "type": "FrameBucketsNode",
       "pos": [
-        -4900.22998046875,
+        -5020.98828125,
         -905.724365234375
       ],
       "size": [
@@ -223,7 +183,7 @@
         58
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -254,15 +214,15 @@
       "id": 232,
       "type": "Note",
       "pos": [
-        -1840.529541015625,
-        143.2461395263672
+        -1874.9158935546875,
+        547.9503173828125
       ],
       "size": [
         405.556884765625,
         88
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -283,15 +243,15 @@
       "id": 236,
       "type": "Note",
       "pos": [
-        -1919.872314453125,
-        -400.6055908203125
+        -1954.258544921875,
+        4.09861421585083
       ],
       "size": [
         329.5334777832031,
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -309,47 +269,18 @@
       "bgcolor": "#653"
     },
     {
-      "id": 122,
-      "type": "MarkdownNote",
-      "pos": [
-        -4522.56591796875,
-        -1973.625244140625
-      ],
-      "size": [
-        880,
-        640
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "# Summary\n\n| Model          | LoRA | Full Fine Tune | fp8/quantization |\n|----------------|------|----------------|------------------|\n|SDXL            |✅    |✅              |❌                |\n|Flux            |✅    |✅              |✅                |\n|LTX-Video       |✅    |❌              |❌                |\n|HunyuanVideo    |✅    |❌              |✅                |\n|Cosmos          |✅    |❌              |❌                |\n|Lumina Image 2.0|✅    |✅              |❌                |\n|Wan2.1          |✅    |✅              |✅                |\n|Chroma          |✅    |✅              |✅                |\n|HiDream         |✅    |❌              |✅                |\n|SD3             |✅    |❌              |✅                |\n|Cosmos-Predict2 |✅    |✅              |✅                |\n|OmniGen2        |✅    |❌              |❌                |\n|Flux Kontext    |✅    |✅              |✅                |\n|Wan2.2          |✅    |✅              |✅                |\n|Qwen-Image      |✅    |✅              |✅                |\n|Qwen-Image-Edit |✅    |✅              |✅                |\n|HunyuanImage-2.1|✅    |✅              |✅                |\n\n\n## SDXL\n```\n[model]\ntype = 'sdxl'\ncheckpoint_path = '/data2/imagegen_models/sdxl/sd_xl_base_1.0_0.9vae.safetensors'\ndtype = 'bfloat16'\n# You can train v-prediction models (e.g. NoobAI vpred) by setting this option.\n#v_pred = true\n# Min SNR is supported. Same meaning as sd-scripts\n#min_snr_gamma = 5\n# Debiased estimation loss is supported. Same meaning as sd-scripts.\n#debiased_estimation_loss = true\n# You can set separate learning rates for unet and text encoders. If one of these isn't set, the optimizer learning rate will apply.\nunet_lr = 4e-5\ntext_encoder_1_lr = 2e-5\ntext_encoder_2_lr = 2e-5\n```\nUnlike other models, for SDXL the text embeddings are not cached, and the text encoders are trained.\n\nSDXL can be full fine tuned. Just remove the [adapter] table in the config file. You will need 48GB VRAM. 2x24GB GPUs works with pipeline_stages=2.\n\nSDXL LoRAs are saved in Kohya sd-scripts format. SDXL full fine tune models are saved in the original SDXL checkpoint format.\n\n## Flux\n```\n[model]\ntype = 'flux'\n# Path to Huggingface Diffusers directory for Flux\ndiffusers_path = '/data2/imagegen_models/FLUX.1-dev'\n# You can override the transformer from a BFL format checkpoint.\n#transformer_path = '/data2/imagegen_models/flux-dev-single-files/consolidated_s6700-schnell.safetensors'\ndtype = 'bfloat16'\n# Flux supports fp8 for the transformer when training LoRA.\ntransformer_dtype = 'float8'  \n# Resolution-dependent timestep shift towards more noise. Same meaning as sd-scripts.\nflux_shift = true\n# For FLEX.1-alpha, you can bypass the guidance embedding which is the recommended way to train that model.\n#bypass_guidance_embedding = true\n```\nFor Flux, you can override the transformer weights by setting transformer_path to an original Black Forest Labs (BFL) format checkpoint. For example, the above config loads the model from Diffusers format FLUX.1-dev, but the transformer_path, if uncommented, loads the transformer from Flux Dev De-distill.\n\nFlux LoRAs are saved in Diffusers format.\n\n## LTX-Video\n```\n[model]\ntype = 'ltx-video'\ndiffusers_path = '/data2/imagegen_models/LTX-Video'\n# Point this to one of the single checkpoint files to load the transformer and VAE from it.\nsingle_file_path = '/data2/imagegen_models/LTX-Video/ltx-video-2b-v0.9.1.safetensors'\ndtype = 'bfloat16'\n# Can load the transformer in fp8.\n#transformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n# Probability to use the first video frame as conditioning (i.e. i2v training).\n#first_frame_conditioning_p = 1.0\n```\nYou can train the more recent LTX-Video versions by using single_file_path. Note that you will still need to set diffusers_path to the original model folder (it gets the text encoder from here). Only t2i and t2v training is supported.\n\nLTX-Video LoRAs are saved in ComfyUI format.\n\n## HunyuanVideo\n```\n[model]\ntype = 'hunyuan-video'\n# Can load Hunyuan Video entirely from the ckpt path set up for the official inference scripts.\n#ckpt_path = '/home/anon/HunyuanVideo/ckpts'\n# Or you can load it by pointing to all the ComfyUI files.\ntransformer_path = '/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_720_cfgdistill_fp8_e4m3fn.safetensors'\nvae_path = '/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_vae_bf16.safetensors'\nllm_path = '/data2/imagegen_models/hunyuan_video_comfyui/llava-llama-3-8b-text-encoder-tokenizer'\nclip_path = '/data2/imagegen_models/hunyuan_video_comfyui/clip-vit-large-patch14'\n# Base dtype used for all models.\ndtype = 'bfloat16'\n# Hunyuan Video supports fp8 for the transformer when training LoRA.\ntransformer_dtype = 'float8'\n# How to sample timesteps to train on. Can be logit_normal or uniform.\ntimestep_sample_method = 'logit_normal'\n```\nHunyuanVideo LoRAs are saved in a Diffusers-style format. The keys are named according to the original model, and prefixed with \"transformer.\". This format will directly work with ComfyUI.\n\n## Cosmos\n```\n[model]\ntype = 'cosmos'\n# Point these paths at the ComfyUI files.\ntransformer_path = '/data2/imagegen_models/cosmos/cosmos-1.0-diffusion-7b-text2world.pt'\nvae_path = '/data2/imagegen_models/cosmos/cosmos_cv8x8x8_1.0.safetensors'\ntext_encoder_path = '/data2/imagegen_models/cosmos/oldt5_xxl_fp16.safetensors'\ndtype = 'bfloat16'\n```\nTentative support is added for Cosmos (text2world diffusion variants). Compared to HunyuanVideo, Cosmos is not good for fine-tuning on commodity hardware.\n\n1. Cosmos supports a fixed, limited set of resolutions and frame lengths. Because of this, the 7b model is actually slower to train than HunyuanVideo (12b parameters), because you can't get away with training on lower-resolution images like you can with Hunyuan. And video training is nearly impossible unless you have enormous amounts of VRAM, because for videos you must use the full 121 frame length.\n2. Cosmos seems much worse at generalizing from image-only training to video.\n3. The Cosmos base model is much more limited in the types of content that it knows, which makes fine tuning for most concepts more difficult.\n\nI will likely not be actively supporting Cosmos going forward. All the pieces are there, and if you really want to try training it you can. But don't expect me to spend time trying to fix things if something doesn't work right.\n\nCosmos LoRAs are saved in ComfyUI format.\n\n## Lumina Image 2.0\n```\n[model]\ntype = 'lumina_2'\n# Point these paths at the ComfyUI files.\ntransformer_path = '/data2/imagegen_models/lumina-2-single-files/lumina_2_model_bf16.safetensors'\nllm_path = '/data2/imagegen_models/lumina-2-single-files/gemma_2_2b_fp16.safetensors'\nvae_path = '/data2/imagegen_models/lumina-2-single-files/flux_vae.safetensors'\ndtype = 'bfloat16'\nlumina_shift = true\n```\nSee the [Lumina 2 example dataset config](../examples/recommended_lumina_dataset_config.toml) which shows how to add a caption prefix and contains the recommended resolution settings.\n\nIn addition to LoRA, Lumina 2 supports full fine tuning. It can be fine tuned at 1024x1024 resolution on a single 24GB GPU. For FFT, delete or comment out the [adapter] block in the config. If doing FFT with 24GB VRAM, you will need to use an alternative optimizer to lower VRAM use:\n```\n[optimizer]\ntype = 'adamw8bitkahan'\nlr = 5e-6\nbetas = [0.9, 0.99]\nweight_decay = 0.01\neps = 1e-8\ngradient_release = true\n```\n\nThis uses a custom AdamW8bit optimizer with Kahan summation (required for proper bf16 training), and it enables an experimental gradient release for more VRAM saving. If you are training only at 512 resolution, you can remove the gradient release part. If you have a >24GB GPU, or multiple GPUs and use pipeline parallelism, you can perhaps just use the normal adamw_optimi optimizer type.\n\nLumina 2 LoRAs are saved in ComfyUI format.\n\n## Wan2.1\n```\n[model]\ntype = 'wan'\nckpt_path = '/data2/imagegen_models/Wan2.1-T2V-1.3B'\ndtype = 'bfloat16'\n# You can use fp8 for the transformer when training LoRA.\n#transformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\n\nBoth t2v and i2v Wan2.1 variants are supported. Set ckpt_path to the original model checkpoint directory, e.g. [Wan2.1-T2V-1.3B](https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B).\n\n(Optional) You may skip downloading the transformer and UMT5 text encoder from the original checkpoint, and instead pass in paths to the ComfyUI safetensors files instead.\n\nDownload checkpoint but skip the transformer and UMT5:\n```\nhuggingface-cli download Wan-AI/Wan2.1-T2V-1.3B --local-dir Wan2.1-T2V-1.3B --exclude \"diffusion_pytorch_model*\" \"models_t5*\"\n```\n\nThen use this config:\n```\n[model]\ntype = 'wan'\nckpt_path = '/data2/imagegen_models/Wan2.1-T2V-1.3B'\ntransformer_path = '/data2/imagegen_models/wan_comfyui/wan2.1_t2v_1.3B_bf16.safetensors'\nllm_path = '/data2/imagegen_models/wan_comfyui/wrapper/umt5-xxl-enc-bf16.safetensors'\ndtype = 'bfloat16'\n# You can use fp8 for the transformer when training LoRA.\n#transformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nYou still need ckpt_path, it's just that it can be missing the transformer files and/or UMT5. The transformer/UMT5 can be loaded from the native ComfyUI repackaged file, or the file for Kijai's wrapper extension. Additionally, you can mix and match components, for example, using the transformer from the ComfyUI repackaged repository alongside the UMT5 safetensors from Kijai's wrapper repository for training or other combinations.\n\nFor i2v training, you **MUST** train on a dataset of only videos. The training script will crash with an error otherwise. The first frame of each video clip is used as the image conditioning, and the model is trained to predict the rest of the video. Please pay attention to the video_clip_mode setting. It defaults to 'single_beginning' if unset, which is reasonable for i2v training, but if you set it to something else during t2v training it may not be what you want for i2v. Only the 14B model has an i2v variant, and it requires training on videos, so VRAM requirements are high. Use block swapping as needed if you don't have enough VRAM.\n\nWan2.1 LoRAs are saved in ComfyUI format.\n\n## Chroma\n```\n[model]\ntype = 'chroma'\ndiffusers_path = '/data2/imagegen_models/FLUX.1-dev'\ntransformer_path = '/data2/imagegen_models/chroma/chroma-unlocked-v10.safetensors'\ndtype = 'bfloat16'\n# You can optionally load the transformer in fp8 when training LoRAs.\ntransformer_dtype = 'float8'\nflux_shift = true\n```\nChroma is a model that is architecturally modifed and finetuned from Flux Schnell. The modifications are significant enough that it has its own model type. Set transformer_path to the Chroma single model file, and set diffusers_path to either Flux Dev or Schnell Diffusers folder (the Diffusers model is needed for loading the VAE and text encoder).\n\nChroma LoRAs are saved in ComfyUI format.\n\n## HiDream\n```\n[model]\ntype = 'hidream'\ndiffusers_path = '/data/imagegen_models/HiDream-I1-Full'\nllama3_path = '/data2/models/Meta-Llama-3.1-8B-Instruct'\nllama3_4bit = true\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n# Can use nf4 quantization for even more VRAM saving.\n#transformer_dtype = 'nf4'\nmax_llama3_sequence_length = 128\n# Can use a resolution-dependent timestep shift, like Flux. Unsure if results are better.\n#flux_shift = true\n```\n\nOnly the Full version is tested. Dev and Fast likely will not work properly due to being distilled, and because you can't set the guidance value.\n\n**HiDream doesn't perform well at resolutions under 1024**. The model uses the same training objective and VAE as Flux, so the loss values are directly comparable between the two. When I compare with Flux, there is moderate degradation in the loss value at 768 resolution. There is severe degradation in the loss value at 512 resolution, and inference at 512 produces completely fried images.\n\nThe official inference code uses a max sequence length of 128 for all text encoders. You can change the sequence length of llama3 (which carries almost all the weight) by changing max_llama3_sequence_length. A value of 256 causes a slight increase in stabilized validation loss of the model before any training happens, so there is some quality degradation. If you have many captions longer than 128 tokens, it may be worth increasing this value, but this is untested. I would not increase it beyond 256.\n\nDue to how the Llama3 text embeddings are computed, the Llama3 text encoder must be kept loaded and its embeddings computed during training, rather than being pre-cached. Otherwise the cache would use an enormous amount of space on disk. This increases memory use, but you can have Llama3 in 4bit with essentially 0 measurable effect on validation loss.\n\nWithout block swapping, you will need 48GB VRAM, or 2x24GB with pipeline parallelism. With enough block swapping you can train on a single 24GB GPU. Using nf4 quantization also allows training with 24GB, but there may be some quality decrease.\n\nHiDream LoRAs are saved in ComfyUI format.\n\n## Stable Diffusion 3\n```\n[model]\ntype = 'sd3'\ndiffusers_path = '/data2/imagegen_models/stable-diffusion-3.5-medium'\ndtype = 'bfloat16'\n#transformer_dtype = 'float8'\n#flux_shift = true\n```\n\nStable Diffusion 3 LoRA training is supported. You need the full Diffusers folder for the model. Tested on SD3.5 Medium and Large.\n\nSD3 LoRAs are saved in Diffusers format. This format works in ComfyUI.\n\n## Cosmos-Predict2\n```\n[model]\ntype = 'cosmos_predict2'\ntransformer_path = '/data2/imagegen_models/Cosmos-Predict2-2B-Text2Image/model.pt'\nvae_path = '/data2/imagegen_models/comfyui-models/wan_2.1_vae.safetensors'\nt5_path = '/data2/imagegen_models/comfyui-models/oldt5_xxl_fp16.safetensors'\ndtype = 'bfloat16'\n#transformer_dtype = 'float8_e5m2'\n```\n\nCosmos-Predict2 supports LoRA and full fine tuning. Currently only for the t2i model variants.\n\nSet transformer_path to the original model checkpoint, vae_path to the ComfyUI Wan VAE, and t5_path to the ComfyUI [old T5 model file](https://huggingface.co/comfyanonymous/cosmos_1.0_text_encoder_and_VAE_ComfyUI/blob/main/text_encoders/oldt5_xxl_fp16.safetensors). Please note this is the OLDER version of T5, not the one that is more commonly used with other models.\n\nThis model appears more sensitive to fp8 / quantization than most models. float8_e4m3fn WILL NOT work well. If you are using fp8 transformer, use float8_e5m2 as in the config above. Probably avoid using fp8 on the 2B model if you can. float8_e5m2 on the 14B transformer seems fine, and is required for training on a 24GB GPU.\n\nfloat8_e5m2 is also the only fp8 datatype that works for inference (as of this writing). But beware, in ComfyUI, **LoRAs don't work well when applied on a float8_e5m2 model**. The generated images are very noisy. I guess the stochastic rounding when merging the LoRA weights with this datatype just introduces too much noise. This issue doesn't affect training because the LoRA weights are separate and not merged during training. TLDR: you can use ```transformer_dtype = 'float8_e5m2'``` for training LoRAs for the 14B, but don't use fp8 on this model when applying LoRAs in ComfyUI. UPDATE: LoRAs will work fine for inference using GGUF model weights, because in that case the LoRAs aren't merged into the quantized weights.\n\nCosmos-Predict2 LoRAs are saved in ComfyUI format.\n\n## OmniGen2\n```\n[model]\ntype = 'omnigen2'\ndiffusers_path = '/data2/imagegen_models/OmniGen2'\ndtype = 'bfloat16'\n#flux_shift = true\n```\n\nOmniGen2 LoRA training is supported. Set ```diffusers_path``` to the original model checkpoint directory. Only t2i training (i.e. single image and caption) is supported.\n\nOmniGen2 LoRAs are saved in ComfyUI format.\n\n## Flux Kontext\n```\n[model]\ntype = 'flux'\n# Or just point to Flux Kontext Diffusers folder without needing transformer_path\ndiffusers_path = '/data2/imagegen_models/FLUX.1-dev'\ntransformer_path = '/data2/imagegen_models/flux-dev-single-files/flux1-kontext-dev.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n#flux_shift = true\n```\n\nFlux Kontext is supported, both for standard t2i datasets and edit datasets. The weight shapes are 100% compatible with Flux Dev, so if you already have the Dev Diffusers folder you can use transformer_path to point to the Kontext single model file to save space.\n\nSee the [Flux Kontext example dataset config](../examples/flux_kontext_dataset.toml) for how to configure the dataset.\n\n**IMPORTANT**: The control/context images should be approximately the same aspect ratio as the target images. All of the aspect ratio and size bucketing is done with respect to the target images. Then, the control image is resized and cropped to match the target image size. If the aspect ratio of the control image is very different from the target image, it will be cropping away a lot of the control image.\n\nFlux Kontext LoRAs are saved in Diffusers format, which will work in ComfyUI.\n\n## Wan2.2\nLoad from checkpoint:\n```\n[model]\ntype = 'wan'\nckpt_path = '/data/imagegen_models/Wan2.2-T2V-A14B'\ntransformer_path = '/data/imagegen_models/Wan2.2-T2V-A14B/low_noise_model'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\nmin_t = 0\nmax_t = 0.875\n```\nOr, load from ComfyUI files to save space:\n```\n[model]\ntype = 'wan'\nckpt_path = '/data/imagegen_models/Wan2.2-T2V-A14B'\ntransformer_path = '/data/imagegen_models/comfyui-models/wan2.2_t2v_low_noise_14B_fp16.safetensors'\nllm_path = '/data2/imagegen_models/comfyui-models/umt5_xxl_fp16.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n```\n\nThe 5B model is also supported, but only for t2v / t2i training, not i2v.\n\nThe LoRAs are saved in ComfyUI format.\n\n### Notes on loading models\nWhen loading from ComfyUI files, you still need the checkpoint folder with the VAE and config files inside it, but it doesn't need the transformer or T5. You can download it and skip those files like this:\n```\nhuggingface-cli download Wan-AI/Wan2.2-T2V-A14B --local-dir Wan2.2-T2V-A14B --exclude \"models_t5*\" \"*/diffusion_pytorch_model*\"\n```\nFor Wan2.2 A14B, if you are loading fully from the checkpoint folder, you need to use ```transformer_path``` to point to the subfolder of the model you want to train, i.e. low noise or high noise.\n\n### Timestep ranges\nWan2.2 A14B has two models: low noise and high noise. They process different parts of the timestep range during inference, switching between models once the timestep reaches a certain boundary. t=0 is no noise, t=1 is fully noise. The models are independent; you can train LoRAs for either one, or both.\n\nI couldn't find any exact details on what timesteps the Wan team used to train each model, but presumably they trained it to match how it would be used at inference time. For the T2V model, the configured inference boundary timestep is 0.875. For I2V, it is 0.9. You can (and should) use the ```min_t``` and ```max_t``` parameters to restrict the training timestep range appropriate for the model. For example, the first model config above has the timestep range set for the low noise T2V model. I don't know if the training timestep range should exactly match the inference boundary or not. For the high noise T2V model, you would use:\n```\nmin_t = 0.875\nmax_t = 1\n```\nControlling the timestep range like this will work correctly even if you are using the ```shift``` or ```flux_shift``` parameters to shift the timestep distribution.\n\nAlternatively, people have noticed that the low noise model can be used entirely on its own. So you could just train the low noise model without restricting the timestep range, just like you would do with Wan2.1.\n\n## Qwen-Image\n```\n[model]\ntype = 'qwen_image'\ndiffusers_path = '/data/imagegen_models/Qwen-Image'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nOr load from individual files:\n```\n[model]\ntype = 'qwen_image'\ntransformer_path = '/data/imagegen_models/comfyui-models/qwen_image_bf16.safetensors'\ntext_encoder_path = '/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors'\nvae_path = '/data/imagegen_models/Qwen-Image/vae/diffusion_pytorch_model.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nIn the second format, ```transformer_path``` and ```text_encoder_path``` should be the ComfyUI files, but ```vae_path``` needs to be the **Diffusers VAE** (the weight key names are completely different and the ComfyUI VAE isn't currently supported). You should use bf16 files even if you are casting the transformer to float8; fp8_scaled weights won't work at all, and fp8 weights might have slightly lower quality because the training script tries to keep some weights in higher precision. If you give both ```diffusers_path``` and the individual model paths, it will prefer to read the sub-model from the individual path.\n\nAs of this writing you will need the latest Diffusers:\n```\npip uninstall diffusers\npip install git+https://github.com/huggingface/diffusers\n```\n\nQwen-Image LoRAs are saved in ComfyUI format.\n\n### Training LoRAs on a single 24GB GPU\n- You will need block swapping. See the [example 24GB VRAM config](../examples/qwen_image_24gb_vram.toml) which has everything set correctly.\n- Use the expandable segments CUDA feature: ```PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True NCCL_P2P_DISABLE=\"1\" NCCL_IB_DISABLE=\"1\" deepspeed --num_gpus=1 train.py --deepspeed --config /home/anon/code/diffusion-pipe-configs/tmp.toml```\n- Use a dataset resolution of 640. This is one of the resolutions the model was trained with and might work a bit better than 512.\n- If you use higher LoRA rank or higher resolution, you might need to increase blocks_to_swap.\n\n## Qwen-Image-Edit\n```\n[model]\ntype = 'qwen_image'\ndiffusers_path = '/data/imagegen_models/Qwen-Image'  # or, Qwen-Image-Edit Diffusers folder\n# Only needed if you are using Qwen-Image Diffusers model instead of Qwen-Image-Edit\ntransformer_path = '/data/imagegen_models/comfyui-models/qwen_image_edit_bf16.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nConfiguring and training Qwen-Image-Edit is the same as Flux-Kontext. See the [example dataset config](../examples/flux_kontext_dataset.toml). The same dataset considerations apply. The reference images are resized to whatever size bucket the target images end up in, so your reference images need to have approximately the same aspect ratio as the targets, or else they will be overly cropped.\n\nThe model is taking larger inputs than T2I training, so it is slower and uses more VRAM. I don't know if you can train it on 24GB VRAM. Maybe if you block swap enough.\n\nQwen-Image-Edit LoRAs are saved in ComfyUI format.\n\n\n## HunyuanImage-2.1\nUse ComfyUI compatible model files.\n```\n[model]\ntype = 'hunyuan_image'\ntransformer_path = '/data/imagegen_models/comfyui-models/hunyuanimage2.1.safetensors'\nvae_path = '/data/imagegen_models/comfyui-models/hunyuan_image_2.1_vae_fp16.safetensors'\ntext_encoder_path = '/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors'\nbyt5_path = '/data/imagegen_models/comfyui-models/byt5_small_glyphxl_fp16.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n```\n\n### A note on image resolution\nDue to the high spatial compression of the VAE and the architecture of the DiT model, the compute and memory requirements at a certain image resolution are the same as half the image side length for other models. That is, 1024 resolution for Hunyuan is the same compute as 512 for Flux, Qwen, Lumina, etc. You can train at 512 resolution for a speed boost, and it does seem to learn mostly fine from this resolution even though it is relatively low for this model. But depending on the dataset, it may be better to train at 1024+, especially if you are trying to learn unique fine-grained details from your dataset.\n\nHunyuanImage-2.1 LoRAs are saved in ComfyUI format. Notably, this means some of the key names are different from the original model structure. Keep this in mind if you are trying to use the LoRA anywhere but ComfyUI.\n\n\n\n\n"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
       "id": 147,
       "type": "SD3ModelNode",
       "pos": [
-        -3514.805419921875,
-        -2782.400390625
+        -3531.86767578125,
+        -2321.70947265625
       ],
       "size": [
         390.72479248046875,
         82
       ],
       "flags": {},
-      "order": 9,
+      "order": 7,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -381,15 +312,15 @@
       "id": 233,
       "type": "PreviewAny",
       "pos": [
-        -1242.456298828125,
-        -56.937374114990234
+        -1276.8424072265625,
+        347.76678466796875
       ],
       "size": [
         503.4194030761719,
         223.86830139160156
       ],
       "flags": {},
-      "order": 43,
+      "order": 46,
       "mode": 0,
       "inputs": [
         {
@@ -417,15 +348,15 @@
       "id": 150,
       "type": "OmniGen2ModelNode",
       "pos": [
-        -3446.3203125,
-        -2479.175048828125
+        -3463.382568359375,
+        -2018.4837646484375
       ],
       "size": [
         330,
         82
       ],
       "flags": {},
-      "order": 10,
+      "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -457,15 +388,15 @@
       "id": 274,
       "type": "HunyuanImage21ModelNode",
       "pos": [
-        -3433.848388671875,
-        -3183.912109375
+        -3450.91064453125,
+        -2723.22119140625
       ],
       "size": [
         406.7791748046875,
         146.21170043945312
       ],
       "flags": {},
-      "order": 11,
+      "order": 9,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -494,15 +425,15 @@
       "id": 135,
       "type": "HunyuanVideoModelNode",
       "pos": [
-        -2946.67724609375,
-        -3189.364013671875
+        -2963.739501953125,
+        -2728.673095703125
       ],
       "size": [
         713.2388916015625,
         154
       ],
       "flags": {},
-      "order": 12,
+      "order": 10,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -537,15 +468,15 @@
       "id": 138,
       "type": "CosmosModelNode",
       "pos": [
-        -2191.632568359375,
-        -3193.61865234375
+        -2208.69482421875,
+        -2732.927734375
       ],
       "size": [
         538.4299926757812,
         106
       ],
       "flags": {},
-      "order": 13,
+      "order": 11,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -578,15 +509,15 @@
       "id": 139,
       "type": "Lumina2ModelNode",
       "pos": [
-        -2121.632568359375,
-        -3033.61865234375
+        -2138.694580078125,
+        -2572.927734375
       ],
       "size": [
         421.02410888671875,
         130
       ],
       "flags": {},
-      "order": 14,
+      "order": 12,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -620,15 +551,15 @@
       "id": 141,
       "type": "Wan21ModelNode",
       "pos": [
-        -2837.1748046875,
-        -2708.0126953125
+        -2854.237060546875,
+        -2247.32177734375
       ],
       "size": [
         670,
         106
       ],
       "flags": {},
-      "order": 15,
+      "order": 13,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -661,15 +592,15 @@
       "id": 279,
       "type": "easy showAnything",
       "pos": [
-        -2813.48486328125,
-        -1477.53466796875
+        -2901.4169921875,
+        -1148.74560546875
       ],
       "size": [
         539.8226318359375,
         169.6727294921875
       ],
       "flags": {},
-      "order": 32,
+      "order": 33,
       "mode": 0,
       "inputs": [
         {
@@ -700,15 +631,15 @@
       "id": 151,
       "type": "FluxKontextModelNode",
       "pos": [
-        -2122.79248046875,
-        -2592.617919921875
+        -2139.8544921875,
+        -2131.927001953125
       ],
       "size": [
         396.4298400878906,
         106
       ],
       "flags": {},
-      "order": 16,
+      "order": 14,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -741,15 +672,15 @@
       "id": 281,
       "type": "SDXLModelNode",
       "pos": [
-        -3486.6455078125,
-        -2291.633544921875
+        -3503.707763671875,
+        -1830.94189453125
       ],
       "size": [
         403.1981201171875,
         202
       ],
       "flags": {},
-      "order": 17,
+      "order": 15,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -780,15 +711,15 @@
       "id": 152,
       "type": "Wan22ModelNode",
       "pos": [
-        -2848.5390625,
-        -2527.47119140625
+        -2865.601318359375,
+        -2066.7802734375
       ],
       "size": [
         670,
         154
       ],
       "flags": {},
-      "order": 18,
+      "order": 16,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -823,15 +754,15 @@
       "id": 278,
       "type": "FluxModelNode",
       "pos": [
-        -3045.61962890625,
-        -2304.706298828125
+        -3062.681884765625,
+        -1844.014892578125
       ],
       "size": [
         493.0029602050781,
         130
       ],
       "flags": {},
-      "order": 19,
+      "order": 17,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -859,15 +790,15 @@
       "id": 283,
       "type": "QwenImageModelNode",
       "pos": [
-        -3047.43017578125,
-        -2118.297607421875
+        -3064.492431640625,
+        -1657.606201171875
       ],
       "size": [
         572.4099731445312,
         154
       ],
       "flags": {},
-      "order": 20,
+      "order": 18,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -908,15 +839,15 @@
       "id": 284,
       "type": "Wan21ModelNode",
       "pos": [
-        -2070.909423828125,
-        -2430.995361328125
+        -2087.9716796875,
+        -1970.3045654296875
       ],
       "size": [
         270,
         106
       ],
       "flags": {},
-      "order": 21,
+      "order": 19,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -943,15 +874,15 @@
       "id": 155,
       "type": "QwenImageEditModelNode",
       "pos": [
-        -3420.49560546875,
-        -1366.673095703125
+        -3508.427734375,
+        -1037.884033203125
       ],
       "size": [
         440,
         82
       ],
       "flags": {},
-      "order": 22,
+      "order": 20,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -983,15 +914,15 @@
       "id": 193,
       "type": "QwenImageModelNode",
       "pos": [
-        -3457.205322265625,
-        -1578.0843505859375
+        -3545.137451171875,
+        -1249.2952880859375
       ],
       "size": [
         572.4099731445312,
         154
       ],
       "flags": {},
-      "order": 23,
+      "order": 21,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1032,61 +963,18 @@
       "bgcolor": "#3f5159"
     },
     {
-      "id": 216,
-      "type": "EditModelDatasetPathNode",
-      "pos": [
-        -5002.4384765625,
-        -1067.1595458984375
-      ],
-      "size": [
-        632.7076416015625,
-        82
-      ],
-      "flags": {},
-      "order": 24,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "input_path",
-          "type": "input_path",
-          "links": []
-        }
-      ],
-      "properties": {
-        "cnr_id": "Diffusion_pipe_in_ComfyUI",
-        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
-        "Node name for S&R": "EditModelDatasetPathNode",
-        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
-        "ue_properties": {
-          "widget_ue_connectable": {
-            "target_path": true,
-            "control_path": true
-          },
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\test",
-        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\test1"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 176,
       "type": "ModelConfig",
       "pos": [
-        -2873.414306640625,
-        -1232.0546875
+        -2961.346435546875,
+        -903.2655639648438
       ],
       "size": [
         320,
         106
       ],
       "flags": {},
-      "order": 31,
+      "order": 32,
       "mode": 0,
       "inputs": [
         {
@@ -1100,7 +988,7 @@
           "name": "model_config",
           "type": "model_config",
           "links": [
-            366
+            412
           ]
         }
       ],
@@ -1127,15 +1015,15 @@
       "id": 282,
       "type": "AdvancedTrainConfig",
       "pos": [
-        -3347.61376953125,
-        -599.2967529296875
+        -3435.5458984375,
+        -270.5076904296875
       ],
       "size": [
         349.455078125,
         346
       ],
       "flags": {},
-      "order": 25,
+      "order": 22,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1143,7 +1031,7 @@
           "name": "advanced_config",
           "type": "ADVANCED_TRAIN_CONFIG",
           "links": [
-            397
+            415
           ]
         }
       ],
@@ -1174,7 +1062,7 @@
       "id": 91,
       "type": "ArBucketsNode",
       "pos": [
-        -4892.70361328125,
+        -5013.4619140625,
         -795.7151489257812
       ],
       "size": [
@@ -1182,7 +1070,7 @@
         60
       ],
       "flags": {},
-      "order": 26,
+      "order": 23,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1221,7 +1109,7 @@
         795.7750244140625
       ],
       "flags": {},
-      "order": 27,
+      "order": 24,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1242,21 +1130,21 @@
       "id": 229,
       "type": "OutputDirPassthrough",
       "pos": [
-        -1910.3392333984375,
-        -227.0140838623047
+        -1944.7255859375,
+        177.68994140625
       ],
       "size": [
         224.31991577148438,
         26
       ],
       "flags": {},
-      "order": 37,
+      "order": 40,
       "mode": 0,
       "inputs": [
         {
           "name": "output_dir",
           "type": "STRING",
-          "link": 374
+          "link": 418
         }
       ],
       "outputs": [
@@ -1287,15 +1175,15 @@
       "id": 174,
       "type": "OptimizerConfigNode",
       "pos": [
-        -3425.115234375,
-        -1087.3724365234375
+        -3513.04736328125,
+        -758.583251953125
       ],
       "size": [
         390,
         202
       ],
       "flags": {},
-      "order": 28,
+      "order": 25,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1303,7 +1191,7 @@
           "name": "optimizer_config",
           "type": "OPTIMIZER_CONFIG",
           "links": [
-            365
+            411
           ]
         }
       ],
@@ -1330,51 +1218,10 @@
       "bgcolor": "#335"
     },
     {
-      "id": 75,
-      "type": "GeneralDatasetPathNode",
-      "pos": [
-        -4999.1337890625,
-        -1180.0953369140625
-      ],
-      "size": [
-        667.703125,
-        58
-      ],
-      "flags": {},
-      "order": 29,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "input_path",
-          "type": "input_path",
-          "links": [
-            399
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "Diffusion_pipe_in_ComfyUI",
-        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
-        "Node name for S&R": "GeneralDatasetPathNode",
-        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\modern"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 177,
       "type": "GeneralDatasetConfig",
       "pos": [
-        -4330.46923828125,
+        -4451.2275390625,
         -1153.2650146484375
       ],
       "size": [
@@ -1382,7 +1229,7 @@
         242
       ],
       "flags": {},
-      "order": 33,
+      "order": 35,
       "mode": 0,
       "inputs": [
         {
@@ -1410,7 +1257,7 @@
           "links": [
             203,
             278,
-            367
+            413
           ]
         }
       ],
@@ -1437,54 +1284,18 @@
       "bgcolor": "#653"
     },
     {
-      "id": 181,
-      "type": "PreviewAny",
-      "pos": [
-        -4253.11572265625,
-        -848.6781616210938
-      ],
-      "size": [
-        515.5888671875,
-        460.3047790527344
-      ],
-      "flags": {},
-      "order": 34,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source",
-          "type": "*",
-          "link": 203
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.57",
-        "Node name for S&R": "PreviewAny",
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 175,
       "type": "AdapterConfigNode",
       "pos": [
-        -3425.078857421875,
-        -790.5072631835938
+        -3513.010986328125,
+        -461.71820068359375
       ],
       "size": [
         344.6865539550781,
         130
       ],
       "flags": {},
-      "order": 30,
+      "order": 26,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1492,7 +1303,7 @@
           "name": "adapter_config",
           "type": "ADAPTER_CONFIG",
           "links": [
-            368
+            414
           ]
         }
       ],
@@ -1517,24 +1328,26 @@
       "bgcolor": "#335"
     },
     {
-      "id": 218,
+      "id": 188,
       "type": "PreviewAny",
       "pos": [
-        -2909.311767578125,
-        -271.3851013183594
+        -1909.86328125,
+        -891.9558715820312
       ],
       "size": [
-        662.9313354492188,
-        598.0123901367188
+        518.5387573242188,
+        595.182373046875
       ],
-      "flags": {},
-      "order": 36,
+      "flags": {
+        "collapsed": false
+      },
+      "order": 44,
       "mode": 0,
       "inputs": [
         {
           "name": "source",
           "type": "*",
-          "link": 369
+          "link": 382
         }
       ],
       "outputs": [],
@@ -1553,18 +1366,128 @@
       "bgcolor": "#335"
     },
     {
+      "id": 220,
+      "type": "Train",
+      "pos": [
+        -1923.738525390625,
+        -1181.8170166015625
+      ],
+      "size": [
+        274.5047912597656,
+        242
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "dataset_config",
+          "type": "DATASET_CONFIG",
+          "link": 278
+        },
+        {
+          "name": "train_config",
+          "type": "TRAIN_CONFIG",
+          "link": 417
+        },
+        {
+          "name": "config_path",
+          "type": "config_path",
+          "link": 419
+        }
+      ],
+      "outputs": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "links": [
+            280
+          ]
+        },
+        {
+          "name": "log_output",
+          "type": "STRING",
+          "links": [
+            382
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "Train",
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "",
+        false,
+        false,
+        false,
+        false,
+        false,
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 231,
+      "type": "PrimitiveString",
+      "pos": [
+        -1917.5267333984375,
+        421.9335021972656
+      ],
+      "size": [
+        497.604736328125,
+        58
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.59",
+        "Node name for S&R": "PrimitiveString",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "value": true
+          },
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\output\\chanyi\\20251017_09-29-54"
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
+    },
+    {
       "id": 210,
       "type": "PreviewAny",
       "pos": [
-        -1072.6197509765625,
-        -260.6509094238281
+        -1107.0054931640625,
+        144.05322265625
       ],
       "size": [
         210,
         88
       ],
       "flags": {},
-      "order": 42,
+      "order": 45,
       "mode": 0,
       "inputs": [
         {
@@ -1589,18 +1512,482 @@
       "bgcolor": "#533"
     },
     {
+      "id": 122,
+      "type": "MarkdownNote",
+      "pos": [
+        -4547.9375,
+        -2110.4501953125
+      ],
+      "size": [
+        880,
+        640
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "# Summary\n\n| Model          | LoRA | Full Fine Tune | fp8/quantization |\n|----------------|------|----------------|------------------|\n|SDXL            |✅    |✅              |❌                |\n|Flux            |✅    |✅              |✅                |\n|LTX-Video       |✅    |❌              |❌                |\n|HunyuanVideo    |✅    |❌              |✅                |\n|Cosmos          |✅    |❌              |❌                |\n|Lumina Image 2.0|✅    |✅              |❌                |\n|Wan2.1          |✅    |✅              |✅                |\n|Chroma          |✅    |✅              |✅                |\n|HiDream         |✅    |❌              |✅                |\n|SD3             |✅    |❌              |✅                |\n|Cosmos-Predict2 |✅    |✅              |✅                |\n|OmniGen2        |✅    |❌              |❌                |\n|Flux Kontext    |✅    |✅              |✅                |\n|Wan2.2          |✅    |✅              |✅                |\n|Qwen-Image      |✅    |✅              |✅                |\n|Qwen-Image-Edit |✅    |✅              |✅                |\n|HunyuanImage-2.1|✅    |✅              |✅                |\n\n\n## SDXL\n```\n[model]\ntype = 'sdxl'\ncheckpoint_path = '/data2/imagegen_models/sdxl/sd_xl_base_1.0_0.9vae.safetensors'\ndtype = 'bfloat16'\n# You can train v-prediction models (e.g. NoobAI vpred) by setting this option.\n#v_pred = true\n# Min SNR is supported. Same meaning as sd-scripts\n#min_snr_gamma = 5\n# Debiased estimation loss is supported. Same meaning as sd-scripts.\n#debiased_estimation_loss = true\n# You can set separate learning rates for unet and text encoders. If one of these isn't set, the optimizer learning rate will apply.\nunet_lr = 4e-5\ntext_encoder_1_lr = 2e-5\ntext_encoder_2_lr = 2e-5\n```\nUnlike other models, for SDXL the text embeddings are not cached, and the text encoders are trained.\n\nSDXL can be full fine tuned. Just remove the [adapter] table in the config file. You will need 48GB VRAM. 2x24GB GPUs works with pipeline_stages=2.\n\nSDXL LoRAs are saved in Kohya sd-scripts format. SDXL full fine tune models are saved in the original SDXL checkpoint format.\n\n## Flux\n```\n[model]\ntype = 'flux'\n# Path to Huggingface Diffusers directory for Flux\ndiffusers_path = '/data2/imagegen_models/FLUX.1-dev'\n# You can override the transformer from a BFL format checkpoint.\n#transformer_path = '/data2/imagegen_models/flux-dev-single-files/consolidated_s6700-schnell.safetensors'\ndtype = 'bfloat16'\n# Flux supports fp8 for the transformer when training LoRA.\ntransformer_dtype = 'float8'  \n# Resolution-dependent timestep shift towards more noise. Same meaning as sd-scripts.\nflux_shift = true\n# For FLEX.1-alpha, you can bypass the guidance embedding which is the recommended way to train that model.\n#bypass_guidance_embedding = true\n```\nFor Flux, you can override the transformer weights by setting transformer_path to an original Black Forest Labs (BFL) format checkpoint. For example, the above config loads the model from Diffusers format FLUX.1-dev, but the transformer_path, if uncommented, loads the transformer from Flux Dev De-distill.\n\nFlux LoRAs are saved in Diffusers format.\n\n## LTX-Video\n```\n[model]\ntype = 'ltx-video'\ndiffusers_path = '/data2/imagegen_models/LTX-Video'\n# Point this to one of the single checkpoint files to load the transformer and VAE from it.\nsingle_file_path = '/data2/imagegen_models/LTX-Video/ltx-video-2b-v0.9.1.safetensors'\ndtype = 'bfloat16'\n# Can load the transformer in fp8.\n#transformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n# Probability to use the first video frame as conditioning (i.e. i2v training).\n#first_frame_conditioning_p = 1.0\n```\nYou can train the more recent LTX-Video versions by using single_file_path. Note that you will still need to set diffusers_path to the original model folder (it gets the text encoder from here). Only t2i and t2v training is supported.\n\nLTX-Video LoRAs are saved in ComfyUI format.\n\n## HunyuanVideo\n```\n[model]\ntype = 'hunyuan-video'\n# Can load Hunyuan Video entirely from the ckpt path set up for the official inference scripts.\n#ckpt_path = '/home/anon/HunyuanVideo/ckpts'\n# Or you can load it by pointing to all the ComfyUI files.\ntransformer_path = '/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_720_cfgdistill_fp8_e4m3fn.safetensors'\nvae_path = '/data2/imagegen_models/hunyuan_video_comfyui/hunyuan_video_vae_bf16.safetensors'\nllm_path = '/data2/imagegen_models/hunyuan_video_comfyui/llava-llama-3-8b-text-encoder-tokenizer'\nclip_path = '/data2/imagegen_models/hunyuan_video_comfyui/clip-vit-large-patch14'\n# Base dtype used for all models.\ndtype = 'bfloat16'\n# Hunyuan Video supports fp8 for the transformer when training LoRA.\ntransformer_dtype = 'float8'\n# How to sample timesteps to train on. Can be logit_normal or uniform.\ntimestep_sample_method = 'logit_normal'\n```\nHunyuanVideo LoRAs are saved in a Diffusers-style format. The keys are named according to the original model, and prefixed with \"transformer.\". This format will directly work with ComfyUI.\n\n## Cosmos\n```\n[model]\ntype = 'cosmos'\n# Point these paths at the ComfyUI files.\ntransformer_path = '/data2/imagegen_models/cosmos/cosmos-1.0-diffusion-7b-text2world.pt'\nvae_path = '/data2/imagegen_models/cosmos/cosmos_cv8x8x8_1.0.safetensors'\ntext_encoder_path = '/data2/imagegen_models/cosmos/oldt5_xxl_fp16.safetensors'\ndtype = 'bfloat16'\n```\nTentative support is added for Cosmos (text2world diffusion variants). Compared to HunyuanVideo, Cosmos is not good for fine-tuning on commodity hardware.\n\n1. Cosmos supports a fixed, limited set of resolutions and frame lengths. Because of this, the 7b model is actually slower to train than HunyuanVideo (12b parameters), because you can't get away with training on lower-resolution images like you can with Hunyuan. And video training is nearly impossible unless you have enormous amounts of VRAM, because for videos you must use the full 121 frame length.\n2. Cosmos seems much worse at generalizing from image-only training to video.\n3. The Cosmos base model is much more limited in the types of content that it knows, which makes fine tuning for most concepts more difficult.\n\nI will likely not be actively supporting Cosmos going forward. All the pieces are there, and if you really want to try training it you can. But don't expect me to spend time trying to fix things if something doesn't work right.\n\nCosmos LoRAs are saved in ComfyUI format.\n\n## Lumina Image 2.0\n```\n[model]\ntype = 'lumina_2'\n# Point these paths at the ComfyUI files.\ntransformer_path = '/data2/imagegen_models/lumina-2-single-files/lumina_2_model_bf16.safetensors'\nllm_path = '/data2/imagegen_models/lumina-2-single-files/gemma_2_2b_fp16.safetensors'\nvae_path = '/data2/imagegen_models/lumina-2-single-files/flux_vae.safetensors'\ndtype = 'bfloat16'\nlumina_shift = true\n```\nSee the [Lumina 2 example dataset config](../examples/recommended_lumina_dataset_config.toml) which shows how to add a caption prefix and contains the recommended resolution settings.\n\nIn addition to LoRA, Lumina 2 supports full fine tuning. It can be fine tuned at 1024x1024 resolution on a single 24GB GPU. For FFT, delete or comment out the [adapter] block in the config. If doing FFT with 24GB VRAM, you will need to use an alternative optimizer to lower VRAM use:\n```\n[optimizer]\ntype = 'adamw8bitkahan'\nlr = 5e-6\nbetas = [0.9, 0.99]\nweight_decay = 0.01\neps = 1e-8\ngradient_release = true\n```\n\nThis uses a custom AdamW8bit optimizer with Kahan summation (required for proper bf16 training), and it enables an experimental gradient release for more VRAM saving. If you are training only at 512 resolution, you can remove the gradient release part. If you have a >24GB GPU, or multiple GPUs and use pipeline parallelism, you can perhaps just use the normal adamw_optimi optimizer type.\n\nLumina 2 LoRAs are saved in ComfyUI format.\n\n## Wan2.1\n```\n[model]\ntype = 'wan'\nckpt_path = '/data2/imagegen_models/Wan2.1-T2V-1.3B'\ndtype = 'bfloat16'\n# You can use fp8 for the transformer when training LoRA.\n#transformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\n\nBoth t2v and i2v Wan2.1 variants are supported. Set ckpt_path to the original model checkpoint directory, e.g. [Wan2.1-T2V-1.3B](https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B).\n\n(Optional) You may skip downloading the transformer and UMT5 text encoder from the original checkpoint, and instead pass in paths to the ComfyUI safetensors files instead.\n\nDownload checkpoint but skip the transformer and UMT5:\n```\nhuggingface-cli download Wan-AI/Wan2.1-T2V-1.3B --local-dir Wan2.1-T2V-1.3B --exclude \"diffusion_pytorch_model*\" \"models_t5*\"\n```\n\nThen use this config:\n```\n[model]\ntype = 'wan'\nckpt_path = '/data2/imagegen_models/Wan2.1-T2V-1.3B'\ntransformer_path = '/data2/imagegen_models/wan_comfyui/wan2.1_t2v_1.3B_bf16.safetensors'\nllm_path = '/data2/imagegen_models/wan_comfyui/wrapper/umt5-xxl-enc-bf16.safetensors'\ndtype = 'bfloat16'\n# You can use fp8 for the transformer when training LoRA.\n#transformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nYou still need ckpt_path, it's just that it can be missing the transformer files and/or UMT5. The transformer/UMT5 can be loaded from the native ComfyUI repackaged file, or the file for Kijai's wrapper extension. Additionally, you can mix and match components, for example, using the transformer from the ComfyUI repackaged repository alongside the UMT5 safetensors from Kijai's wrapper repository for training or other combinations.\n\nFor i2v training, you **MUST** train on a dataset of only videos. The training script will crash with an error otherwise. The first frame of each video clip is used as the image conditioning, and the model is trained to predict the rest of the video. Please pay attention to the video_clip_mode setting. It defaults to 'single_beginning' if unset, which is reasonable for i2v training, but if you set it to something else during t2v training it may not be what you want for i2v. Only the 14B model has an i2v variant, and it requires training on videos, so VRAM requirements are high. Use block swapping as needed if you don't have enough VRAM.\n\nWan2.1 LoRAs are saved in ComfyUI format.\n\n## Chroma\n```\n[model]\ntype = 'chroma'\ndiffusers_path = '/data2/imagegen_models/FLUX.1-dev'\ntransformer_path = '/data2/imagegen_models/chroma/chroma-unlocked-v10.safetensors'\ndtype = 'bfloat16'\n# You can optionally load the transformer in fp8 when training LoRAs.\ntransformer_dtype = 'float8'\nflux_shift = true\n```\nChroma is a model that is architecturally modifed and finetuned from Flux Schnell. The modifications are significant enough that it has its own model type. Set transformer_path to the Chroma single model file, and set diffusers_path to either Flux Dev or Schnell Diffusers folder (the Diffusers model is needed for loading the VAE and text encoder).\n\nChroma LoRAs are saved in ComfyUI format.\n\n## HiDream\n```\n[model]\ntype = 'hidream'\ndiffusers_path = '/data/imagegen_models/HiDream-I1-Full'\nllama3_path = '/data2/models/Meta-Llama-3.1-8B-Instruct'\nllama3_4bit = true\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n# Can use nf4 quantization for even more VRAM saving.\n#transformer_dtype = 'nf4'\nmax_llama3_sequence_length = 128\n# Can use a resolution-dependent timestep shift, like Flux. Unsure if results are better.\n#flux_shift = true\n```\n\nOnly the Full version is tested. Dev and Fast likely will not work properly due to being distilled, and because you can't set the guidance value.\n\n**HiDream doesn't perform well at resolutions under 1024**. The model uses the same training objective and VAE as Flux, so the loss values are directly comparable between the two. When I compare with Flux, there is moderate degradation in the loss value at 768 resolution. There is severe degradation in the loss value at 512 resolution, and inference at 512 produces completely fried images.\n\nThe official inference code uses a max sequence length of 128 for all text encoders. You can change the sequence length of llama3 (which carries almost all the weight) by changing max_llama3_sequence_length. A value of 256 causes a slight increase in stabilized validation loss of the model before any training happens, so there is some quality degradation. If you have many captions longer than 128 tokens, it may be worth increasing this value, but this is untested. I would not increase it beyond 256.\n\nDue to how the Llama3 text embeddings are computed, the Llama3 text encoder must be kept loaded and its embeddings computed during training, rather than being pre-cached. Otherwise the cache would use an enormous amount of space on disk. This increases memory use, but you can have Llama3 in 4bit with essentially 0 measurable effect on validation loss.\n\nWithout block swapping, you will need 48GB VRAM, or 2x24GB with pipeline parallelism. With enough block swapping you can train on a single 24GB GPU. Using nf4 quantization also allows training with 24GB, but there may be some quality decrease.\n\nHiDream LoRAs are saved in ComfyUI format.\n\n## Stable Diffusion 3\n```\n[model]\ntype = 'sd3'\ndiffusers_path = '/data2/imagegen_models/stable-diffusion-3.5-medium'\ndtype = 'bfloat16'\n#transformer_dtype = 'float8'\n#flux_shift = true\n```\n\nStable Diffusion 3 LoRA training is supported. You need the full Diffusers folder for the model. Tested on SD3.5 Medium and Large.\n\nSD3 LoRAs are saved in Diffusers format. This format works in ComfyUI.\n\n## Cosmos-Predict2\n```\n[model]\ntype = 'cosmos_predict2'\ntransformer_path = '/data2/imagegen_models/Cosmos-Predict2-2B-Text2Image/model.pt'\nvae_path = '/data2/imagegen_models/comfyui-models/wan_2.1_vae.safetensors'\nt5_path = '/data2/imagegen_models/comfyui-models/oldt5_xxl_fp16.safetensors'\ndtype = 'bfloat16'\n#transformer_dtype = 'float8_e5m2'\n```\n\nCosmos-Predict2 supports LoRA and full fine tuning. Currently only for the t2i model variants.\n\nSet transformer_path to the original model checkpoint, vae_path to the ComfyUI Wan VAE, and t5_path to the ComfyUI [old T5 model file](https://huggingface.co/comfyanonymous/cosmos_1.0_text_encoder_and_VAE_ComfyUI/blob/main/text_encoders/oldt5_xxl_fp16.safetensors). Please note this is the OLDER version of T5, not the one that is more commonly used with other models.\n\nThis model appears more sensitive to fp8 / quantization than most models. float8_e4m3fn WILL NOT work well. If you are using fp8 transformer, use float8_e5m2 as in the config above. Probably avoid using fp8 on the 2B model if you can. float8_e5m2 on the 14B transformer seems fine, and is required for training on a 24GB GPU.\n\nfloat8_e5m2 is also the only fp8 datatype that works for inference (as of this writing). But beware, in ComfyUI, **LoRAs don't work well when applied on a float8_e5m2 model**. The generated images are very noisy. I guess the stochastic rounding when merging the LoRA weights with this datatype just introduces too much noise. This issue doesn't affect training because the LoRA weights are separate and not merged during training. TLDR: you can use ```transformer_dtype = 'float8_e5m2'``` for training LoRAs for the 14B, but don't use fp8 on this model when applying LoRAs in ComfyUI. UPDATE: LoRAs will work fine for inference using GGUF model weights, because in that case the LoRAs aren't merged into the quantized weights.\n\nCosmos-Predict2 LoRAs are saved in ComfyUI format.\n\n## OmniGen2\n```\n[model]\ntype = 'omnigen2'\ndiffusers_path = '/data2/imagegen_models/OmniGen2'\ndtype = 'bfloat16'\n#flux_shift = true\n```\n\nOmniGen2 LoRA training is supported. Set ```diffusers_path``` to the original model checkpoint directory. Only t2i training (i.e. single image and caption) is supported.\n\nOmniGen2 LoRAs are saved in ComfyUI format.\n\n## Flux Kontext\n```\n[model]\ntype = 'flux'\n# Or just point to Flux Kontext Diffusers folder without needing transformer_path\ndiffusers_path = '/data2/imagegen_models/FLUX.1-dev'\ntransformer_path = '/data2/imagegen_models/flux-dev-single-files/flux1-kontext-dev.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n#flux_shift = true\n```\n\nFlux Kontext is supported, both for standard t2i datasets and edit datasets. The weight shapes are 100% compatible with Flux Dev, so if you already have the Dev Diffusers folder you can use transformer_path to point to the Kontext single model file to save space.\n\nSee the [Flux Kontext example dataset config](../examples/flux_kontext_dataset.toml) for how to configure the dataset.\n\n**IMPORTANT**: The control/context images should be approximately the same aspect ratio as the target images. All of the aspect ratio and size bucketing is done with respect to the target images. Then, the control image is resized and cropped to match the target image size. If the aspect ratio of the control image is very different from the target image, it will be cropping away a lot of the control image.\n\nFlux Kontext LoRAs are saved in Diffusers format, which will work in ComfyUI.\n\n## Wan2.2\nLoad from checkpoint:\n```\n[model]\ntype = 'wan'\nckpt_path = '/data/imagegen_models/Wan2.2-T2V-A14B'\ntransformer_path = '/data/imagegen_models/Wan2.2-T2V-A14B/low_noise_model'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\nmin_t = 0\nmax_t = 0.875\n```\nOr, load from ComfyUI files to save space:\n```\n[model]\ntype = 'wan'\nckpt_path = '/data/imagegen_models/Wan2.2-T2V-A14B'\ntransformer_path = '/data/imagegen_models/comfyui-models/wan2.2_t2v_low_noise_14B_fp16.safetensors'\nllm_path = '/data2/imagegen_models/comfyui-models/umt5_xxl_fp16.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n```\n\nThe 5B model is also supported, but only for t2v / t2i training, not i2v.\n\nThe LoRAs are saved in ComfyUI format.\n\n### Notes on loading models\nWhen loading from ComfyUI files, you still need the checkpoint folder with the VAE and config files inside it, but it doesn't need the transformer or T5. You can download it and skip those files like this:\n```\nhuggingface-cli download Wan-AI/Wan2.2-T2V-A14B --local-dir Wan2.2-T2V-A14B --exclude \"models_t5*\" \"*/diffusion_pytorch_model*\"\n```\nFor Wan2.2 A14B, if you are loading fully from the checkpoint folder, you need to use ```transformer_path``` to point to the subfolder of the model you want to train, i.e. low noise or high noise.\n\n### Timestep ranges\nWan2.2 A14B has two models: low noise and high noise. They process different parts of the timestep range during inference, switching between models once the timestep reaches a certain boundary. t=0 is no noise, t=1 is fully noise. The models are independent; you can train LoRAs for either one, or both.\n\nI couldn't find any exact details on what timesteps the Wan team used to train each model, but presumably they trained it to match how it would be used at inference time. For the T2V model, the configured inference boundary timestep is 0.875. For I2V, it is 0.9. You can (and should) use the ```min_t``` and ```max_t``` parameters to restrict the training timestep range appropriate for the model. For example, the first model config above has the timestep range set for the low noise T2V model. I don't know if the training timestep range should exactly match the inference boundary or not. For the high noise T2V model, you would use:\n```\nmin_t = 0.875\nmax_t = 1\n```\nControlling the timestep range like this will work correctly even if you are using the ```shift``` or ```flux_shift``` parameters to shift the timestep distribution.\n\nAlternatively, people have noticed that the low noise model can be used entirely on its own. So you could just train the low noise model without restricting the timestep range, just like you would do with Wan2.1.\n\n## Qwen-Image\n```\n[model]\ntype = 'qwen_image'\ndiffusers_path = '/data/imagegen_models/Qwen-Image'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nOr load from individual files:\n```\n[model]\ntype = 'qwen_image'\ntransformer_path = '/data/imagegen_models/comfyui-models/qwen_image_bf16.safetensors'\ntext_encoder_path = '/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors'\nvae_path = '/data/imagegen_models/Qwen-Image/vae/diffusion_pytorch_model.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nIn the second format, ```transformer_path``` and ```text_encoder_path``` should be the ComfyUI files, but ```vae_path``` needs to be the **Diffusers VAE** (the weight key names are completely different and the ComfyUI VAE isn't currently supported). You should use bf16 files even if you are casting the transformer to float8; fp8_scaled weights won't work at all, and fp8 weights might have slightly lower quality because the training script tries to keep some weights in higher precision. If you give both ```diffusers_path``` and the individual model paths, it will prefer to read the sub-model from the individual path.\n\nAs of this writing you will need the latest Diffusers:\n```\npip uninstall diffusers\npip install git+https://github.com/huggingface/diffusers\n```\n\nQwen-Image LoRAs are saved in ComfyUI format.\n\n### Training LoRAs on a single 24GB GPU\n- You will need block swapping. See the [example 24GB VRAM config](../examples/qwen_image_24gb_vram.toml) which has everything set correctly.\n- Use the expandable segments CUDA feature: ```PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True NCCL_P2P_DISABLE=\"1\" NCCL_IB_DISABLE=\"1\" deepspeed --num_gpus=1 train.py --deepspeed --config /home/anon/code/diffusion-pipe-configs/tmp.toml```\n- Use a dataset resolution of 640. This is one of the resolutions the model was trained with and might work a bit better than 512.\n- If you use higher LoRA rank or higher resolution, you might need to increase blocks_to_swap.\n\n## Qwen-Image-Edit\n```\n[model]\ntype = 'qwen_image'\ndiffusers_path = '/data/imagegen_models/Qwen-Image'  # or, Qwen-Image-Edit Diffusers folder\n# Only needed if you are using Qwen-Image Diffusers model instead of Qwen-Image-Edit\ntransformer_path = '/data/imagegen_models/comfyui-models/qwen_image_edit_bf16.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\ntimestep_sample_method = 'logit_normal'\n```\nConfiguring and training Qwen-Image-Edit is the same as Flux-Kontext. See the [example dataset config](../examples/flux_kontext_dataset.toml). The same dataset considerations apply. The reference images are resized to whatever size bucket the target images end up in, so your reference images need to have approximately the same aspect ratio as the targets, or else they will be overly cropped.\n\nThe model is taking larger inputs than T2I training, so it is slower and uses more VRAM. I don't know if you can train it on 24GB VRAM. Maybe if you block swap enough.\n\nQwen-Image-Edit LoRAs are saved in ComfyUI format.\n\n\n## HunyuanImage-2.1\nUse ComfyUI compatible model files.\n```\n[model]\ntype = 'hunyuan_image'\ntransformer_path = '/data/imagegen_models/comfyui-models/hunyuanimage2.1.safetensors'\nvae_path = '/data/imagegen_models/comfyui-models/hunyuan_image_2.1_vae_fp16.safetensors'\ntext_encoder_path = '/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors'\nbyt5_path = '/data/imagegen_models/comfyui-models/byt5_small_glyphxl_fp16.safetensors'\ndtype = 'bfloat16'\ntransformer_dtype = 'float8'\n```\n\n### A note on image resolution\nDue to the high spatial compression of the VAE and the architecture of the DiT model, the compute and memory requirements at a certain image resolution are the same as half the image side length for other models. That is, 1024 resolution for Hunyuan is the same compute as 512 for Flux, Qwen, Lumina, etc. You can train at 512 resolution for a speed boost, and it does seem to learn mostly fine from this resolution even though it is relatively low for this model. But depending on the dataset, it may be better to train at 1024+, especially if you are trying to learn unique fine-grained details from your dataset.\n\nHunyuanImage-2.1 LoRAs are saved in ComfyUI format. Notably, this means some of the key names are different from the original model structure. Keep this in mind if you are trying to use the LoRA anywhere but ComfyUI.\n\n\n\n\n"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 181,
+      "type": "PreviewAny",
+      "pos": [
+        -4372.58984375,
+        -852.5315551757812
+      ],
+      "size": [
+        600.3622436523438,
+        209.8379669189453
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 203
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.57",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 290,
+      "type": "EvalDatasetConfig",
+      "pos": [
+        -4118.12939453125,
+        -560.6680297851562
+      ],
+      "size": [
+        290.44921875,
+        218
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input_path",
+          "type": "input_path",
+          "link": 420
+        },
+        {
+          "name": "frame_buckets",
+          "shape": 7,
+          "type": "frame_buckets",
+          "link": null
+        },
+        {
+          "name": "ar_buckets",
+          "shape": 7,
+          "type": "ar_buckets",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "eval_dataset_config",
+          "type": "EVAL_DATASET_CONFIG",
+          "links": [
+            421,
+            422
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3251ccb0be782f96679b2b6a50c6526d742e9ee8",
+        "Node name for S&R": "EvalDatasetConfig"
+      },
+      "widgets_values": [
+        "[512]",
+        true,
+        0.5,
+        2,
+        7,
+        1
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 218,
+      "type": "PreviewAny",
+      "pos": [
+        -2925.62060546875,
+        -42.17368698120117
+      ],
+      "size": [
+        662.9313354492188,
+        598.0123901367188
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 416
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.57",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 292,
+      "type": "easy showAnything",
+      "pos": [
+        -4349.357421875,
+        -275.403076171875
+      ],
+      "size": [
+        615.3095703125,
+        236.61341857910156
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 421
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-easy-use",
+        "ver": "f550ce83a84114b0eeae5510679910e914f5d514",
+        "Node name for S&R": "easy showAnything"
+      },
+      "widgets_values": [
+        "resolutions = [512]\nenable_ar_bucket = true\nmin_ar = 0.5\nmax_ar = 2.0\nnum_ar_buckets = 7\n[[directory]]\npath = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test2'\nnum_repeats = 1"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 291,
+      "type": "GeneralDatasetPathNode",
+      "pos": [
+        -4876.76904296875,
+        -533.1367797851562
+      ],
+      "size": [
+        667.703125,
+        58
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "input_path",
+          "type": "input_path",
+          "links": [
+            420
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "GeneralDatasetPathNode",
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\test2"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 75,
+      "type": "GeneralDatasetPathNode",
+      "pos": [
+        -5165.537109375,
+        -1160.9879150390625
+      ],
+      "size": [
+        667.703125,
+        58
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "input_path",
+          "type": "input_path",
+          "links": [
+            399
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "GeneralDatasetPathNode",
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\test"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 216,
+      "type": "EditModelDatasetPathNode",
+      "pos": [
+        -5132.84716796875,
+        -1050.490966796875
+      ],
+      "size": [
+        632.7076416015625,
+        82
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "input_path",
+          "type": "input_path",
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "EditModelDatasetPathNode",
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "target_path": true,
+            "control_path": true
+          },
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\test",
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\custom_nodes\\Diffusion_pipe_in_ComfyUI\\input\\test1"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 289,
+      "type": "GeneralConfig",
+      "pos": [
+        -3021.87158203125,
+        -742.2393798828125
+      ],
+      "size": [
+        557.035400390625,
+        638
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "optimizer_config",
+          "type": "OPTIMIZER_CONFIG",
+          "link": 411
+        },
+        {
+          "name": "model_config",
+          "type": "model_config",
+          "link": 412
+        },
+        {
+          "name": "dataset_config",
+          "type": "DATASET_CONFIG",
+          "link": 413
+        },
+        {
+          "name": "adapter_config",
+          "shape": 7,
+          "type": "ADAPTER_CONFIG",
+          "link": 414
+        },
+        {
+          "name": "advanced_config",
+          "shape": 7,
+          "type": "ADVANCED_TRAIN_CONFIG",
+          "link": 415
+        },
+        {
+          "name": "eval_dataset_config",
+          "shape": 7,
+          "type": "EVAL_DATASET_CONFIG",
+          "link": 422
+        }
+      ],
+      "outputs": [
+        {
+          "name": "train_config",
+          "type": "TRAIN_CONFIG",
+          "links": [
+            416,
+            417
+          ]
+        },
+        {
+          "name": "output_dir",
+          "type": "STRING",
+          "links": [
+            418
+          ]
+        },
+        {
+          "name": "config_path",
+          "type": "config_path",
+          "links": [
+            419
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3251ccb0be782f96679b2b6a50c6526d742e9ee8",
+        "Node name for S&R": "GeneralConfig"
+      },
+      "widgets_values": [
+        "training_output",
+        50,
+        2,
+        1,
+        1,
+        0,
+        0,
+        500,
+        20,
+        true,
+        "bfloat16",
+        "parameters",
+        1,
+        true,
+        1,
+        1,
+        1,
+        120,
+        1,
+        false,
+        "none"
+      ]
+    },
+    {
+      "id": 180,
+      "type": "PreviewAny",
+      "pos": [
+        -1374.9453125,
+        -1168.477783203125
+      ],
+      "size": [
+        537.2894287109375,
+        652.601318359375
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 280
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.57",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "version": "7.1",
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
       "id": 230,
       "type": "TensorBoardMonitor",
       "pos": [
-        -1633.9110107421875,
-        -256.80157470703125
+        -1665.904598629807,
+        171.82867495783933
       ],
       "size": [
         299.5706481933594,
         150
       ],
       "flags": {},
-      "order": 39,
+      "order": 42,
       "mode": 0,
       "inputs": [
         {
@@ -1646,247 +2033,6 @@
         "localhost",
         false,
         "start"
-      ],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
-      "id": 276,
-      "type": "GeneralConfig",
-      "pos": [
-        -2840.75048828125,
-        -1022.7338256835938
-      ],
-      "size": [
-        740.3923950195312,
-        696
-      ],
-      "flags": {},
-      "order": 35,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "optimizer_config",
-          "type": "OPTIMIZER_CONFIG",
-          "link": 365
-        },
-        {
-          "name": "model_config",
-          "type": "model_config",
-          "link": 366
-        },
-        {
-          "name": "dataset_config",
-          "type": "DATASET_CONFIG",
-          "link": 367
-        },
-        {
-          "name": "adapter_config",
-          "shape": 7,
-          "type": "ADAPTER_CONFIG",
-          "link": 368
-        },
-        {
-          "name": "advanced_config",
-          "shape": 7,
-          "type": "ADVANCED_TRAIN_CONFIG",
-          "link": 397
-        }
-      ],
-      "outputs": [
-        {
-          "name": "train_config",
-          "type": "TRAIN_CONFIG",
-          "links": [
-            369,
-            396
-          ]
-        },
-        {
-          "name": "output_dir",
-          "type": "STRING",
-          "links": [
-            374
-          ]
-        },
-        {
-          "name": "config_path",
-          "type": "config_path",
-          "links": [
-            375
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "Diffusion_pipe_in_ComfyUI",
-        "ver": "0f0da5e557e65a78bc05937db748cf76ee19d0e1",
-        "Node name for S&R": "GeneralConfig"
-      },
-      "widgets_values": [
-        "modern",
-        100,
-        1,
-        1,
-        1,
-        4,
-        1,
-        500,
-        40,
-        true,
-        "bfloat16",
-        "parameters",
-        0,
-        true,
-        1,
-        1,
-        2,
-        120,
-        1,
-        1,
-        "none",
-        ""
-      ]
-    },
-    {
-      "id": 188,
-      "type": "PreviewAny",
-      "pos": [
-        -1856.3397216796875,
-        -1339.261962890625
-      ],
-      "size": [
-        518.5387573242188,
-        595.182373046875
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 41,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source",
-          "type": "*",
-          "link": 382
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.57",
-        "Node name for S&R": "PreviewAny",
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#223",
-      "bgcolor": "#335"
-    },
-    {
-      "id": 180,
-      "type": "PreviewAny",
-      "pos": [
-        -1321.4217529296875,
-        -1615.7838134765625
-      ],
-      "size": [
-        537.2894287109375,
-        652.601318359375
-      ],
-      "flags": {},
-      "order": 40,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source",
-          "type": "*",
-          "link": 280
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.57",
-        "Node name for S&R": "PreviewAny",
-        "ue_properties": {
-          "version": "7.1",
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [],
-      "color": "#223",
-      "bgcolor": "#335"
-    },
-    {
-      "id": 220,
-      "type": "Train",
-      "pos": [
-        -1870.2149658203125,
-        -1629.123046875
-      ],
-      "size": [
-        274.5047912597656,
-        242
-      ],
-      "flags": {},
-      "order": 38,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "dataset_config",
-          "type": "DATASET_CONFIG",
-          "link": 278
-        },
-        {
-          "name": "train_config",
-          "type": "TRAIN_CONFIG",
-          "link": 396
-        },
-        {
-          "name": "config_path",
-          "type": "config_path",
-          "link": 375
-        }
-      ],
-      "outputs": [
-        {
-          "name": "status",
-          "type": "STRING",
-          "links": [
-            280
-          ]
-        },
-        {
-          "name": "log_output",
-          "type": "STRING",
-          "links": [
-            382
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "Diffusion_pipe_in_ComfyUI",
-        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
-        "Node name for S&R": "Train",
-        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "",
-        false,
-        false,
-        false,
-        false,
-        false,
-        ""
       ],
       "color": "#322",
       "bgcolor": "#533"
@@ -1942,62 +2088,6 @@
       "STRING"
     ],
     [
-      365,
-      174,
-      0,
-      276,
-      0,
-      "OPTIMIZER_CONFIG"
-    ],
-    [
-      366,
-      176,
-      0,
-      276,
-      1,
-      "model_config"
-    ],
-    [
-      367,
-      177,
-      0,
-      276,
-      2,
-      "DATASET_CONFIG"
-    ],
-    [
-      368,
-      175,
-      0,
-      276,
-      3,
-      "ADAPTER_CONFIG"
-    ],
-    [
-      369,
-      276,
-      0,
-      218,
-      0,
-      "*"
-    ],
-    [
-      374,
-      276,
-      1,
-      229,
-      0,
-      "STRING"
-    ],
-    [
-      375,
-      276,
-      2,
-      220,
-      2,
-      "config_path"
-    ],
-    [
       382,
       220,
       1,
@@ -2022,50 +2112,117 @@
       "*"
     ],
     [
-      396,
-      276,
-      0,
-      220,
-      1,
-      "TRAIN_CONFIG"
-    ],
-    [
-      397,
-      282,
-      0,
-      276,
-      4,
-      "ADVANCED_TRAIN_CONFIG"
-    ],
-    [
       399,
       75,
       0,
       177,
       0,
       "input_path"
+    ],
+    [
+      411,
+      174,
+      0,
+      289,
+      0,
+      "OPTIMIZER_CONFIG"
+    ],
+    [
+      412,
+      176,
+      0,
+      289,
+      1,
+      "model_config"
+    ],
+    [
+      413,
+      177,
+      0,
+      289,
+      2,
+      "DATASET_CONFIG"
+    ],
+    [
+      414,
+      175,
+      0,
+      289,
+      3,
+      "ADAPTER_CONFIG"
+    ],
+    [
+      415,
+      282,
+      0,
+      289,
+      4,
+      "ADVANCED_TRAIN_CONFIG"
+    ],
+    [
+      416,
+      289,
+      0,
+      218,
+      0,
+      "*"
+    ],
+    [
+      417,
+      289,
+      0,
+      220,
+      1,
+      "TRAIN_CONFIG"
+    ],
+    [
+      418,
+      289,
+      1,
+      229,
+      0,
+      "STRING"
+    ],
+    [
+      419,
+      289,
+      2,
+      220,
+      2,
+      "config_path"
+    ],
+    [
+      420,
+      291,
+      0,
+      290,
+      0,
+      "input_path"
+    ],
+    [
+      421,
+      290,
+      0,
+      292,
+      0,
+      "*"
+    ],
+    [
+      422,
+      290,
+      0,
+      289,
+      5,
+      "EVAL_DATASET_CONFIG"
     ]
   ],
   "groups": [
     {
-      "id": 1,
-      "title": "dateset",
-      "bounding": [
-        -5030,
-        -1280,
-        1450,
-        1250
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    },
-    {
       "id": 2,
       "title": "model_loader",
       "bounding": [
-        -3541.632568359375,
-        -3273.61865234375,
+        -3558.69482421875,
+        -2812.927734375,
         1940,
         1380
       ],
@@ -2077,10 +2234,10 @@
       "id": 3,
       "title": "trainconfig模型配置",
       "bounding": [
-        -3523.29052734375,
-        -1648.5166015625,
-        1557.999755859375,
-        1852.770751953125
+        -3611.22265625,
+        -1319.7275390625,
+        1544.2000732421875,
+        2108.59814453125
       ],
       "color": "#8A8",
       "font_size": 24,
@@ -2090,8 +2247,8 @@
       "id": 4,
       "title": "go train",
       "bounding": [
-        -1908.7747802734375,
-        -1699.8221435546875,
+        -1962.29833984375,
+        -1252.51611328125,
         1113.9310302734375,
         1195.7437744140625
       ],
@@ -2103,10 +2260,23 @@
       "id": 5,
       "title": "TensorBoard",
       "bounding": [
-        -1952.0347900390625,
-        -430.802490234375,
+        -1986.421142578125,
+        -26.098278045654297,
         1212.814453125,
         819.6329345703125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "id": 1,
+      "title": "dateset",
+      "bounding": [
+        -5150.75830078125,
+        -1265,
+        1450,
+        1250
       ],
       "color": "#3f789e",
       "font_size": 24,
@@ -2117,14 +2287,14 @@
   "extra": {
     "ue_links": [],
     "ds": {
-      "scale": 0.6588450000000765,
+      "scale": 0.548096648678823,
       "offset": [
-        3364.6574601973225,
-        2309.265011309974
+        4628.827494260509,
+        1240.0703322852974
       ]
     },
     "links_added_by_ue": [],
-    "frontendVersion": "1.26.13",
+    "frontendVersion": "1.28.7",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,

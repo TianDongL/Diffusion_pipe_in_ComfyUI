@@ -174,10 +174,8 @@ class GeneralConfig:
                     "default": "none",
                     "tooltip": "仅适用于视频模型训练。视频帧提取模式 - none:不使用视频模式, single_beginning:从视频开头提取一个片段, single_middle:从视频中间提取一个片段, multiple_overlapping:提取多个可能重叠的片段覆盖整个视频"
                 }),
-                "eval_datasets": ("STRING", {
-                    "default": "",
-                    "multiline": True,
-                    "tooltip": "评估数据集列表，每行一个数据集名称或路径。留空则使用默认的空列表。支持相对路径和绝对路径。"
+                "eval_dataset_config": ("EVAL_DATASET_CONFIG", {
+                    "tooltip": "评估数据集配置（可选，来自EvalDatasetConfig节点）"
                 }),
             }
         }
@@ -195,32 +193,24 @@ class GeneralConfig:
                          eval_gradient_accumulation_steps: int = 1, save_every_n_epochs: int = 1,
                          checkpoint_every_n_minutes: int = 120, caching_batch_size: int = 1,
                          disable_block_swap_for_eval: bool = False, video_clip_mode: str = "none",
-                         eval_datasets: str = "", adapter_config=None, advanced_config=None) -> Tuple[str, str, str]:
+                         adapter_config=None, advanced_config=None, eval_dataset_config=None) -> Tuple[str, str, str]:
         """生成通用训练设置"""
         try:
-            # 自动构建输出目录路径：@output/用户输入的文件夹名
-            # 获取ComfyUI根目录
             comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
             comfyui_root = os.path.abspath(comfyui_root)
             
-            # 构建输出路径：ComfyUI根目录/output/用户输入的文件夹名
             abs_output_dir = os.path.join(comfyui_root, "output", output_folder_name)
             abs_output_dir = os.path.normpath(abs_output_dir)
             
-            # 确保输出目录存在
             os.makedirs(abs_output_dir, exist_ok=True)
             
-            # 将输出目录路径转换为正斜杠格式（用于配置文件）
             config_output_dir = abs_output_dir.replace('\\', '/')
             
-            # 自动构建配置文件保存路径
             config_save_path = os.path.join(os.path.dirname(__file__), "..", "train_config", "trainconfig.toml")
             config_save_path = os.path.normpath(config_save_path)
             
-            # 确保配置文件目录存在
             os.makedirs(os.path.dirname(config_save_path), exist_ok=True)
             
-            # 构建设置字典
             settings = {
                 "epochs": epochs,
                 "micro_batch_size_per_gpu": micro_batch_size_per_gpu,
@@ -236,24 +226,12 @@ class GeneralConfig:
                 "disable_block_swap_for_eval": disable_block_swap_for_eval,
             }
             
-            # 处理视频剪辑模式 - 仅在非none时添加到配置中
             if video_clip_mode != "none":
                 settings["video_clip_mode"] = video_clip_mode
             
-            # 处理评估数据集 - 解析用户输入的多行文本
-            eval_datasets_list = []
-            if eval_datasets and eval_datasets.strip():
-                # 按行分割，去除空行和前后空格
-                lines = [line.strip() for line in eval_datasets.strip().split('\n')]
-                # 将路径中的反斜杠转换为正斜杠
-                eval_datasets_list = [line.replace('\\', '/') for line in lines if line]
-            settings["eval_datasets"] = eval_datasets_list
-            
-            # 处理梯度累积步数 - 0表示不设置此参数（让系统自动计算）
             if gradient_accumulation_steps > 0:
                 settings["gradient_accumulation_steps"] = gradient_accumulation_steps
             
-            # 处理梯度裁剪 - 0表示不设置此参数（不进行梯度裁剪）
             if gradient_clipping > 0:
                 settings["gradient_clipping"] = gradient_clipping
             
@@ -324,12 +302,6 @@ class GeneralConfig:
             # 处理数据集配置（必需）
             if dataset_config:
                 try:
-                    # 数据集配置应该包含保存路径信息，我们需要从中提取数据集文件路径
-                    # dataset_config 是配置内容字符串，我们需要找到对应的输出路径
-                    # 从 GeneralDatasetConfig 节点的 output_path 参数推导数据集文件路径
-                    
-                    # 简单的方法：通过解析配置内容查找数据集路径模式
-                    # 或者直接使用固定的数据集文件路径（基于约定）
                     dataset_path = None
                     
                     # 方法1：尝试从当前工作目录找到最近保存的数据集配置文件
@@ -366,6 +338,48 @@ class GeneralConfig:
             else:
                 logging.error("未提供数据集配置，这是必需的参数")
                 raise ValueError("dataset_config是必需参数，必须连接数据集配置节点")
+            
+            # 处理评估数据集配置（如果提供）
+            eval_datasets_list = []
+            
+            if eval_dataset_config:
+                try:
+                    eval_dataset_path = None
+                    
+                    eval_dataset_dir = os.path.join(os.path.dirname(__file__), "..", "dataset")
+                    eval_dataset_dir = os.path.abspath(eval_dataset_dir)
+                    
+                    if os.path.exists(eval_dataset_dir):
+                        toml_files = [f for f in os.listdir(eval_dataset_dir) if f.endswith('.toml')]
+                        if toml_files:
+                            latest_file = max(toml_files, key=lambda f: os.path.getmtime(os.path.join(eval_dataset_dir, f)))
+                            eval_dataset_path = os.path.abspath(os.path.join(eval_dataset_dir, latest_file)).replace('\\', '/')
+                    
+                    if not eval_dataset_path:
+                        comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+                        comfyui_root = os.path.abspath(comfyui_root)
+                        default_eval_dataset_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "evaldataset.toml")
+                        eval_dataset_path = os.path.normpath(os.path.abspath(default_eval_dataset_path)).replace('\\', '/')
+                    
+                    if eval_dataset_path:
+                        eval_datasets_list.append({
+                            'name': 'validation_set',
+                            'config': eval_dataset_path
+                        })
+                        logging.info(f"使用评估数据集配置: {eval_dataset_path}")
+                        
+                except Exception as e:
+                    logging.warning(f"处理评估数据集配置时出错: {str(e)}")
+                    comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+                    comfyui_root = os.path.abspath(comfyui_root)
+                    fallback_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "evaldataset.toml")
+                    fallback_eval_path = os.path.normpath(os.path.abspath(fallback_path)).replace('\\', '/')
+                    eval_datasets_list.append({
+                        'name': 'validation_set',
+                        'config': fallback_eval_path
+                    })
+            
+            settings["eval_datasets"] = eval_datasets_list
             
             # 合并适配器配置（如果提供）
             if adapter_config:
@@ -417,9 +431,17 @@ class GeneralConfig:
             # 输出为TOML格式
             if toml:
                 try:
+                    # 提取 eval_datasets 以便特殊处理
+                    eval_datasets_value = settings.pop('eval_datasets', [])
+                    # 序列化其余配置
                     train_config = toml.dumps(settings)
                     # 将双引号替换为单引号
                     train_config = self._replace_quotes_in_toml(train_config)
+                    # 单独格式化 eval_datasets 为内联数组格式
+                    eval_datasets_line = self._format_toml_value('eval_datasets', eval_datasets_value)
+                    # 将 eval_datasets 添加到配置开头
+                    train_config = eval_datasets_line + '\n' + train_config
+                    
                 except Exception as e:                   
                     train_config = json.dumps(settings, indent=2, ensure_ascii=False)
                     # JSON格式也替换为单引号
@@ -489,11 +511,30 @@ class GeneralConfig:
         elif isinstance(value, str):
             return f"{key} = '{value}'"
         elif isinstance(value, list):
-            if all(isinstance(x, str) for x in value):
-                formatted_list = ', '.join([f"'{x}'" for x in value])
+            if key == 'eval_datasets':
+                formatted_items = []
+                for item in value:
+                    if isinstance(item, dict):
+                        dict_parts = []
+                        for k, v in item.items():
+                            if isinstance(v, str):
+                                dict_parts.append(f"{k} = '{v}'")
+                            elif isinstance(v, bool):
+                                dict_parts.append(f"{k} = {str(v).lower()}")
+                            else:
+                                dict_parts.append(f"{k} = {v}")
+                        formatted_items.append('{' + ', '.join(dict_parts) + '}')
+                    elif isinstance(item, str):
+                        formatted_items.append(f"'{item}'")
+                    else:
+                        formatted_items.append(str(item))
+                return f"{key} = [{', '.join(formatted_items)}]"
             else:
-                formatted_list = ', '.join([str(x) for x in value])
-            return f"{key} = [ {formatted_list},]"
+                if all(isinstance(x, str) for x in value):
+                    formatted_list = ', '.join([f"'{x}'" for x in value])
+                else:
+                    formatted_list = ', '.join([str(x) for x in value])
+                return f"{key} = [ {formatted_list},]"
         else:
             return f"{key} = {value}"
     

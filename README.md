@@ -12,12 +12,17 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 
 # Quick Start
 
+## update
+
+20251026:support eval 
+
 ## Installation Guide
 
 ### Installation 
 Make sure you have ComfyUI on Linux or WSL2 system, refer to https://docs.comfy.org/installation/manual_install
 
 ps: ComfyUI on WSL2 works so well that I even want to delete my ComfyUI on Windows
+
 
 ```bash
 conda create -n comfyui_DP python=3.12

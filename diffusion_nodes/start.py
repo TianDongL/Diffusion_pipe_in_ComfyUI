@@ -123,89 +123,60 @@ class Train:
         
         else:
             return path
-    def log_reader(self, process, log_queue):
-        import select
-        import sys
-        
+    def log_reader(self, stream, log_queue, prefix="", stream_name="stream"):
+        """改进的日志读取器，支持进度条显示"""
         try:
+            buffer = ""
+            last_was_progress = False
+            
             while True:
-                if process.poll() is not None:
-                    self._read_remaining_output(process, log_queue)
+                chunk = stream.read(256)
+                if not chunk:
                     break
+                    
+                text = chunk.decode('utf-8', errors='ignore')
                 
-                if hasattr(select, 'select'):
-                    try:
-                        readable, _, _ = select.select(
-                            [process.stdout, process.stderr], [], [], 0.1
-                        )
-                        
-                        for stream in readable:
-                            line = stream.readline()
-                            if line:
-                                decoded_line = line.decode('utf-8', errors='ignore').rstrip()
-                                if stream == process.stderr:
-                                    log_queue.put(f"ERROR: {decoded_line}")
-                                    sys.stderr.write(f"{decoded_line}\n")
-                                    sys.stderr.flush()
-                                else:
-                                    log_queue.put(decoded_line)
-                                    print(decoded_line, flush=True)
-                    except (ValueError, OSError) as e:
-                        break
-                else:
-                    self._read_alternate(process, log_queue)
+                for char in text:
+                    if char == '\n':
+                        if buffer.strip():
+                            if last_was_progress:
+                                print()
+                            line = f"{prefix}{buffer}" if prefix else buffer
+                            print(line)
+                            log_queue.put(line)
+                            last_was_progress = False
+                        buffer = ""
+                    elif char == '\r':
+                        if buffer.strip():
+                            # 检测进度条模式：包含百分比、进度条符号等
+                            is_progress = '%|' in buffer or '|/' in buffer or ('[' in buffer and ']' in buffer)
+                            if is_progress:
+                                # 进度条：使用回车符在同一行更新
+                                print(f"\r{buffer}", end='', flush=True)
+                                last_was_progress = True
+                            else:
+                                # 普通行：正常打印
+                                if last_was_progress:
+                                    print()
+                                line = f"{prefix}{buffer}" if prefix else buffer
+                                print(line)
+                                log_queue.put(line)
+                                last_was_progress = False
+                        buffer = ""
+                    else:
+                        buffer += char
                     
+            # 处理剩余缓冲区内容
+            if buffer.strip():
+                if last_was_progress:
+                    print()
+                line = f"{prefix}{buffer}" if prefix else buffer
+                print(line)
+                log_queue.put(line)
         except Exception as e:
-            error_msg = f"Log reader error: {str(e)}"
+            error_msg = f"ERROR reading {stream_name}: {str(e)}"
+            print(error_msg)
             log_queue.put(error_msg)
-            sys.stderr.write(f"{error_msg}\n")
-            sys.stderr.flush()
-    
-    def _read_remaining_output(self, process, log_queue):
-        import sys
-        
-        try:
-            if process.stdout:
-                for line in process.stdout:
-                    if line:
-                        decoded_line = line.decode('utf-8', errors='ignore').rstrip()
-                        log_queue.put(decoded_line)
-                        print(decoded_line, flush=True)
-            
-            if process.stderr:
-                for line in process.stderr:
-                    if line:
-                        decoded_line = line.decode('utf-8', errors='ignore').rstrip()
-                        log_queue.put(f"ERROR: {decoded_line}")
-                        sys.stderr.write(f"{decoded_line}\n")
-                        sys.stderr.flush()
-        except Exception as e:
-            sys.stderr.write(f"Error reading remaining output: {str(e)}\n")
-            sys.stderr.flush()
-    
-    def _read_alternate(self, process, log_queue):
-        import sys
-        
-        try:
-            if process.stdout:
-                line = process.stdout.readline()
-                if line:
-                    decoded_line = line.decode('utf-8', errors='ignore').rstrip()
-                    log_queue.put(decoded_line)
-                    print(decoded_line, flush=True)
-            
-            if process.stderr:
-                line = process.stderr.readline()
-                if line:
-                    decoded_line = line.decode('utf-8', errors='ignore').rstrip()
-                    log_queue.put(f"ERROR: {decoded_line}")
-                    sys.stderr.write(f"{decoded_line}\n")
-                    sys.stderr.flush()
-                    
-            time.sleep(0.1)
-        except Exception as e:
-            sys.stderr.write(f"Error in alternate read: {str(e)}\n")
-            sys.stderr.flush()
 
     def start_training(self, dataset_config, train_config, config_path, 
                       resume_from_checkpoint="", reset_dataloader=False, 
@@ -322,28 +293,38 @@ class Train:
                 env['MASTER_PORT'] = str(train_config.get('master_port', 29500))
             
             # 启动训练进程
-            print(f"启动训练命令: {' '.join(cmd)}")
-            print(f"使用配置文件: {config_path}")
-            print(f"GPU数量: {num_gpus}")
+            print("\n" + "="*80)
+            print("Starting Training Process")
+            print("="*80)
+            print(f"Command: {' '.join(cmd)}")
+            print(f"Config: {config_path}")
+            print(f"GPUs: {num_gpus}")
             if resume_from_checkpoint and resume_from_checkpoint.strip():
-                print(f"从检查点恢复训练: {resume_from_checkpoint.strip()}")
+                print(f"Resume from: {resume_from_checkpoint.strip()}")
+            print("="*80 + "\n")
             
             self.training_process = subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 env=env,
-                bufsize=1,
+                bufsize=0,  # 无缓冲模式，确保实时输出
                 universal_newlines=False
             )
             
-            # 启动日志读取线程
-            log_thread = threading.Thread(
+            # 启动日志读取线程 - 分别处理 stdout 和 stderr
+            stdout_thread = threading.Thread(
                 target=self.log_reader,
-                args=(self.training_process, self.log_queue),
+                args=(self.training_process.stdout, self.log_queue, "", "stdout"),
                 daemon=True
             )
-            log_thread.start()
+            stderr_thread = threading.Thread(
+                target=self.log_reader,
+                args=(self.training_process.stderr, self.log_queue, "Training ", "stderr"),
+                daemon=True
+            )
+            stdout_thread.start()
+            stderr_thread.start()
             
             self.is_training = True
             
@@ -353,17 +334,21 @@ class Train:
             if self.training_process.poll() is not None:
                 # 进程已经结束，可能是启动失败
                 return_code = self.training_process.returncode
-                error_msg = f"训练进程启动失败，返回码: {return_code}"
+                print("\n" + "="*80)
+                print("Training Process Failed to Start")
+                print("="*80)
+                error_msg = f"Exit code: {return_code}"
                 
                 # 尝试读取错误信息
                 try:
                     stderr_output = self.training_process.stderr.read().decode('utf-8', errors='ignore')
                     if stderr_output:
-                        error_msg += f"\n错误信息: {stderr_output}"
+                        error_msg += f"\n{stderr_output}"
                         print(stderr_output, flush=True)
                 except:
                     pass
                 
+                print("="*80 + "\n")
                 self.is_training = False
                 return "ERROR", error_msg
             
@@ -406,8 +391,12 @@ class Train:
                     self.training_process.kill()
                     self.training_process.wait()
                 
+                print("\n" + "="*80)
+                print("Training Stopped by User")
+                print("="*80 + "\n")
+                
                 self.is_training = False
-                return "STOPPED", "训练已停止"
+                return "STOPPED", "Training stopped"
                 
             except Exception as e:
                 return "ERROR", f"停止训练时发生错误: {str(e)}"
@@ -437,7 +426,13 @@ class Train:
             self.is_training = False
             
             if return_code == 0:
-                return "COMPLETED", f"训练已完成 (返回码: {return_code})"
+                print("\n" + "="*80)
+                print("Training Completed Successfully")
+                print("="*80 + "\n")
+                return "COMPLETED", f"Training completed (Exit code: {return_code})"
             else:
-                return "FAILED", f"训练失败 (返回码: {return_code})"
+                print("\n" + "="*80)
+                print("Training Failed")
+                print("="*80 + "\n")
+                return "FAILED", f"Training failed (Exit code: {return_code})"
     

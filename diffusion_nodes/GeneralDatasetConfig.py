@@ -220,10 +220,11 @@ class GeneralDatasetConfig:
                     import datetime
                     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     current_cwd = os.getcwd()
-                    # 输出配置信息到控制台
+                    print("\n" + "="*80)
                     print(f"[数据集配置] 配置文件已保存到: {normalized_output_path}")
                     print(f"[数据集配置] 生成时间: {current_time}")
                     print(f"[数据集配置] 当前工作目录: {current_cwd}")
+                    print("="*80 + "\n")
                     
                     config_with_path = config_content
                     
@@ -232,7 +233,9 @@ class GeneralDatasetConfig:
                     
                     # 显示保存路径时使用正斜杠（便于阅读）
                     display_path = normalized_output_path.replace('\\', '/')
+                    print("="*80)
                     print(f"数据集配置已保存到: {display_path}")
+                    print("="*80)
                     
                     # 返回包含路径注释的配置
                     return (config_with_path,)

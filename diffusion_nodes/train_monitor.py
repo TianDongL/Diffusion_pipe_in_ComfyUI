@@ -136,29 +136,40 @@ class TensorBoardMonitor:
     
     def execute(self, output_dir, port=6006, host="localhost", is_new_training=True, action="start"):
         """执行TensorBoard监控操作"""
+        print("\n" + "="*80)
+        print(f"[TensorBoard Monitor] 执行操作: {action}")
+        print("="*80)
+        
         if action == "start":
-            url = self.start_tensorboard(output_dir, port, host, is_new_training)
+            url_result = self.start_tensorboard(output_dir, port, host, is_new_training)
             status = self.get_current_status()
-            return (url[0] if url else "", status)
+            url = url_result[0] if url_result and len(url_result) > 0 else ""
+            print("="*80 + "\n")
+            return (url, status)
         elif action == "stop":
-            result = self.stop_tensorboard()
+            result_tuple = self.stop_tensorboard()
             status = self.get_current_status()
-            return (result[0] if result else "", status)
+            result = result_tuple[0] if result_tuple and len(result_tuple) > 0 else ""
+            print("="*80 + "\n")
+            return (result, status)
         elif action == "status":
             status = self.get_current_status()
             url = f"http://{host}:{port}" if self.is_running else ""
+            print("="*80 + "\n")
             return (url, status)
         elif action == "kill_port":
             if self.process_manager.kill_process_on_port(port):
-                result = f"成功清理端口{port}上的所有TensorBoard进程"
+                result = f"成功清理端口{port}上的所有进程 (Successfully cleaned all processes on port {port})"
                 print(result)
             else:
-                result = f"清理端口{port}失败或该端口无TensorBoard进程"
+                result = f"清理端口{port}失败或该端口无进程 (Failed to clean port {port} or no processes on this port)"
                 print(result)
             status = self.get_current_status()
+            print("="*80 + "\n")
             return ("", result)
         else:
-            return ("", "未知操作")
+            print("="*80 + "\n")
+            return ("", "未知操作 (Unknown operation)")
     
     def normalize_path(self, path):
         """规范化路径"""

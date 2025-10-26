@@ -2,6 +2,7 @@
 try:
     # 尝试相对导入 (在 ComfyUI 中作为包导入时)
     from .diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
+    from .diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
     from .diffusion_nodes.dataset_tools import GeneralDatasetPathNode, EditModelDatasetPathNode, FrameBucketsNode
     from .diffusion_nodes.general_config import GeneralConfig
     from .diffusion_nodes.advanced_train_config import AdvancedTrainConfig
@@ -21,6 +22,7 @@ except ImportError:
         sys.path.append(current_dir)
     
     from diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
+    from diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
     from diffusion_nodes.dataset_tools import GeneralDatasetPathNode, EditModelDatasetPathNode, FrameBucketsNode
     from diffusion_nodes.general_config import GeneralConfig
     from diffusion_nodes.advanced_train_config import AdvancedTrainConfig
@@ -37,6 +39,7 @@ NODE_CLASS_MAPPINGS = {
     
     # 数据集配置节点
     "GeneralDatasetConfig": GeneralDatasetConfig,
+    "EvalDatasetConfig": EvalDatasetConfig,
     "GeneralDatasetPathNode": GeneralDatasetPathNode,
     "EditModelDatasetPathNode": EditModelDatasetPathNode,
     "FrameBucketsNode": FrameBucketsNode,
@@ -81,6 +84,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     
     # 数据集配置节点
     "GeneralDatasetConfig": "通用数据集配置",
+    "EvalDatasetConfig": "评估数据集配置",
     "GeneralDatasetPathNode": "通用数据集路径",
     "EditModelDatasetPathNode": "编辑模型数据集路径",
     "FrameBucketsNode": "帧数分桶配置",
