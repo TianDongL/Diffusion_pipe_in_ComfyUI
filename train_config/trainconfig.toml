@@ -28,8 +28,11 @@ weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = 'qwen_image'
-diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
+type = 'aura_flow'
+aura_flow_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
+text_encoder_path = ''
+vae_path = ''
+max_sequence_length = 768
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'bfloat16'

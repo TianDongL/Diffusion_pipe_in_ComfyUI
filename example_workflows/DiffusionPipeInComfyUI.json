@@ -1,8 +1,8 @@
 {
   "id": "6d5bb5d7-1026-4495-a5dc-bed47fd78a21",
   "revision": 0,
-  "last_node_id": 293,
-  "last_link_id": 422,
+  "last_node_id": 294,
+  "last_link_id": 426,
   "nodes": [
     {
       "id": 146,
@@ -214,8 +214,8 @@
       "id": 232,
       "type": "Note",
       "pos": [
-        -1874.9158935546875,
-        547.9503173828125
+        -1890.3292188573016,
+        330.8790437589986
       ],
       "size": [
         405.556884765625,
@@ -243,8 +243,8 @@
       "id": 236,
       "type": "Note",
       "pos": [
-        -1954.258544921875,
-        4.09861421585083
+        -1969.671870224489,
+        -212.9726594079632
       ],
       "size": [
         329.5334777832031,
@@ -312,15 +312,15 @@
       "id": 233,
       "type": "PreviewAny",
       "pos": [
-        -1276.8424072265625,
-        347.76678466796875
+        -1292.2557325291766,
+        130.69551104415476
       ],
       "size": [
         503.4194030761719,
         223.86830139160156
       ],
       "flags": {},
-      "order": 46,
+      "order": 47,
       "mode": 0,
       "inputs": [
         {
@@ -600,7 +600,7 @@
         169.6727294921875
       ],
       "flags": {},
-      "order": 33,
+      "order": 36,
       "mode": 0,
       "inputs": [
         {
@@ -608,7 +608,7 @@
           "name": "anything",
           "shape": 7,
           "type": "*",
-          "link": 395
+          "link": 426
         }
       ],
       "outputs": [
@@ -911,58 +911,6 @@
       "bgcolor": "#3f5159"
     },
     {
-      "id": 193,
-      "type": "QwenImageModelNode",
-      "pos": [
-        -3545.137451171875,
-        -1249.2952880859375
-      ],
-      "size": [
-        572.4099731445312,
-        154
-      ],
-      "flags": {},
-      "order": 21,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "model_path",
-          "type": "model_path",
-          "links": [
-            394,
-            395
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "Diffusion_pipe_in_ComfyUI",
-        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
-        "Node name for S&R": "QwenImageModelNode",
-        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
-        "ue_properties": {
-          "widget_ue_connectable": {
-            "diffusers_path": true,
-            "transformer_path": true,
-            "text_encoder_path": true,
-            "tokenizer_path": true,
-            "vae_path": true
-          },
-          "version": "7.1",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\models\\unet\\Qwen-Image",
-        "",
-        "",
-        "",
-        ""
-      ],
-      "color": "#2a363b",
-      "bgcolor": "#3f5159"
-    },
-    {
       "id": 176,
       "type": "ModelConfig",
       "pos": [
@@ -974,13 +922,13 @@
         106
       ],
       "flags": {},
-      "order": 32,
+      "order": 35,
       "mode": 0,
       "inputs": [
         {
           "name": "model_path",
           "type": "model_path",
-          "link": 394
+          "link": 425
         }
       ],
       "outputs": [
@@ -1023,7 +971,7 @@
         346
       ],
       "flags": {},
-      "order": 22,
+      "order": 21,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1070,7 +1018,7 @@
         60
       ],
       "flags": {},
-      "order": 23,
+      "order": 22,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1109,7 +1057,7 @@
         795.7750244140625
       ],
       "flags": {},
-      "order": 24,
+      "order": 23,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1130,15 +1078,15 @@
       "id": 229,
       "type": "OutputDirPassthrough",
       "pos": [
-        -1944.7255859375,
-        177.68994140625
+        -1960.138911240114,
+        -39.381332217564015
       ],
       "size": [
-        224.31991577148438,
+        224.319921875,
         26
       ],
       "flags": {},
-      "order": 40,
+      "order": 41,
       "mode": 0,
       "inputs": [
         {
@@ -1183,7 +1131,7 @@
         202
       ],
       "flags": {},
-      "order": 25,
+      "order": 24,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1229,7 +1177,7 @@
         242
       ],
       "flags": {},
-      "order": 35,
+      "order": 34,
       "mode": 0,
       "inputs": [
         {
@@ -1295,7 +1243,7 @@
         130
       ],
       "flags": {},
-      "order": 26,
+      "order": 25,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1341,7 +1289,7 @@
       "flags": {
         "collapsed": false
       },
-      "order": 44,
+      "order": 45,
       "mode": 0,
       "inputs": [
         {
@@ -1377,7 +1325,7 @@
         242
       ],
       "flags": {},
-      "order": 41,
+      "order": 42,
       "mode": 0,
       "inputs": [
         {
@@ -1439,15 +1387,15 @@
       "id": 231,
       "type": "PrimitiveString",
       "pos": [
-        -1917.5267333984375,
-        421.9335021972656
+        -1932.9400587010516,
+        204.8622285734517
       ],
       "size": [
         497.604736328125,
         58
       ],
       "flags": {},
-      "order": 27,
+      "order": 26,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1479,15 +1427,15 @@
       "id": 210,
       "type": "PreviewAny",
       "pos": [
-        -1107.0054931640625,
-        144.05322265625
+        -1122.4188184666766,
+        -73.01805096756402
       ],
       "size": [
         210,
         88
       ],
       "flags": {},
-      "order": 45,
+      "order": 46,
       "mode": 0,
       "inputs": [
         {
@@ -1523,7 +1471,7 @@
         640
       ],
       "flags": {},
-      "order": 28,
+      "order": 27,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -1552,7 +1500,7 @@
         209.8379669189453
       ],
       "flags": {},
-      "order": 37,
+      "order": 38,
       "mode": 0,
       "inputs": [
         {
@@ -1588,7 +1536,7 @@
         218
       ],
       "flags": {},
-      "order": 34,
+      "order": 33,
       "mode": 0,
       "inputs": [
         {
@@ -1647,7 +1595,7 @@
         598.0123901367188
       ],
       "flags": {},
-      "order": 39,
+      "order": 40,
       "mode": 0,
       "inputs": [
         {
@@ -1683,7 +1631,7 @@
         236.61341857910156
       ],
       "flags": {},
-      "order": 36,
+      "order": 37,
       "mode": 0,
       "inputs": [
         {
@@ -1724,7 +1672,7 @@
         58
       ],
       "flags": {},
-      "order": 29,
+      "order": 28,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1765,7 +1713,7 @@
         58
       ],
       "flags": {},
-      "order": 30,
+      "order": 29,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1806,7 +1754,7 @@
         82
       ],
       "flags": {},
-      "order": 31,
+      "order": 30,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -1849,7 +1797,7 @@
         638
       ],
       "flags": {},
-      "order": 38,
+      "order": 39,
       "mode": 0,
       "inputs": [
         {
@@ -1951,7 +1899,7 @@
         652.601318359375
       ],
       "flags": {},
-      "order": 43,
+      "order": 44,
       "mode": 0,
       "inputs": [
         {
@@ -1979,15 +1927,15 @@
       "id": 230,
       "type": "TensorBoardMonitor",
       "pos": [
-        -1665.904598629807,
-        171.82867495783933
+        -1681.317923932421,
+        -45.24259866597469
       ],
       "size": [
         299.5706481933594,
         150
       ],
       "flags": {},
-      "order": 42,
+      "order": 43,
       "mode": 0,
       "inputs": [
         {
@@ -2036,6 +1984,94 @@
       ],
       "color": "#322",
       "bgcolor": "#533"
+    },
+    {
+      "id": 193,
+      "type": "QwenImageModelNode",
+      "pos": [
+        -3545.137451171875,
+        -1249.2952880859375
+      ],
+      "size": [
+        572.4099731445312,
+        154
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model_path",
+          "type": "model_path",
+          "links": [
+            425,
+            426
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "3a3b86a2487387147f0146233ab8716bbe3aab0f",
+        "Node name for S&R": "QwenImageModelNode",
+        "aux_id": "TianDongL/Diffusion_pipe_in_ComfyUI",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "diffusers_path": true,
+            "transformer_path": true,
+            "text_encoder_path": true,
+            "tokenizer_path": true,
+            "vae_path": true
+          },
+          "version": "7.1",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\models\\unet\\Qwen-Image",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
+    },
+    {
+      "id": 294,
+      "type": "AuraFlowModelNode",
+      "pos": [
+        -2386.0948867494067,
+        -1711.2623278197534
+      ],
+      "size": [
+        535.9369220438916,
+        130
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model_path",
+          "type": "model_path",
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "Diffusion_pipe_in_ComfyUI",
+        "ver": "80f8385cea141421d4d56d3fe6c5bca6d3690a84",
+        "Node name for S&R": "AuraFlowModelNode"
+      },
+      "widgets_values": [
+        "Z:\\home\\TIANDONG\\comfy\\ComfyUI\\models\\unet\\Qwen-Image",
+        "",
+        "",
+        768
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
     }
   ],
   "links": [
@@ -2092,22 +2128,6 @@
       220,
       1,
       188,
-      0,
-      "*"
-    ],
-    [
-      394,
-      193,
-      0,
-      176,
-      0,
-      "model_path"
-    ],
-    [
-      395,
-      193,
-      0,
-      279,
       0,
       "*"
     ],
@@ -2214,6 +2234,22 @@
       289,
       5,
       "EVAL_DATASET_CONFIG"
+    ],
+    [
+      425,
+      193,
+      0,
+      176,
+      0,
+      "model_path"
+    ],
+    [
+      426,
+      193,
+      0,
+      279,
+      0,
+      "*"
     ]
   ],
   "groups": [
@@ -2249,8 +2285,8 @@
       "bounding": [
         -1962.29833984375,
         -1252.51611328125,
-        1113.9310302734375,
-        1195.7437744140625
+        1115.2152596837686,
+        996.6547748904088
       ],
       "color": "#A88",
       "font_size": 24,
@@ -2260,8 +2296,8 @@
       "id": 5,
       "title": "TensorBoard",
       "bounding": [
-        -1986.421142578125,
-        -26.098278045654297,
+        -2001.834467880739,
+        -243.16955166946832,
         1212.814453125,
         819.6329345703125
       ],
@@ -2287,10 +2323,10 @@
   "extra": {
     "ue_links": [],
     "ds": {
-      "scale": 0.548096648678823,
+      "scale": 0.729516639391515,
       "offset": [
-        4628.827494260509,
-        1240.0703322852974
+        3707.72433083067,
+        2576.8316063453417
       ]
     },
     "links_added_by_ue": [],

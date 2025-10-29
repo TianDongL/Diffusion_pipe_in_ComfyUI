@@ -1072,6 +1072,65 @@ class QwenImageEditModelNode:
         except Exception as e:
             return ({"error": str(e)},)
 
+            
+class AuraFlowModelNode:
+    """Aura Flow模型加载节点"""
+    
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "aura_flow_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Aura Flow模型文件的完整路径（如/data2/imagegen_models/comfyui-models/auraflow/pony-v7-base.safetensors）"
+                }),
+                "text_encoder_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Text Encoder模型文件的完整路径（如/data2/imagegen_models/comfyui-models/auraflow/text_encoder.safetensors）"
+                }),
+                "vae_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "VAE模型文件的完整路径（如/data2/imagegen_models/comfyui-models/auraflow/vae.safetensors）"
+                }),
+                "max_sequence_length": ("INT", {
+                    "default": 768,
+                    "min": 128,
+                    "max": 8192,
+                    "step": 128,
+                    "tooltip": " Pony-V7是768，Base AuraFlow是256."
+                }),
+
+            }
+        }
+        
+    RETURN_TYPES = ("model_path",)
+    RETURN_NAMES = ("model_path",)
+    FUNCTION = "get_aura_flow_config"
+    CATEGORY = "Diffusion-Pipe/Model"
+
+    def get_aura_flow_config(self, aura_flow_path: str, text_encoder_path: str = "", vae_path: str = "", max_sequence_length: int = 768) -> Tuple[dict]:
+        """获取Aura Flow模型配置"""
+        try:
+            if not aura_flow_path.strip():
+                return ({"error": "aura_flow_path不能为空"},)
+            
+            # Windows环境路径处理
+            normalized_aura_flow_path = normalize_wsl_path(aura_flow_path.strip())
+            
+            # 构建Aura Flow模型配置
+            config = {
+                "type": "aura_flow",
+                "aura_flow_path": normalized_aura_flow_path,
+                "text_encoder_path": normalize_wsl_path(text_encoder_path.strip()),
+                "vae_path": normalize_wsl_path(vae_path.strip()),
+                "max_sequence_length": max_sequence_length,
+            }
+            
+            return (config,)
+            
+        except Exception as e:
+            return ({"error": str(e)},)            
+
 
 class AdapterConfigNode:
     """适配器配置节点 - 配置LoRA等适配器参数"""
