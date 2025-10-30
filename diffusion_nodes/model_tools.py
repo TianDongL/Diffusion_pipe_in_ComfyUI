@@ -1004,8 +1004,8 @@ class QwenImageModelNode:
             # 处理text_encoder_path
             if text_encoder_path.strip():
                 config["text_encoder_path"] = normalize_wsl_path(text_encoder_path.strip())
-            
-            
+    
+        
             # 处理vae_path
             if vae_path.strip():
                 config["vae_path"] = normalize_wsl_path(vae_path.strip())
