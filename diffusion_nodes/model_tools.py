@@ -1119,8 +1119,8 @@ class AuraFlowModelNode:
             
             # 构建Aura Flow模型配置
             config = {
-                "type": "aura_flow",
-                "aura_flow_path": normalized_aura_flow_path,
+                "type": "auraflow",
+                "transformer_path": normalized_aura_flow_path,
                 "text_encoder_path": normalize_wsl_path(text_encoder_path.strip()),
                 "vae_path": normalize_wsl_path(vae_path.strip()),
                 "max_sequence_length": max_sequence_length,

@@ -11,7 +11,7 @@ caching_batch_size = 1
 partition_method = 'parameters'
 output_dir = '/home/TIANDONG/comfy/ComfyUI/output/training_output'
 disable_block_swap_for_eval = false
-eval_every_n_epochs = 1
+eval_every_n_epochs = 10
 eval_before_first_step = true
 eval_micro_batch_size_per_gpu = 1
 eval_gradient_accumulation_steps = 1
@@ -28,11 +28,8 @@ weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = 'aura_flow'
-aura_flow_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
-text_encoder_path = ''
-vae_path = ''
-max_sequence_length = 768
+type = 'qwen_image'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'bfloat16'
