@@ -972,10 +972,6 @@ class QwenImageModelNode:
                     "default": "",
                     "tooltip": "Text Encoder文件的完整路径，如'/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors"
                 }),
-                "tokenizer_path": ("STRING", {
-                    "default": "",
-                    "tooltip": "Tokenizer文件夹的完整路径"
-                }),
                 "vae_path": ("STRING", {
                     "default": "",
                     "tooltip": "VAE文件的完整路径（如：/data/imagegen_models/Qwen-Image/vae/diffusion_pytorch_model.safetensors）"
@@ -989,7 +985,7 @@ class QwenImageModelNode:
     CATEGORY = "Diffusion-Pipe/Model"
 
     def get_qwen_image_config(self, transformer_path: str = "", text_encoder_path: str = "", 
-                             tokenizer_path: str = "", vae_path: str = "", diffusers_path: str = "") -> Tuple[dict]:
+                             vae_path: str = "", diffusers_path: str = "") -> Tuple[dict]:
         """获取Qwen-Image模型配置"""
         try:
             # 构建Qwen-Image模型配置
@@ -1009,9 +1005,6 @@ class QwenImageModelNode:
             if text_encoder_path.strip():
                 config["text_encoder_path"] = normalize_wsl_path(text_encoder_path.strip())
             
-            # 处理tokenizer_path
-            if tokenizer_path.strip():
-                config["tokenizer_path"] = normalize_wsl_path(tokenizer_path.strip())
             
             # 处理vae_path
             if vae_path.strip():
@@ -1080,7 +1073,7 @@ class AuraFlowModelNode:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "aura_flow_path": ("STRING", {
+                "transformer_path": ("STRING", {
                     "default": "",
                     "tooltip": "Aura Flow模型文件的完整路径（如/data2/imagegen_models/comfyui-models/auraflow/pony-v7-base.safetensors）"
                 }),
@@ -1108,19 +1101,19 @@ class AuraFlowModelNode:
     FUNCTION = "get_aura_flow_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_aura_flow_config(self, aura_flow_path: str, text_encoder_path: str = "", vae_path: str = "", max_sequence_length: int = 768) -> Tuple[dict]:
+    def get_aura_flow_config(self, transformer_path: str, text_encoder_path: str = "", vae_path: str = "", max_sequence_length: int = 768) -> Tuple[dict]:
         """获取Aura Flow模型配置"""
         try:
-            if not aura_flow_path.strip():
+            if not transformer_path.strip():
                 return ({"error": "aura_flow_path不能为空"},)
             
             # Windows环境路径处理
-            normalized_aura_flow_path = normalize_wsl_path(aura_flow_path.strip())
+            normalized_transformer_path = normalize_wsl_path(transformer_path.strip())
             
             # 构建Aura Flow模型配置
             config = {
                 "type": "auraflow",
-                "transformer_path": normalized_aura_flow_path,
+                "transformer_path": normalized_transformer_path,
                 "text_encoder_path": normalize_wsl_path(text_encoder_path.strip()),
                 "vae_path": normalize_wsl_path(vae_path.strip()),
                 "max_sequence_length": max_sequence_length,

@@ -347,6 +347,36 @@
       }
     }
   },
+
+  "AuraFlowModelNode": {
+    "display_name": "AuraFlow模型",
+    "description": "AuraFlow模型加载节点",
+    "inputs": {
+      "transformer_path": {
+        "name": "Transformer路径",
+        "tooltip": "AuraFlow模型文件的完整路径（如：/data2/imagegen_models/comfyui-models/auraflow/pony-v7-base.safetensors）"
+      },
+      "max_sequence_length": {
+        "name": "最大序列长度",
+        "tooltip": "最大序列长度，Pony-V7是768，Base AuraFlow是256."
+      },
+      "text_encoder_path": {
+        "name": "文本编码器路径",
+        "tooltip": "文本编码器文件的完整路径（如：/data2/imagegen_models/comfyui-models/auraflow/text_encoder.safetensors）"
+      },
+      "vae_path": {
+        "name": "VAE路径",
+        "tooltip": "VAE文件的完整路径（如：/data2/imagegen_models/comfyui-models/auraflow/vae.safetensors）"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "AuraFlow模型配置"
+      }
+    }
+  },
+
   "ChromaModelNode": {
     "display_name": "Chroma模型",
     "description": "Chroma模型加载节点",
