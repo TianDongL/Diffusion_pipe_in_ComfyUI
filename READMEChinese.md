@@ -167,7 +167,7 @@ pip install -r requirements.txt
 
 感谢以下项目和团队：
 - ComfyUI 团队
-- Diffusion_Piped的原作者 @tdrussell
+- Diffusion_Pipe的原作者 [@tdrussell](https://github.com/tdrussell/diffusion-pipe.git)
 - Hugging Face Diffusers
 - DeepSpeed 团队
 - 各模型原始作者
