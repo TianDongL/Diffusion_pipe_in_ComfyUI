@@ -1,4 +1,13 @@
+ ![](./img/img.png)
+
  # Diffusion-Pipe In ComfyUI 自定义节点
+
+ <div align="center">
+
+  [![Windows 版本](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)
+  
+</div>
+
 
 *click to see [English](./README.md)*
 
@@ -12,6 +21,7 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 
 # 快速开始
+
 ## 更新日志 
 
 20251026:评估支持

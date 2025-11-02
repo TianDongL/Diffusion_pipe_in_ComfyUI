@@ -1,9 +1,12 @@
+![](./img/img.png)
+
+
 # Diffusion-Pipe In ComfyUI Custom Nodes
 
 <div align="center">
 
   [![Windows Version](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)
-  
+
 </div>
 
 
