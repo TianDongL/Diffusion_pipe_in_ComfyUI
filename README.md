@@ -7,7 +7,8 @@
 </div>
 
 
- *查看[中文](./READMEChinese.md)*
+# 点击查看 [中文文档](./READMEChinese.md)
+
 
 ## Project Overview
 
