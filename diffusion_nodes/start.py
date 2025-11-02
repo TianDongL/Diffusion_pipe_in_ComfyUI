@@ -32,7 +32,6 @@ class Train:
         self.training_process = None
         self.log_queue = queue.Queue()
         self.is_training = False
-        # 注册全局实例
         try:
             from .train_monitor import set_global_train_instance
             set_global_train_instance(self)
@@ -95,7 +94,6 @@ class Train:
                 regenerate_cache=False, cache_only=False, 
                 trust_cache=False, i_know_what_i_am_doing=False,
                 dump_dataset=""):
-        """ComfyUI节点的执行入口"""
         return self.start_training(
             dataset_config, train_config, config_path, 
             resume_from_checkpoint, reset_dataloader, 
@@ -104,11 +102,9 @@ class Train:
         )
     
     def normalize_wsl_path(self, path):
-        """规范化WSL2环境下的路径"""
         if not path:
             return path
             
-        # 如果是Windows驱动器路径格式
         if len(path) >= 3 and path[1] == ':' and path[2] in ['\\', '/']:
             drive_letter = path[0].lower()
             rest_path = path[3:].replace('\\', '/')
@@ -124,7 +120,6 @@ class Train:
         else:
             return path
     def log_reader(self, stream, log_queue, prefix="", stream_name="stream"):
-        """改进的日志读取器，支持进度条显示"""
         try:
             buffer = ""
             last_was_progress = False
@@ -148,14 +143,11 @@ class Train:
                         buffer = ""
                     elif char == '\r':
                         if buffer.strip():
-                            # 检测进度条模式：包含百分比、进度条符号等
                             is_progress = '%|' in buffer or '|/' in buffer or ('[' in buffer and ']' in buffer)
                             if is_progress:
-                                # 进度条：使用回车符在同一行更新
                                 print(f"\r{buffer}", end='', flush=True)
                                 last_was_progress = True
                             else:
-                                # 普通行：正常打印
                                 if last_was_progress:
                                     print()
                                 line = f"{prefix}{buffer}" if prefix else buffer
@@ -166,7 +158,6 @@ class Train:
                     else:
                         buffer += char
                     
-            # 处理剩余缓冲区内容
             if buffer.strip():
                 if last_was_progress:
                     print()
@@ -183,7 +174,6 @@ class Train:
                       regenerate_cache=False, cache_only=False, 
                       trust_cache=False, i_know_what_i_am_doing=False,
                       dump_dataset=""):
-        """启动训练进程"""
         try:
             if self.is_training and self.training_process and self.training_process.poll() is None:
                 return "ALREADY_RUNNING", "训练已在进行中，请等待当前训练完成"
@@ -228,7 +218,6 @@ class Train:
             
             train_cmd_args = train_config.get('_train_cmd_args', {})
             
-            # 1. 处理布尔型参数
             bool_params = {
                 'reset_dataloader': reset_dataloader,
                 'regenerate_cache': regenerate_cache,
@@ -238,7 +227,7 @@ class Train:
             }
             
             for arg_name, node_value in bool_params.items():
-                if node_value:  # 节点参数为True
+                if node_value:  
                     cmd.append(f"--{arg_name}")
                 elif arg_name in train_cmd_args and train_cmd_args.get(arg_name, False):
                     cmd.append(f"--{arg_name}")
@@ -274,17 +263,13 @@ class Train:
             if final_resume and final_resume.strip():
                 cmd.extend(["--resume_from_checkpoint", final_resume.strip()])
             
-            # 设置环境变量
             env = os.environ.copy()
             
-            # 设置 NCCL 环境变量以避免通信问题
             env['NCCL_P2P_DISABLE'] = "1"
             env['NCCL_IB_DISABLE'] = "1"
             
-            # 禁用Python输出缓冲，确保日志实时输出
             env['PYTHONUNBUFFERED'] = "1"
             
-            # 如果是多GPU训练，设置相关环境变量
             if num_gpus > 1:
                 env['WORLD_SIZE'] = str(num_gpus)
                 env['RANK'] = '0'
@@ -292,7 +277,6 @@ class Train:
                 env['MASTER_ADDR'] = 'localhost'
                 env['MASTER_PORT'] = str(train_config.get('master_port', 29500))
             
-            # 启动训练进程
             print("\n" + "="*80)
             print("Starting Training Process")
             print("="*80)
@@ -308,11 +292,10 @@ class Train:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 env=env,
-                bufsize=0,  # 无缓冲模式，确保实时输出
+                bufsize=0,  
                 universal_newlines=False
             )
             
-            # 启动日志读取线程 - 分别处理 stdout 和 stderr
             stdout_thread = threading.Thread(
                 target=self.log_reader,
                 args=(self.training_process.stdout, self.log_queue, "", "stdout"),
@@ -328,18 +311,15 @@ class Train:
             
             self.is_training = True
             
-            # 等待一小段时间检查进程是否正常启动
             time.sleep(2)
             
             if self.training_process.poll() is not None:
-                # 进程已经结束，可能是启动失败
                 return_code = self.training_process.returncode
                 print("\n" + "="*80)
                 print("Training Process Failed to Start")
                 print("="*80)
                 error_msg = f"Exit code: {return_code}"
                 
-                # 尝试读取错误信息
                 try:
                     stderr_output = self.training_process.stderr.read().decode('utf-8', errors='ignore')
                     if stderr_output:
@@ -352,9 +332,8 @@ class Train:
                 self.is_training = False
                 return "ERROR", error_msg
             
-            # 收集初始日志
             initial_logs = []
-            log_timeout = time.time() + 5  # 5秒超时
+            log_timeout = time.time() + 5  
             
             while time.time() < log_timeout:
                 try:
@@ -377,17 +356,13 @@ class Train:
             return "ERROR", error_msg
     
     def stop_training(self):
-        """停止训练进程"""
         if self.training_process and self.training_process.poll() is None:
             try:
-                # 尝试优雅地终止进程
                 self.training_process.terminate()
                 
-                # 等待进程结束，最多等待10秒
                 try:
                     self.training_process.wait(timeout=10)
                 except subprocess.TimeoutExpired:
-                    # 如果进程没有在10秒内结束，强制杀死
                     self.training_process.kill()
                     self.training_process.wait()
                 
@@ -404,12 +379,10 @@ class Train:
             return "NOT_RUNNING", "没有正在运行的训练进程"
     
     def get_training_status(self):
-        """获取训练状态"""
         if not self.training_process:
             return "NOT_STARTED", "训练未启动"
         
         if self.training_process.poll() is None:
-            # 进程仍在运行
             logs = []
             try:
                 while True:
@@ -421,7 +394,6 @@ class Train:
             log_output = "\n".join(logs[-50:]) if logs else "训练进行中..."  # 只显示最近50行日志
             return "RUNNING", f"训练正在进行中 (PID: {self.training_process.pid})\n\n最新日志:\n{log_output}"
         else:
-            # 进程已结束
             return_code = self.training_process.returncode
             self.is_training = False
             

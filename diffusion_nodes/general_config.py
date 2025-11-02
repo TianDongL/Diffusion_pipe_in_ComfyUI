@@ -4,10 +4,6 @@ import logging
 from typing import Dict, Any, Tuple
 
 def normalize_wsl_path(path):
-    """
-    规范化WSL2环境下的路径
-    将Windows路径转换为WSL路径，或保持Linux路径不变
-    """
     if not path:
         return path
         
@@ -15,9 +11,7 @@ def normalize_wsl_path(path):
         drive_letter = path[0].lower()
         rest_path = path[3:].replace('\\', '/')
         
-        # 特殊处理Z:驱动器（通常映射到WSL根目录）
         if drive_letter == 'z':
-            # 如果rest_path以home开头，直接映射到根目录
             if rest_path.startswith('home/'):
                 return f'/{rest_path}'
             else:
@@ -25,11 +19,9 @@ def normalize_wsl_path(path):
         else:
             return f'/mnt/{drive_letter}/{rest_path}'
     
-    # 如果已经是Linux路径格式，保持正斜杠
     elif path.startswith('/'):
         return path.replace('\\', '/')
     
-    # 相对路径处理 - 保持原样，不进行路径规范化（避免在Windows下转换为反斜杠）
     else:
         return path
 
@@ -39,7 +31,6 @@ except ImportError:
     toml = None
 
 class GeneralConfig:
-    """通用训练设置节点 - 配置训练过程中的通用参数"""
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -194,7 +185,6 @@ class GeneralConfig:
                          checkpoint_every_n_minutes: int = 120, caching_batch_size: int = 1,
                          disable_block_swap_for_eval: bool = False, video_clip_mode: str = "none",
                          adapter_config=None, advanced_config=None, eval_dataset_config=None) -> Tuple[str, str, str]:
-        """生成通用训练设置"""
         try:
             comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
             comfyui_root = os.path.abspath(comfyui_root)
@@ -235,38 +225,30 @@ class GeneralConfig:
             if gradient_clipping > 0:
                 settings["gradient_clipping"] = gradient_clipping
             
-            # 处理评估相关参数 - 0表示不评估
             if eval_every_n_epochs > 0:
                 settings["eval_every_n_epochs"] = eval_every_n_epochs
                 settings["eval_before_first_step"] = eval_before_first_step
                 settings["eval_micro_batch_size_per_gpu"] = eval_micro_batch_size_per_gpu
                 settings["eval_gradient_accumulation_steps"] = eval_gradient_accumulation_steps
             
-            # 处理保存相关参数 - 0表示不定期保存
             if save_every_n_epochs > 0:
                 settings["save_every_n_epochs"] = save_every_n_epochs
             
             if checkpoint_every_n_minutes > 0:
                 settings["checkpoint_every_n_minutes"] = checkpoint_every_n_minutes
             
-            # 合并优化器配置（必需）
             if optimizer_config:
                 try:
-                    # 如果optimizer_config是字符串，尝试解析为JSON
                     if isinstance(optimizer_config, str):
                         optimizer_dict = json.loads(optimizer_config)
                     else:
                         optimizer_dict = optimizer_config
                     
-                    # 将优化器配置合并到设置中
                     if isinstance(optimizer_dict, dict):
-                        # 为某些优化器添加默认参数
                         if optimizer_dict.get("type") == "AdamW8bitKahan":
-                            # 为AdamW8bitKahan添加gradient_release参数
                             if "gradient_release" not in optimizer_dict:
                                 optimizer_dict["gradient_release"] = False
                         
-                        # 添加optimizer section以匹配TOML配置格式
                         settings["optimizer"] = optimizer_dict
                         logging.info(f"成功合并优化器配置，类型: {optimizer_dict.get('type', 'unknown')}")
                     else:
@@ -276,18 +258,14 @@ class GeneralConfig:
             else:
                 logging.warning("未提供优化器配置，这可能导致训练失败")
             
-            # 合并模型配置（必需）
             if model_config:
                 try:
-                    # 如果model_config是字符串，尝试解析为JSON
                     if isinstance(model_config, str):
                         model_dict = json.loads(model_config)
                     else:
                         model_dict = model_config
                     
-                    # 将模型配置添加到设置中
                     if isinstance(model_dict, dict):
-                        # 规范化模型配置中的路径
                         normalized_model_dict = self._normalize_paths_in_dict(model_dict)
                         settings["model"] = normalized_model_dict
                         logging.info(f"成功合并模型配置，类型: {normalized_model_dict.get('type', 'unknown')}")
@@ -299,38 +277,30 @@ class GeneralConfig:
                 logging.error("未提供模型配置，这是必需的参数")
                 raise ValueError("model_config是必需参数，必须连接模型配置节点")
             
-            # 处理数据集配置（必需）
             if dataset_config:
                 try:
                     dataset_path = None
                     
-                    # 方法1：尝试从当前工作目录找到最近保存的数据集配置文件
                     dataset_dir = os.path.join(os.path.dirname(__file__), "..", "dataset")
-                    dataset_dir = os.path.abspath(dataset_dir)  # 标准化为绝对路径
+                    dataset_dir = os.path.abspath(dataset_dir)  
                     
                     if os.path.exists(dataset_dir):
-                        # 查找最新的 .toml 数据集文件
                         toml_files = [f for f in os.listdir(dataset_dir) if f.endswith('.toml')]
                         if toml_files:
-                            # 使用最新修改的文件
                             latest_file = max(toml_files, key=lambda f: os.path.getmtime(os.path.join(dataset_dir, f)))
                             dataset_path = os.path.abspath(os.path.join(dataset_dir, latest_file)).replace('\\', '/')
                     
-                    # 方法2：如果没有找到文件，使用默认路径
                     if not dataset_path:
-                        # 计算相对于ComfyUI根目录的标准化路径
                         comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
                         comfyui_root = os.path.abspath(comfyui_root)
                         default_dataset_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "dataset.toml")
                         dataset_path = os.path.normpath(os.path.abspath(default_dataset_path)).replace('\\', '/')
                     
-                    # 添加数据集引用到配置中
                     settings["dataset"] = dataset_path
                     logging.info(f"数据集配置路径: {dataset_path}")
                     
                 except Exception as e:
                     logging.warning(f"处理数据集配置时出错: {str(e)}")
-                    # 使用默认数据集路径作为后备方案
                     comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
                     comfyui_root = os.path.abspath(comfyui_root)
                     fallback_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "dataset.toml")
@@ -339,7 +309,6 @@ class GeneralConfig:
                 logging.error("未提供数据集配置，这是必需的参数")
                 raise ValueError("dataset_config是必需参数，必须连接数据集配置节点")
             
-            # 处理评估数据集配置（如果提供）
             eval_datasets_list = []
             
             if eval_dataset_config:
@@ -381,18 +350,14 @@ class GeneralConfig:
             
             settings["eval_datasets"] = eval_datasets_list
             
-            # 合并适配器配置（如果提供）
             if adapter_config:
                 try:
-                    # 如果adapter_config是字符串，尝试解析为JSON
                     if isinstance(adapter_config, str):
                         adapter_dict = json.loads(adapter_config)
                     else:
                         adapter_dict = adapter_config
                     
-                    # 将适配器配置合并到设置中
                     if isinstance(adapter_dict, dict):
-                        # 规范化适配器配置中的路径
                         normalized_adapter_dict = self._normalize_paths_in_dict(adapter_dict)
                         settings.update(normalized_adapter_dict)
                         logging.info(f"成功合并适配器配置，包含 {len(normalized_adapter_dict)} 个参数")
@@ -403,18 +368,14 @@ class GeneralConfig:
             else:
                 logging.info("未提供适配器配置，将进行全量微调")
             
-            # 合并高级配置（如果提供）
             if advanced_config:
                 try:
-                    # 如果advanced_config是字符串，尝试解析为JSON
                     if isinstance(advanced_config, str):
                         advanced_dict = json.loads(advanced_config)
                     else:
                         advanced_dict = advanced_config
                     
-                    # 将高级配置合并到设置中
                     if isinstance(advanced_dict, dict):
-                        # 规范化高级配置中的路径
                         normalized_advanced_dict = self._normalize_paths_in_dict(advanced_dict)
                         settings.update(normalized_advanced_dict)
                         logging.info(f"成功合并高级配置，包含 {len(normalized_advanced_dict)} 个参数")
@@ -425,29 +386,20 @@ class GeneralConfig:
             else:
                 logging.info("未提供高级配置，使用默认设置")
             
-            # 最终规范化所有路径为正斜杠格式
             settings = self._normalize_paths_in_dict(settings)
             
-            # 输出为TOML格式
             if toml:
                 try:
-                    # 提取 eval_datasets 以便特殊处理
                     eval_datasets_value = settings.pop('eval_datasets', [])
-                    # 序列化其余配置
                     train_config = toml.dumps(settings)
-                    # 将双引号替换为单引号
                     train_config = self._replace_quotes_in_toml(train_config)
-                    # 单独格式化 eval_datasets 为内联数组格式
                     eval_datasets_line = self._format_toml_value('eval_datasets', eval_datasets_value)
-                    # 将 eval_datasets 添加到配置开头
                     train_config = eval_datasets_line + '\n' + train_config
                     
                 except Exception as e:                   
                     train_config = json.dumps(settings, indent=2, ensure_ascii=False)
-                    # JSON格式也替换为单引号
                     train_config = train_config.replace('"', "'")
             else:
-                # 如果没有toml库，使用自定义TOML格式化
                 train_config = self._format_as_toml(settings)
             
             if config_save_path:
@@ -461,7 +413,6 @@ class GeneralConfig:
                     import datetime
                     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     current_cwd = os.getcwd()
-                    # 输出配置信息到控制台
                     print(f"[通用训练配置] 配置文件已保存到: {normalized_save_path}")
                     print(f"[通用训练配置] 生成时间: {current_time}")
                     print(f"[通用训练配置] 当前工作目录: {current_cwd}")
@@ -489,7 +440,6 @@ class GeneralConfig:
             return ("{}", "", "")
     
     def _format_as_toml(self, settings: dict) -> str:
-        """自定义TOML格式化方法"""
         toml_lines = []
         
         for key, value in settings.items():
@@ -505,7 +455,6 @@ class GeneralConfig:
         return '\n'.join(toml_lines)
     
     def _format_toml_value(self, key: str, value) -> str:
-        """格式化TOML键值对"""
         if isinstance(value, bool):
             return f"{key} = {str(value).lower()}"
         elif isinstance(value, str):
@@ -539,11 +488,9 @@ class GeneralConfig:
             return f"{key} = {value}"
     
     def _replace_quotes_in_toml(self, toml_text: str) -> str:
-        """将TOML文本中的双引号替换为单引号"""
         return toml_text.replace('"', "'")
     
     def _normalize_paths_in_dict(self, data: Any) -> Any:
-        """递归地将字典中所有路径字符串的反斜杠转换为正斜杠"""
         if isinstance(data, dict):
             return {key: self._normalize_paths_in_dict(value) for key, value in data.items()}
         elif isinstance(data, list):
