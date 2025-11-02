@@ -4,7 +4,7 @@
 
  <div align="center">
 
-  [![Windows 版本](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)
+  [![Windows 版本](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill&logo=github&logoColor=white)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)
   
 </div>
 

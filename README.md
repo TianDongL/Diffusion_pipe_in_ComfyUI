@@ -5,8 +5,8 @@
 
 <div align="center">
 
-  [![Windows Version](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)
-
+  [![Windows Version](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill&logo=github&logoColor=white)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)
+  
 </div>
 
 
