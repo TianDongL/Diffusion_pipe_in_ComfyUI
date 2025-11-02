@@ -127,7 +127,23 @@
       }
     }
   },
-  "SDXLModelNode": {
+  "MultiImageEditDatasetPathNode": {
+    "display_name": "Multi Image Edit Dataset Path",
+    "description": "Configure multi image edit dataset path",
+    "inputs": {
+      "target_path": {
+        "name": "Target Path",
+        "tooltip": "Target image path - the model will learn to generate images from this path"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Input Path",
+        "tooltip": "Return multi image edit dataset path configuration"
+      }
+    }
+  },
+    "SDXLModelNode": {
     "display_name": "SDXL Model",
     "description": "SDXL model loading node",
     "inputs": {

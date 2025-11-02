@@ -211,7 +211,23 @@
       }
     }
   },
-  "LTXVideoModelNode": {
+  "MultiImageEditDatasetPathNode": {
+    "display_name": "多图编辑数据集路径",
+    "description": "配置多图编辑数据集的路径",
+    "inputs": {
+      "target_path": {
+        "name": "目标路径",
+        "tooltip": "生成图像路径 - 模型要学习生成的图像"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "输入路径",
+        "tooltip": "返回的多图编辑数据集路径配置"
+      }
+    }
+  },
+    "LTXVideoModelNode": {
     "display_name": "LTX-Video模型",
     "description": "LTX-Video模型加载节点",
     "inputs": {

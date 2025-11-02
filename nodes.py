@@ -3,12 +3,22 @@ try:
     # 尝试相对导入 (在 ComfyUI 中作为包导入时)
     from .diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
     from .diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
-    from .diffusion_nodes.dataset_tools import GeneralDatasetPathNode, EditModelDatasetPathNode, FrameBucketsNode
+    from .diffusion_nodes.dataset_tools import (
+        GeneralDatasetPathNode, EditModelDatasetPathNode, 
+        MultiImageEditDatasetPathNode, FrameBucketsNode
+    )
+    
     from .diffusion_nodes.general_config import GeneralConfig
     from .diffusion_nodes.advanced_train_config import AdvancedTrainConfig
     from .diffusion_nodes.model_config import ModelConfig
     from .diffusion_nodes.dataset_tools import ArBucketsNode
-    from .diffusion_nodes.model_tools import SDXLModelNode,Wan22ModelNode,HunyuanImage21ModelNode,QwenImageEditModelNode,FluxKontextModelNode,QwenImageModelNode,CosmosPredict2ModelNode,OmniGen2ModelNode, FluxModelNode,SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,HiDreamModelNode,ChromaModelNode,CosmosModelNode,Lumina2ModelNode,Wan21ModelNode,AuraFlowModelNode 
+    from .diffusion_nodes.model_tools import (
+        SDXLModelNode, Wan22ModelNode, HunyuanImage21ModelNode, QwenImageEditModelNode,
+        FluxKontextModelNode, QwenImageModelNode, CosmosPredict2ModelNode, OmniGen2ModelNode,
+        FluxModelNode, SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,
+        HiDreamModelNode, ChromaModelNode, CosmosModelNode, Lumina2ModelNode,
+        Wan21ModelNode, AuraFlowModelNode
+    ) 
     from .diffusion_nodes.model_tools import AdapterConfigNode, OptimizerConfigNode
     from .diffusion_nodes.start import Train
     from .diffusion_nodes.train_monitor import TensorBoardMonitor
@@ -23,12 +33,21 @@ except ImportError:
     
     from diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
     from diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
-    from diffusion_nodes.dataset_tools import GeneralDatasetPathNode, EditModelDatasetPathNode, FrameBucketsNode
+    from diffusion_nodes.dataset_tools import (
+        GeneralDatasetPathNode, EditModelDatasetPathNode, 
+        MultiImageEditDatasetPathNode, FrameBucketsNode
+    )
     from diffusion_nodes.general_config import GeneralConfig
     from diffusion_nodes.advanced_train_config import AdvancedTrainConfig
     from diffusion_nodes.model_config import ModelConfig
     from diffusion_nodes.dataset_tools import ArBucketsNode
-    from diffusion_nodes.model_tools import SDXLModelNode,Wan22ModelNode,QwenImageEditModelNode,FluxKontextModelNode,QwenImageModelNode,CosmosPredict2ModelNode,OmniGen2ModelNode, FluxModelNode,SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,HiDreamModelNode,ChromaModelNode,CosmosModelNode,Lumina2ModelNode,Wan21ModelNode,AuraFlowModelNode 
+    from diffusion_nodes.model_tools import (
+        SDXLModelNode, Wan22ModelNode, HunyuanImage21ModelNode, QwenImageEditModelNode,
+        FluxKontextModelNode, QwenImageModelNode, CosmosPredict2ModelNode, OmniGen2ModelNode,
+        FluxModelNode, SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,
+        HiDreamModelNode, ChromaModelNode, CosmosModelNode, Lumina2ModelNode,
+        Wan21ModelNode, AuraFlowModelNode
+    ) 
     from diffusion_nodes.model_tools import AdapterConfigNode, OptimizerConfigNode
     from diffusion_nodes.start import Train
     from diffusion_nodes.train_monitor import TensorBoardMonitor
@@ -42,6 +61,7 @@ NODE_CLASS_MAPPINGS = {
     "EvalDatasetConfig": EvalDatasetConfig,
     "GeneralDatasetPathNode": GeneralDatasetPathNode,
     "EditModelDatasetPathNode": EditModelDatasetPathNode,
+    "MultiImageEditDatasetPathNode": MultiImageEditDatasetPathNode,
     "FrameBucketsNode": FrameBucketsNode,
     "ArBucketsNode": ArBucketsNode,
     
@@ -87,6 +107,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "EvalDatasetConfig": "评估数据集配置",
     "GeneralDatasetPathNode": "通用数据集路径",
     "EditModelDatasetPathNode": "编辑模型数据集路径",
+    "MultiImageEditDatasetPathNode": "多图编辑数据集路径",
     "FrameBucketsNode": "帧数分桶配置",
     "ArBucketsNode": "宽高比分桶配置",
     

@@ -1,18 +1,20 @@
-eval_datasets = [{name = 'validation_set', config = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml'}]
+eval_datasets = []
 epochs = 50
 micro_batch_size_per_gpu = 2
 number_of_gpus = 1
 pipeline_stages = 1
 warmup_steps = 500
-blocks_to_swap = 20
+blocks_to_swap = 10
 activation_checkpointing = true
 save_dtype = 'bfloat16'
 caching_batch_size = 1
 partition_method = 'parameters'
-output_dir = '/home/TIANDONG/comfy/ComfyUI/output/training_output'
+output_dir = '/home/TIANDONG/comfy/ComfyUI/output/2509test'
 disable_block_swap_for_eval = false
+gradient_accumulation_steps = 1
+gradient_clipping = 1.0
 eval_every_n_epochs = 10
-eval_before_first_step = true
+eval_before_first_step = false
 eval_micro_batch_size_per_gpu = 1
 eval_gradient_accumulation_steps = 1
 save_every_n_epochs = 1
@@ -29,7 +31,7 @@ gradient_release = false
 
 [model]
 type = 'qwen_image'
-diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/diffusion_models/Qwen-Image-Edit-2509'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'bfloat16'

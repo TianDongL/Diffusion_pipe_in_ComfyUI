@@ -73,17 +73,17 @@ class GeneralConfig:
                     "tooltip": "管道并行阶段数，将模型拆分到的 GPU 数量，应与 GPU 数量匹配"
                 }),
                 "gradient_accumulation_steps": ("INT", {
-                    "default": 0, 
-                    "min": 0, 
+                    "default": 1.0, 
+                    "min": 1.0, 
                     "max": 64,
-                    "tooltip": "梯度累积步数，0表示自动计算"
+                    "tooltip": "梯度累积步数"
                 }),
-                "gradient_clipping": ("INT", {
-                    "default": 0, 
-                    "min": 0, 
-                    "max": 10, 
-                    "step": 0,
-                    "tooltip": "梯度裁剪阈值，0表示不裁剪"
+                "gradient_clipping": ("FLOAT", {
+                    "default": 1, 
+                    "min": 1, 
+                    "max": 10.0, 
+                    "step": 0.1,
+                    "tooltip": "梯度裁剪阈值"
                 }),
                 "warmup_steps": ("INT", {
                     "default": 500, 

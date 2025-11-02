@@ -28,9 +28,12 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 
 ## update
 
-20251026:support eval 
+* 20251026:support eval 
 
-20251030: Supports training Aura models
+* 20251030: Supports training Aura models
+
+* 20251103:support MultiImage Edit (qwen2509)
+
 
 
 ## Installation Guide

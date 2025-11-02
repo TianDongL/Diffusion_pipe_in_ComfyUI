@@ -309,10 +309,18 @@ class QwenImagePipeline(BasePipeline):
             latents = (latents - vae.latents_mean_tensor) / vae.latents_std_tensor
             result = {'latents': latents}
             if len(args) == 2:
-                control_image = args[1]
-                control_latents = vae.encode(control_image.to(vae.device, vae.dtype)).latent_dist.mode()
-                control_latents = (control_latents - vae.latents_mean_tensor) / vae.latents_std_tensor
-                result['control_latents'] = control_latents
+                control_data = args[1]
+                if isinstance(control_data, list):
+                    control_latents_list = []
+                    for control_image in control_data:
+                        cl = vae.encode(control_image.to(vae.device, vae.dtype)).latent_dist.mode()
+                        cl = (cl - vae.latents_mean_tensor) / vae.latents_std_tensor
+                        control_latents_list.append(cl)
+                    result['control_latents'] = control_latents_list
+                else:
+                    control_latents = vae.encode(control_data.to(vae.device, vae.dtype)).latent_dist.mode()
+                    control_latents = (control_latents - vae.latents_mean_tensor) / vae.latents_std_tensor
+                    result['control_latents'] = control_latents
             return result
         return fn
 
@@ -462,13 +470,27 @@ class QwenImagePipeline(BasePipeline):
         img_shapes = [(1, h // 2, w // 2)]
 
         if 'control_latents' in inputs:
-            control_latents = inputs['control_latents'].float()
-            control_latents = self._pack_latents(control_latents, bs, num_channels_latents, h, w)
-            assert control_latents.shape == latents.shape, (control_latents.shape, latents.shape)
-            img_seq_len = torch.tensor(x_t.shape[1], device=x_t.device).repeat((bs,))
-            extra = (img_seq_len,)
-            x_t = torch.cat([x_t, control_latents], dim=1)
-            img_shapes.append((1, h // 2, w // 2))
+            control_data = inputs['control_latents']
+            if isinstance(control_data, list):
+                all_control_latents = []
+                for control_latents in control_data:
+                    cl = control_latents.float()
+                    cl = self._pack_latents(cl, bs, num_channels_latents, h, w)
+                    all_control_latents.append(cl)
+                combined_control = torch.cat(all_control_latents, dim=1)
+                img_seq_len = torch.tensor(x_t.shape[1], device=x_t.device).repeat((bs,))
+                extra = (img_seq_len,)
+                x_t = torch.cat([x_t, combined_control], dim=1)
+                for _ in range(len(all_control_latents)):
+                    img_shapes.append((1, h // 2, w // 2))
+            else:
+                control_latents = control_data.float()
+                control_latents = self._pack_latents(control_latents, bs, num_channels_latents, h, w)
+                assert control_latents.shape == latents.shape, (control_latents.shape, latents.shape)
+                img_seq_len = torch.tensor(x_t.shape[1], device=x_t.device).repeat((bs,))
+                extra = (img_seq_len,)
+                x_t = torch.cat([x_t, control_latents], dim=1)
+                img_shapes.append((1, h // 2, w // 2))
         else:
             extra = tuple()
 

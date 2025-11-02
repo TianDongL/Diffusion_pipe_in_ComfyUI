@@ -98,11 +98,13 @@ class GeneralDatasetConfig:
         try:
             dataset_path = None
             control_path = None
+            control_paths = None
             is_edit_model = False
             
             if isinstance(input_path, dict):
                 dataset_path = input_path.get("path")
                 control_path = input_path.get("control_path")
+                control_paths = input_path.get("control_paths")
                 is_edit_model = True
             elif isinstance(input_path, str):
                 dataset_path = input_path
@@ -145,7 +147,18 @@ class GeneralDatasetConfig:
             if frame_buckets_list is not None:
                 config_lines.append(f"frame_buckets = {frame_buckets_list}")
             
-            if control_path:
+            if control_paths:
+                normalized_dataset_path = normalize_wsl_path(dataset_path) if dataset_path else "C:\\path\\to\\target\\images"
+                config_lines.extend([
+                    "[[directory]]",
+                    f"path = '{normalized_dataset_path}'",
+                ])
+                
+                normalized_control_paths = [normalize_wsl_path(cp) for cp in control_paths]
+                config_lines.append(f"control_paths = {normalized_control_paths}")
+                config_lines.append(f"num_repeats = {num_repeats}")
+            
+            elif control_path:
                 normalized_dataset_path = normalize_wsl_path(dataset_path) if dataset_path else "/path/to/target/images"
                 normalized_control_path = normalize_wsl_path(control_path) if control_path else "/path/to/control/images"
                 config_lines.extend([
@@ -153,6 +166,7 @@ class GeneralDatasetConfig:
                     f"path = '{normalized_dataset_path}'",
                     f"control_path = '{normalized_control_path}'",
                 ])
+                
             else:
                 normalized_dataset_path = normalize_wsl_path(dataset_path) if dataset_path else "/path/to/your/dataset"
                 config_lines.extend([

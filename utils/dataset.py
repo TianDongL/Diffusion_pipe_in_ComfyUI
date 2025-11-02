@@ -363,7 +363,15 @@ class DirectoryDataset:
         self.shuffle_delimiter = directory_config.get('cache_shuffle_delimiter', dataset_config.get('cache_shuffle_delimiter', ", "))
         self.path = Path(self.directory_config['path'])
         self.mask_path = Path(self.directory_config['mask_path']) if 'mask_path' in self.directory_config else None
-        self.control_path = Path(self.directory_config['control_path']) if 'control_path' in self.directory_config else None
+        if 'control_paths' in self.directory_config:
+            self.control_paths = [Path(p) for p in self.directory_config['control_paths']]
+            self.control_path = None
+        elif 'control_path' in self.directory_config:
+            self.control_path = Path(self.directory_config['control_path'])
+            self.control_paths = None
+        else:
+            self.control_path = None
+            self.control_paths = None
         # For testing. Default if a mask is missing.
         self.default_mask_file = Path(self.directory_config['default_mask_file']) if 'default_mask_file' in self.directory_config else None
         self.cache_dir = self.path / 'cache' / self.model_name
@@ -375,6 +383,10 @@ class DirectoryDataset:
             raise RuntimeError(f'Invalid mask_path: {self.mask_path}')
         if self.control_path is not None and (not self.control_path.exists() or not self.control_path.is_dir()):
             raise RuntimeError(f'Invalid control_path: {self.control_path}')
+        if self.control_paths is not None:
+            for idx, cp in enumerate(self.control_paths):
+                if not cp.exists() or not cp.is_dir():
+                    raise RuntimeError(f'Invalid control_paths[{idx}]: {cp}')
         if self.default_mask_file is not None and (not self.default_mask_file.exists() or not self.default_mask_file.is_file()):
             raise RuntimeError(f'Invalid default_mask_file: {self.default_mask_file}')
 
@@ -506,6 +518,7 @@ class DirectoryDataset:
             # Mask can have any extension, it just needs to have the same stem as the image.
             mask_file_stems = {path.stem: path for path in self.mask_path.glob('*') if path.is_file()} if self.mask_path is not None else {}
             control_file_stems = {path.stem: path for path in self.control_path.glob('*') if path.is_file()} if self.control_path is not None else {}
+            control_paths_stems = [{path.stem: path for path in cp.glob('*') if path.is_file()} for cp in self.control_paths] if self.control_paths is not None else None
 
             def process_file(file):
                 if file.suffix != '.tar':
@@ -539,15 +552,21 @@ class DirectoryDataset:
                         if self.mask_path is not None:
                             logger.warning(f'No mask file was found for image {image_file}, not using mask.')
                         mask_files.append(None)
-                    # control (e.g. Flux Kontext)
-                    if self.control_path:
+                    if self.control_paths:
+                        control_file_list = []
+                        for idx, stems in enumerate(control_paths_stems):
+                            if image_file.stem not in stems:
+                                raise RuntimeError(f'No control file in control_paths[{idx}] for {image_file}')
+                            control_file_list.append(str(stems[image_file.stem]))
+                        control_files.append(control_file_list)
+                    elif self.control_path:
                         if image_file.stem not in control_file_stems:
                             raise RuntimeError(f'No control file exists for image {image_file}')
                         control_files.append(str(control_file_stems[image_file.stem]))
             assert len(image_specs) > 0, f'Directory {self.path} had no images/videos!'
 
             d = {'image_spec': image_specs, 'caption_file': caption_files, 'mask_file': mask_files}
-            if self.control_path:
+            if self.control_path or self.control_paths:
                 d['control_file'] = control_files
             metadata_dataset = datasets.Dataset.from_dict(d)
 
@@ -945,10 +964,19 @@ def _cache_fn(datasets, queue, preprocess_media_file_fn, num_text_encoders, rege
             captions.extend([caption] * len(items))
             if is_edit_dataset:
                 control_file = example['control_file'][i]
-                control_items = preprocess_media_file_fn((None, control_file), None, size_bucket)
-                assert len(control_items) == 1
-                assert len(items) == 1
-                control_tensors_and_masks.append(control_items[0])
+                if isinstance(control_file, list):
+                    multi_control = []
+                    for cf in control_file:
+                        control_items = preprocess_media_file_fn((None, cf), None, size_bucket)
+                        assert len(control_items) == 1
+                        multi_control.append(control_items[0])
+                    assert len(items) == 1
+                    control_tensors_and_masks.append(multi_control)
+                else:
+                    control_items = preprocess_media_file_fn((None, control_file), None, size_bucket)
+                    assert len(control_items) == 1
+                    assert len(items) == 1
+                    control_tensors_and_masks.append(control_items[0])
             else:
                 control_tensors_and_masks.append(None)
 
@@ -960,10 +988,17 @@ def _cache_fn(datasets, queue, preprocess_media_file_fn, num_text_encoders, rege
         results = defaultdict(list)
         for i in range(0, len(tensors_and_masks), caching_batch_size):
             tensor = torch.stack([t[0] for t in tensors_and_masks[i:i+caching_batch_size]])
-            c_tensor = torch.stack([t[0] for t in control_tensors_and_masks[i:i+caching_batch_size]]) if is_edit_dataset else None
+            if is_edit_dataset:
+                first_control = control_tensors_and_masks[i]
+                if isinstance(first_control, list):
+                    c_tensor = [torch.stack([ct[j][0] for ct in control_tensors_and_masks[i:i+caching_batch_size]]) for j in range(len(first_control))]
+                else:
+                    c_tensor = torch.stack([t[0] for t in control_tensors_and_masks[i:i+caching_batch_size]])
+            else:
+                c_tensor = None
             parent_conn, child_conn = pipes.setdefault(rank, mp.Pipe(duplex=False))
             queue.put((0, tensor, c_tensor, child_conn))
-            result = parent_conn.recv()  # dict
+            result = parent_conn.recv()
             for k, v in result.items():
                 results[k].append(v)
         # concatenate the list of tensors at each key into one batched tensor

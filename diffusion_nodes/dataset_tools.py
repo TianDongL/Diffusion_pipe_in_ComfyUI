@@ -123,6 +123,49 @@ class EditModelDatasetPathNode:
         
         return (dataset_config,)
 
+        
+class MultiImageEditDatasetPathNode:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "target_path": ("STRING", {
+                    "default": "",
+                    "multiline": False,
+                }),
+                "control_paths": ("STRING", {
+                    "default": "",
+                    "multiline": True,
+                }),
+            }
+        }
+    
+    RETURN_TYPES = ("input_path",)
+    RETURN_NAMES = ("input_path",)
+    FUNCTION = "get_multi_edit_dataset_paths"
+    CATEGORY = "Diffusion-Pipe/dataset"
+    
+    def get_multi_edit_dataset_paths(self, target_path, control_paths):
+        normalized_target_path = normalize_wsl_path(target_path)
+        
+        if not os.path.exists(normalized_target_path):
+            print(f"警告: 目标路径不存在: {normalized_target_path}")
+        
+        paths = [p.strip() for p in control_paths.split('\n') if p.strip()]
+        
+        for idx, cp in enumerate(paths):
+            normalized_cp = normalize_wsl_path(cp)
+            if not os.path.exists(normalized_cp):
+                print(f"警告: 控制路径 {idx+1} 不存在: {normalized_cp}")
+        
+        dataset_config = {
+            "path": target_path,
+            "control_paths": paths
+        }
+        
+        return (dataset_config,)
+
+
 
 class FrameBucketsNode:
     @classmethod
