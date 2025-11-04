@@ -108,10 +108,10 @@ Models can be stored in the ComfyUI model directory
 Models can be stored in the ComfyUI model directory
 
 ![Dataset Configuration](./img/44.png)
-Recommend storing datasets in paths like Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\input\test_vid
-Recommend dataset configuration paths like Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\dataset\testdataset.toml
+Dataset Configuration
 
 ![Workflow Overview](./img/55.png)
+Workflow Overview
 
 ![Monitoring ](./img/66.png)
 *kill port will stop all monitoring processes on the current port*
