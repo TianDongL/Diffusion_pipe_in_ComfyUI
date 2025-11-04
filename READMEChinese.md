@@ -31,9 +31,9 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 * 20251030:支持aura模型训练
 
-* 20251103：支持多图像编辑（qwen2509）
+* 20251103:支持多图像编辑（qwen2509）
 
-* 20251105: 修复了使用示例作为x轴时绘图中的一个错误，允许在没有tar文件的情况下使用captions.json，添加reset_optimizer标志，--reset_optimiser_params标志（重置优化器参数，可以在继续训练时重置优化器），修复数据集问题，在数据集缓存中将Cast转换为float16以将磁盘大小减半
+* 20251105:支持遮罩训练，修复了使用示例作为x轴时绘图中的一个错误，允许在没有tar文件的情况下使用captions.json，添加reset_optimizer标志，--reset_optimiser_params标志（重置优化器参数，可以在继续训练时重置优化器），修复数据集问题，在数据集缓存中将Cast转换为float16以将磁盘大小减半
 
 ## 安装指南
 

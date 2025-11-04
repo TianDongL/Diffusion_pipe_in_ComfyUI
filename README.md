@@ -34,7 +34,7 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 
 * 20251103:support MultiImage Edit (qwen2509)
 
-* 20251105: Fix off-by-one error in plots when using examples as x-axis,Allow using captions.json without tar files,add reset_optimizer flag,--reset_optimizer_params flag（Reset optimizer parameters, which allows resetting the optimizer during resuming training）,Fix datasets issue,Cast to float16 in dataset caching to cut size on disk in half
+* 20251105:support mask trainning，Fix off-by-one error in plots when using examples as x-axis,Allow using captions.json without tar files,add reset_optimizer flag,--reset_optimizer_params flag（Reset optimizer parameters, which allows resetting the optimizer during resuming training）,Fix datasets issue,Cast to float16 in dataset caching to cut size on disk in half
 
 
 ## Installation Guide
