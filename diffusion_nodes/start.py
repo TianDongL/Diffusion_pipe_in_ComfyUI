@@ -81,6 +81,10 @@ class Train:
                     "default": "",
                     "tooltip": "导出数据集到指定路径（用于调试）"
                 }),
+                "reset_optimizer_params": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "重置优化器状态（在从检查点恢复时使用）"
+                }),
             }
         }
     
@@ -93,12 +97,12 @@ class Train:
                 resume_from_checkpoint="", reset_dataloader=False, 
                 regenerate_cache=False, cache_only=False, 
                 trust_cache=False, i_know_what_i_am_doing=False,
-                dump_dataset=""):
+                dump_dataset="", reset_optimizer_params=False):
         return self.start_training(
             dataset_config, train_config, config_path, 
             resume_from_checkpoint, reset_dataloader, 
             regenerate_cache, cache_only, trust_cache, 
-            i_know_what_i_am_doing, dump_dataset
+            i_know_what_i_am_doing, dump_dataset, reset_optimizer_params
         )
     
     def normalize_wsl_path(self, path):
@@ -173,7 +177,7 @@ class Train:
                       resume_from_checkpoint="", reset_dataloader=False, 
                       regenerate_cache=False, cache_only=False, 
                       trust_cache=False, i_know_what_i_am_doing=False,
-                      dump_dataset=""):
+                      dump_dataset="", reset_optimizer_params=False):
         try:
             if self.is_training and self.training_process and self.training_process.poll() is None:
                 return "ALREADY_RUNNING", "训练已在进行中，请等待当前训练完成"
@@ -216,52 +220,25 @@ class Train:
                 "--config", config_path
             ]
             
-            train_cmd_args = train_config.get('_train_cmd_args', {})
-            
+            # 仅使用节点前端传入的参数，不从配置文件读取
             bool_params = {
                 'reset_dataloader': reset_dataloader,
                 'regenerate_cache': regenerate_cache,
                 'cache_only': cache_only,
                 'trust_cache': trust_cache,
-                'i_know_what_i_am_doing': i_know_what_i_am_doing
+                'i_know_what_i_am_doing': i_know_what_i_am_doing,
+                'reset_optimizer_params': reset_optimizer_params
             }
             
             for arg_name, node_value in bool_params.items():
-                if node_value:  
-                    cmd.append(f"--{arg_name}")
-                elif arg_name in train_cmd_args and train_cmd_args.get(arg_name, False):
-                    cmd.append(f"--{arg_name}")
-                elif train_config.get(arg_name, False):
+                if node_value:
                     cmd.append(f"--{arg_name}")
             
-            final_master_port = None
-            if 'master_port' in train_cmd_args:
-                final_master_port = train_cmd_args['master_port']
-            elif 'master_port' in train_config:
-                final_master_port = train_config['master_port']
+            if dump_dataset and dump_dataset.strip():
+                cmd.extend(["--dump_dataset", dump_dataset.strip()])
             
-            if final_master_port is not None:
-                cmd.extend(["--master_port", str(final_master_port)])
-            
-            final_dump_dataset = dump_dataset  
-            if 'dump_dataset' in train_cmd_args and train_cmd_args['dump_dataset']:
-                final_dump_dataset = train_cmd_args['dump_dataset']
-            elif 'dump_dataset' in train_config and train_config['dump_dataset']:
-                final_dump_dataset = train_config['dump_dataset']
-            
-            if final_dump_dataset and final_dump_dataset.strip():
-                cmd.extend(["--dump_dataset", final_dump_dataset.strip()])
-            
-            final_resume = resume_from_checkpoint 
-            if 'resume_from_checkpoint' in train_cmd_args:
-                resume_value = train_cmd_args['resume_from_checkpoint']
-                if isinstance(resume_value, bool) and resume_value:
-                    final_resume = "latest"  
-                elif isinstance(resume_value, str):
-                    final_resume = resume_value
-            
-            if final_resume and final_resume.strip():
-                cmd.extend(["--resume_from_checkpoint", final_resume.strip()])
+            if resume_from_checkpoint and resume_from_checkpoint.strip():
+                cmd.extend(["--resume_from_checkpoint", resume_from_checkpoint.strip()])
             
             env = os.environ.copy()
             
@@ -278,13 +255,15 @@ class Train:
                 env['MASTER_PORT'] = str(train_config.get('master_port', 29500))
             
             print("\n" + "="*80)
-            print("Starting Training Process")
+            print("启动训练进程")
             print("="*80)
             print(f"Command: {' '.join(cmd)}")
             print(f"Config: {config_path}")
             print(f"GPUs: {num_gpus}")
             if resume_from_checkpoint and resume_from_checkpoint.strip():
                 print(f"Resume from: {resume_from_checkpoint.strip()}")
+            if reset_optimizer_params:
+                print("Reset optimizer params")
             print("="*80 + "\n")
             
             self.training_process = subprocess.Popen(

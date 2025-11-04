@@ -1,4 +1,24 @@
 {
+  "MaskDatasetPathNode": {
+    "display_name": "Mask Dataset Path",
+    "description": "Configure mask dataset path",
+    "inputs": {
+      "dataset_path": {
+        "name": "Dataset Path",
+        "tooltip": "Dataset path - the path to the folder containing training images"
+      },
+      "mask_path": {
+        "name": "Mask Path",
+        "tooltip": "Mask path - white train, black mask, gray partial train. The mask file name must match the training image"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Input Path",
+        "tooltip": "Return mask dataset path configuration"
+      }
+    }
+  },
   "GeneralConfig": {
     "display_name": "General Training Config",
     "description": "General training settings node - configure common parameters for training process",
@@ -726,6 +746,10 @@
       "dump_dataset": {
         "name": "Dump Dataset",
         "tooltip": "Export dataset to specified path (for debugging)"
+      },
+      "reset_optimizer_params": {
+        "name": "Reset Optimizer Params",
+        "tooltip": "Reset optimizer parameters when resuming from checkpoint"
       }
     },
     "outputs": {
@@ -829,7 +853,7 @@
       },
       "resolutions": {
         "name": "Resolutions",
-        "tooltip": "Training resolutions, can be a single value (square) or [width, height] pair, e.g.: [1280, 720]"
+        "tooltip": "Training resolutions, can be a single value (square) or [[width, height]] pair, e.g.: [[1280, 720]]"
       },
       "enable_ar_bucket": {
         "name": "Enable AR Bucket",

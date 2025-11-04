@@ -5,7 +5,7 @@ try:
     from .diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
     from .diffusion_nodes.dataset_tools import (
         GeneralDatasetPathNode, EditModelDatasetPathNode, 
-        MultiImageEditDatasetPathNode, FrameBucketsNode
+        MultiImageEditDatasetPathNode, FrameBucketsNode, MaskDatasetPathNode
     )
     
     from .diffusion_nodes.general_config import GeneralConfig
@@ -24,7 +24,6 @@ try:
     from .diffusion_nodes.train_monitor import TensorBoardMonitor
     from .diffusion_nodes.output_dir_passthrough import OutputDirPassthrough
 except ImportError:
-    # 如果相对导入失败，尝试绝对导入 (直接运行时)
     import os
     import sys
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -35,7 +34,7 @@ except ImportError:
     from diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
     from diffusion_nodes.dataset_tools import (
         GeneralDatasetPathNode, EditModelDatasetPathNode, 
-        MultiImageEditDatasetPathNode, FrameBucketsNode
+        MultiImageEditDatasetPathNode, FrameBucketsNode, MaskDatasetPathNode
     )
     from diffusion_nodes.general_config import GeneralConfig
     from diffusion_nodes.advanced_train_config import AdvancedTrainConfig
@@ -62,6 +61,7 @@ NODE_CLASS_MAPPINGS = {
     "GeneralDatasetPathNode": GeneralDatasetPathNode,
     "EditModelDatasetPathNode": EditModelDatasetPathNode,
     "MultiImageEditDatasetPathNode": MultiImageEditDatasetPathNode,
+    "MaskDatasetPathNode": MaskDatasetPathNode,
     "FrameBucketsNode": FrameBucketsNode,
     "ArBucketsNode": ArBucketsNode,
     
@@ -108,6 +108,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "GeneralDatasetPathNode": "通用数据集路径",
     "EditModelDatasetPathNode": "编辑模型数据集路径",
     "MultiImageEditDatasetPathNode": "多图编辑数据集路径",
+    "MaskDatasetPathNode": "遮罩数据集路径",
     "FrameBucketsNode": "帧数分桶配置",
     "ArBucketsNode": "宽高比分桶配置",
     

@@ -210,11 +210,13 @@ class SizeBucketDataset:
             # up by image file name.
             shuffle_with_seed(iteration_order_list, 42)
 
-            def iteration_order_gen():
-                for image_spec, latents_idx, caption, caption_number in iteration_order_list:
-                    yield {'image_spec': image_spec, 'latents_idx': latents_idx, 'caption': caption, 'caption_number': caption_number}
-
-            iteration_order = datasets.Dataset.from_generator(iteration_order_gen, keep_in_memory=True)
+            iteration_order_dict = defaultdict(list)
+            for image_spec, latents_idx, caption, caption_number in iteration_order_list:
+                iteration_order_dict['image_spec'].append(image_spec)
+                iteration_order_dict['latents_idx'].append(latents_idx)
+                iteration_order_dict['caption'].append(caption)
+                iteration_order_dict['caption_number'].append(caption_number)
+            iteration_order = datasets.Dataset.from_dict(iteration_order_dict)
             iteration_order.save_to_disk(str(iteration_order_cache_dir))
             del iteration_order
 
@@ -576,7 +578,10 @@ class DirectoryDataset:
                     caption_data = json.load(f)
 
                 def add_captions(example):
-                    captions = caption_data.get(example['image_spec'][1], None)
+                    tar_file, image_file = example['image_spec']
+                    if tar_file is None:
+                        image_file = image_file.split('/')[-1]
+                    captions = caption_data.get(image_file, None)
                     if captions is None:
                         logger.warning(f'Image file {image_file} does not have an entry in captions.json')
                     else:
@@ -1139,10 +1144,11 @@ class DatasetManager:
         # I think this is because HF Datasets uses the multiprocess library (different from Python multiprocessing!) so it will always use fork.
         cpu_results = {}
         for k, v in results.items():
+            # Cast all floats to float16 because Arrow files don't support bfloat16, so it would end up float32 on disk. Cuts size in half.
             if isinstance(v, (list, tuple)):
-                cpu_results[k] = [x.to('cpu') for x in v]
+                cpu_results[k] = [x.to('cpu', torch.float16 if torch.is_floating_point(x) else x.dtype) for x in v]
             else:
-                cpu_results[k] = v.to('cpu')
+                cpu_results[k] = v.to('cpu', torch.float16 if torch.is_floating_point(v) else v.dtype)
         pipe.send(cpu_results)
 
 

@@ -1,4 +1,25 @@
 {
+  "MaskDatasetPathNode": {
+    "display_name": "遮罩数据集路径",
+    "description": "遮罩数据集路径节点 -用于遮罩训练",
+    "inputs": {
+      "mask_path": {
+        "name": "遮罩路径",
+        "tooltip": "遮罩路径 - 白色训练，黑色遮蔽，灰色部分训练。遮罩文件名需与训练图片匹配"
+      },
+      "dataset_path": {
+        "name": "数据集路径",
+        "tooltip": "数据集路径 - 包含训练图片的文件夹"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "遮罩数据集路径",
+        "tooltip": "返回的遮罩数据集路径"
+      }
+    }
+  },
+
   "GeneralConfig": {
     "display_name": "通用训练配置",
     "description": "通用训练设置节点 - 配置训练过程中的通用参数",
@@ -756,6 +777,10 @@
       "dump_dataset": {
         "name": "导出数据集",
         "tooltip": "导出数据集到指定路径（用于调试）"
+      },
+      "reset_optimizer_params": {
+        "name": "重置优化器参数",
+        "tooltip": "重置优化器参数（在从检查点恢复时使用）"
       }
     },
     "outputs": {
@@ -859,7 +884,7 @@
       },
       "resolutions": {
         "name": "训练分辨率",
-        "tooltip": "训练分辨率，可以是单个数值（正方形）或 [宽度, 高度] 对,例如: [1280, 720]"
+        "tooltip": "训练分辨率，可以是单个数值（正方形）或 [[宽度, 高度]] 对,例如: [[1280, 720]]"
       },
       "enable_ar_bucket": {
         "name": "启用宽高比分桶",

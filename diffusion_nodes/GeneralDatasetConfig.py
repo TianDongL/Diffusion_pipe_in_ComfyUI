@@ -36,7 +36,7 @@ class GeneralDatasetConfig:
                 "resolutions": ("STRING", {
                     "default": "[512]",
                     "multiline": False,
-                    "tooltip": "训练分辨率，可以是单个数值（正方形）或 [宽度, 高度] 对,例如: [1280, 720]"
+                    "tooltip": "训练分辨率，可以是单个数值（正方形）或 [[宽度, 高度]] 对,例如: [[1280, 720]]"
                 }),
                 
                 "enable_ar_bucket": ("BOOLEAN", {
@@ -99,12 +99,14 @@ class GeneralDatasetConfig:
             dataset_path = None
             control_path = None
             control_paths = None
+            mask_path_from_input = None
             is_edit_model = False
             
             if isinstance(input_path, dict):
                 dataset_path = input_path.get("path")
                 control_path = input_path.get("control_path")
                 control_paths = input_path.get("control_paths")
+                mask_path_from_input = input_path.get("mask_path")
                 is_edit_model = True
             elif isinstance(input_path, str):
                 dataset_path = input_path
@@ -134,15 +136,20 @@ class GeneralDatasetConfig:
             
             config_lines.append(f"enable_ar_bucket = {str(enable_ar_bucket).lower()}")
             
-            if enable_ar_bucket:
+            # 如果用户提供了 ar_buckets，则忽略自动宽高比配置
+            if ar_buckets_list is not None:
+                config_lines.append(f"ar_buckets = {ar_buckets_list}")
+                print("\n" + "="*80)
+                print("[数据集配置] ar_buckets 已连接，忽略自动宽高比配置参数")
+                print(f"[数据集配置] 使用手动指定的宽高比桶: {ar_buckets_list}")
+                print(f"[数据集配置] 已忽略参数: min_ar={min_ar}, max_ar={max_ar}, num_ar_buckets={num_ar_buckets}")
+                print("="*80 + "\n")
+            elif enable_ar_bucket:
                 config_lines.extend([
                     f"min_ar = {min_ar}",
                     f"max_ar = {max_ar}",
                     f"num_ar_buckets = {num_ar_buckets}",
                 ])
-            
-            if ar_buckets_list is not None:
-                config_lines.append(f"ar_buckets = {ar_buckets_list}")
             
             if frame_buckets_list is not None:
                 config_lines.append(f"frame_buckets = {frame_buckets_list}")
@@ -165,6 +172,17 @@ class GeneralDatasetConfig:
                     "[[directory]]",
                     f"path = '{normalized_dataset_path}'",
                     f"control_path = '{normalized_control_path}'",
+                    f"num_repeats = {num_repeats}",
+                ])
+            
+            elif mask_path_from_input:
+                normalized_dataset_path = normalize_wsl_path(dataset_path) if dataset_path else "/path/to/your/dataset"
+                normalized_mask_path = normalize_wsl_path(mask_path_from_input) if mask_path_from_input else "/path/to/mask/images"
+                config_lines.extend([
+                    "[[directory]]",
+                    f"path = '{normalized_dataset_path}'",
+                    f"mask_path = '{normalized_mask_path}'",
+                    f"num_repeats = {num_repeats}",
                 ])
                 
             else:

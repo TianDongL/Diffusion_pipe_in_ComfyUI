@@ -31,7 +31,7 @@ gradient_release = false
 
 [model]
 type = 'qwen_image'
-diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/diffusion_models/Qwen-Image-Edit-2509'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'bfloat16'
