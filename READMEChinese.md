@@ -107,10 +107,10 @@ pip install -r requirements.txt
 模型可以存放在comfyui的模型目录下
 
 ![数据集配置](./img/44.png)
-建议数据集存放在类似于Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\input\test_vid
-建议数据集配置路径类似于Z:\ComfyUI\custom_nodes\Diffusion_pipe_in_ComfyUI\dataset\testdataset.toml
+数据集配置
 
 ![工作流总览](./img/55.png)
+工作流总览
 
 ![监控选项](./img/66.png)
 *kill port会停止当前端口一切监控进程*
