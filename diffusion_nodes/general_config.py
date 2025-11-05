@@ -279,22 +279,11 @@ class GeneralConfig:
             
             if dataset_config:
                 try:
-                    dataset_path = None
-                    
-                    dataset_dir = os.path.join(os.path.dirname(__file__), "..", "dataset")
-                    dataset_dir = os.path.abspath(dataset_dir)  
-                    
-                    if os.path.exists(dataset_dir):
-                        toml_files = [f for f in os.listdir(dataset_dir) if f.endswith('.toml')]
-                        if toml_files:
-                            latest_file = max(toml_files, key=lambda f: os.path.getmtime(os.path.join(dataset_dir, f)))
-                            dataset_path = os.path.abspath(os.path.join(dataset_dir, latest_file)).replace('\\', '/')
-                    
-                    if not dataset_path:
-                        comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
-                        comfyui_root = os.path.abspath(comfyui_root)
-                        default_dataset_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "dataset.toml")
-                        dataset_path = os.path.normpath(os.path.abspath(default_dataset_path)).replace('\\', '/')
+                    # 使用固定的 dataset.toml 文件名
+                    comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+                    comfyui_root = os.path.abspath(comfyui_root)
+                    dataset_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "dataset.toml")
+                    dataset_path = os.path.normpath(os.path.abspath(dataset_path)).replace('\\', '/')
                     
                     settings["dataset"] = dataset_path
                     logging.info(f"数据集配置路径: {dataset_path}")
@@ -313,29 +302,16 @@ class GeneralConfig:
             
             if eval_dataset_config:
                 try:
-                    eval_dataset_path = None
+                    comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
+                    comfyui_root = os.path.abspath(comfyui_root)
+                    eval_dataset_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "evaldataset.toml")
+                    eval_dataset_path = os.path.normpath(os.path.abspath(eval_dataset_path)).replace('\\', '/')
                     
-                    eval_dataset_dir = os.path.join(os.path.dirname(__file__), "..", "dataset")
-                    eval_dataset_dir = os.path.abspath(eval_dataset_dir)
-                    
-                    if os.path.exists(eval_dataset_dir):
-                        toml_files = [f for f in os.listdir(eval_dataset_dir) if f.endswith('.toml')]
-                        if toml_files:
-                            latest_file = max(toml_files, key=lambda f: os.path.getmtime(os.path.join(eval_dataset_dir, f)))
-                            eval_dataset_path = os.path.abspath(os.path.join(eval_dataset_dir, latest_file)).replace('\\', '/')
-                    
-                    if not eval_dataset_path:
-                        comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
-                        comfyui_root = os.path.abspath(comfyui_root)
-                        default_eval_dataset_path = os.path.join(comfyui_root, "custom_nodes", "Diffusion_pipe_in_ComfyUI", "dataset", "evaldataset.toml")
-                        eval_dataset_path = os.path.normpath(os.path.abspath(default_eval_dataset_path)).replace('\\', '/')
-                    
-                    if eval_dataset_path:
-                        eval_datasets_list.append({
-                            'name': 'validation_set',
-                            'config': eval_dataset_path
-                        })
-                        logging.info(f"使用评估数据集配置: {eval_dataset_path}")
+                    eval_datasets_list.append({
+                        'name': 'validation_set',
+                        'config': eval_dataset_path
+                    })
+                    logging.info(f"使用评估数据集配置: {eval_dataset_path}")
                         
                 except Exception as e:
                     logging.warning(f"处理评估数据集配置时出错: {str(e)}")

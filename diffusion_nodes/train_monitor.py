@@ -185,49 +185,6 @@ class TensorBoardMonitor:
         
         return path
     
-    def find_latest_training_dir(self, base_dir):
-        try:
-            print(f"正在扫描目录: {base_dir}")
-            training_dirs = []
-            
-            if not os.path.exists(base_dir):
-                print(f"基础目录不存在: {base_dir}")
-                return None
-                
-            items = os.listdir(base_dir)
-            print(f"找到 {len(items)} 个项目")
-            
-            for item in items:
-                item_path = os.path.join(base_dir, item)
-                if os.path.isdir(item_path):
-                    print(f"检查子目录: {item}")
-                    if self.has_tensorboard_files(item_path):
-                        print(f"发现训练日志目录: {item}")
-                        training_dirs.append((item_path, os.path.getmtime(item_path)))
-            
-            if training_dirs:
-                training_dirs.sort(key=lambda x: x[1], reverse=True)
-                latest_dir = training_dirs[0][0]
-                print(f"选择最新的训练目录: {latest_dir}")
-                return latest_dir
-            
-            print("未找到包含TensorBoard日志的子目录")
-            return None
-            
-        except Exception as e:
-            print(f"查找训练目录时出错: {e}")
-            return None
-    
-    def has_tensorboard_files(self, directory):
-        try:
-            for root, dirs, files in os.walk(directory):
-                for file in files:
-                    if file.startswith('events.out.tfevents'):
-                        return True
-            return False
-        except:
-            return False
-    
     def start_tensorboard(self, output_dir, port, host, is_new_training=True):
         try:
             if output_dir is None:
@@ -256,19 +213,11 @@ class TensorBoardMonitor:
             if is_new_training:
                 print("开始新训练模式：等待新训练文件生成（30秒延迟）...")
                 time.sleep(30)
-                print("等待完成，开始查找最新训练目录")
+                print("等待完成，开始监控训练目录")
             
-            logdir = self.find_latest_training_dir(output_dir)
-            
-            if not logdir and not is_new_training:
-                print("未找到训练日志文件，跳过延迟等待")
-            
-            if logdir and os.path.exists(logdir):
-                print(f"使用训练日志目录: {logdir}")
-                final_logdir = logdir
-            else:
-                print(f"在目录 {output_dir} 中未找到训练日志，使用基础目录")
-                final_logdir = output_dir
+            # 直接使用传入的 output_dir 作为监控目录
+            final_logdir = output_dir
+            print(f"使用训练日志目录: {final_logdir}")
             
             cmd = [
                 "tensorboard",

@@ -46,8 +46,8 @@ parser.add_argument('--resume_from_checkpoint', nargs='?', const=True, default=N
                     help='resume training from checkpoint. If no value is provided, resume from the most recent checkpoint. If a folder name is provided, resume from that specific folder.')
 parser.add_argument('--reset_dataloader', action='store_true', help='Start dataloader from scratch when resuming from checkpoint, i.e. only load the optimizer states.')
 parser.add_argument('--reset_optimizer', action='store_true')
-parser.add_argument('--regenerate_cache', action='store_true', help='Force regenerate cache.')
 parser.add_argument('--reset_optimizer_params', action='store_true')
+parser.add_argument('--regenerate_cache', action='store_true', help='Force regenerate cache.')
 parser.add_argument('--cache_only', action='store_true', help='Cache model inputs then exit.')
 parser.add_argument('--trust_cache', action='store_true', help='Load from metadata cache files if they exist, without checking if any fingerprints have changed. Can make loading much faster for large datasets.')
 parser.add_argument('--i_know_what_i_am_doing', action='store_true', help="Skip certain checks and overrides. You may end up using settings that won't work.")
@@ -340,6 +340,9 @@ if __name__ == '__main__':
     elif model_type == 'hunyuan_image':
         from models import hunyuan_image
         model = hunyuan_image.HunyuanImagePipeline(config)
+    elif model_type == 'auraflow':
+        from models import auraflow
+        model = auraflow.AuraFlowPipeline(config)
     else:
         raise NotImplementedError(f'Model type {model_type} is not implemented')
 
@@ -748,7 +751,7 @@ if __name__ == '__main__':
     # make sure to do this before calling model_engine.set_dataloader(), as that method creates an iterator
     # which starts creating dataloader internal state
     if resume_from_checkpoint:
-        param_groups = optimizer.param_groups.copy()        
+        param_groups = optimizer.param_groups.copy()
         load_path, client_state = model_engine.load_checkpoint(
             run_dir,
             load_module_strict=False,
@@ -757,7 +760,6 @@ if __name__ == '__main__':
         )
         if args.reset_optimizer_params:
             optimizer.param_groups = param_groups
-
         dist.barrier()  # just so the print below doesn't get swamped
         assert load_path is not None
         if args.reset_dataloader:
