@@ -8,7 +8,7 @@
 
   [![原项目](https://img.shields.io/badge/Original%20Project-tdrussell's%20diffusion--pipe-purple?labelColor=6c5ce7&color=a29bfe&style=rounded-pill&logo=github&logoColor=white)](https://github.com/tdrussell/diffusion-pipe.git)
 
-  
+
 </div>
 
 
@@ -161,6 +161,7 @@ pip install -r requirements.txt
 |Wan2.2          |✅    |✅              |✅                |
 |Qwen-Image      |✅    |✅              |✅                |
 |Qwen-Image-Edit |✅    |✅              |✅                |
+|Qwen-Image-Edit-2509 |✅    |✅              |✅                |
 |HunyuanImage-2.1|✅    |✅              |✅                |
 |AuraFlow        |✅    |❌              |✅                |
 
@@ -187,5 +188,4 @@ pip install -r requirements.txt
 - Hugging Face Diffusers
 - DeepSpeed 团队
 - 各模型原始作者
-
 
