@@ -129,15 +129,20 @@ class EvalDatasetConfig:
             
             config_lines.append(f"enable_ar_bucket = {str(enable_ar_bucket).lower()}")
             
-            if enable_ar_bucket:
+            # 如果用户提供了 ar_buckets，则忽略自动宽高比配置
+            if ar_buckets_list is not None:
+                config_lines.append(f"ar_buckets = {ar_buckets_list}")
+                print("\n" + "="*80)
+                print("[评估数据集配置] ar_buckets 已连接，忽略自动宽高比配置参数")
+                print(f"[评估数据集配置] 使用手动指定的宽高比桶: {ar_buckets_list}")
+                print(f"[评估数据集配置] 已忽略参数: min_ar={min_ar}, max_ar={max_ar}, num_ar_buckets={num_ar_buckets}")
+                print("="*80 + "\n")
+            elif enable_ar_bucket:
                 config_lines.extend([
                     f"min_ar = {min_ar}",
                     f"max_ar = {max_ar}",
                     f"num_ar_buckets = {num_ar_buckets}",
                 ])
-            
-            if ar_buckets_list is not None:
-                config_lines.append(f"ar_buckets = {ar_buckets_list}")
             
             if frame_buckets_list is not None:
                 config_lines.append(f"frame_buckets = {frame_buckets_list}")
