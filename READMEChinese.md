@@ -2,6 +2,12 @@
 
  # Diffusion-Pipe In ComfyUI 自定义节点
 
+
+# Attention! This is the Linux(wsl2) version ❗❗❗❗
+# If you use this custom node on Windows, you will not be able to train ❗❗❗❗
+# 注意！此处为Linux(wsl2)版本❗❗❗❗
+# 如果你在windows上使用了这个插件，你将无法训练❗❗❗❗
+
  <div align="center">
 
   [![Windows 版本](https://img.shields.io/badge/Windows%20Version-Visit%20Repo-blue?style=rounded-pill&logo=github&logoColor=white)](https://github.com/TianDongL/Diffusion_pipe_in_ComfyUI_Win.git)

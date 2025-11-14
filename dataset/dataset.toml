@@ -1,9 +1,8 @@
-resolutions = [[720, 1280]]
+resolutions = [128]
 enable_ar_bucket = true
 min_ar = 0.5
 max_ar = 2.0
 num_ar_buckets = 7
 [[directory]]
 path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test'
-mask_path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test1'
 num_repeats = 5
