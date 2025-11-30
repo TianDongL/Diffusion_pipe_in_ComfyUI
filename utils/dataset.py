@@ -22,9 +22,9 @@ from PIL import Image
 import imageio
 import multiprocess as mp
 from tqdm import tqdm
-from tqdm.contrib.concurrent import thread_map
 
 from utils.common import is_main_process, VIDEO_EXTENSIONS, round_to_nearest_multiple
+from utils.cache import Cache
 import comfy.model_management as mm
 
 
@@ -78,53 +78,92 @@ def dedup_and_sort(values):
 
 
 def _map_and_cache(dataset, map_fn, cache_dir, cache_file_prefix='', new_fingerprint_args=None, regenerate_cache=False, caching_batch_size=1):
-    # TODO: remove. Currently using this to avoid recaching everything.
-    # cache_arrow_files = list(str(path) for path in cache_dir.glob(f'{cache_file_prefix}*.arrow'))
-    # cache_arrow_files.sort()
-    # if len(cache_arrow_files) > 0:
-    #     dataset_shards = thread_map(
-    #         datasets.Dataset.from_file,
-    #         cache_arrow_files,
-    #         desc="Loading from map() cached files",
-    #     )
-
-    #     dataset = datasets.concatenate_datasets(
-    #         #[datasets.Dataset.from_file(f) for f in cache_arrow_files]
-    #         dataset_shards
-    #     )
-    #     dataset.set_format('torch')
-    #     return dataset
-
-    # Do the fingerprinting ourselves, because otherwise map() does it by serializing the map function.
-    # That goes poorly when the function is capturing huge models (slow, OOMs, etc).
     new_fingerprint_args = [] if new_fingerprint_args is None else new_fingerprint_args
     new_fingerprint_args.append(dataset._fingerprint)
     new_fingerprint = Hasher.hash(new_fingerprint_args)
-    cache_file = cache_dir / f'{cache_file_prefix}{new_fingerprint}.arrow'
-    cache_file = str(cache_file)
-    dataset = dataset.map(
-        map_fn,
-        cache_file_name=cache_file,
-        load_from_cache_file=(not regenerate_cache),
-        writer_batch_size=100,
-        new_fingerprint=new_fingerprint,
-        remove_columns=dataset.column_names,
-        batched=True,
-        batch_size=caching_batch_size,
-        num_proc=NUM_PROC,
-        with_rank=True,
-    )
-    dataset.set_format('torch')
-    return dataset
+    if cache_file_prefix:
+        cache_dir = cache_dir / cache_file_prefix.strip('_')
+
+    cache = Cache(cache_dir, new_fingerprint, shard_size_gb=10)
+
+    if map_fn is None:
+        # loading directly from cache without mapping
+        assert new_fingerprint == cache.fingerprint
+        return cache
+
+    if regenerate_cache:
+        cache.clear()
+
+    # Cache has either been cleared if fingerprint didn't match, or has some (maybe 0) existing items in it.
+
+    # Skip existing items
+    cache_size = len(cache)
+    dataset_size = len(dataset)
+    assert cache_size <= dataset_size
+    if cache_size == dataset_size:
+        return cache
+    dataset = dataset.select(range(cache_size, dataset_size), keep_in_memory=True)
+
+    # Let each worker process know its rank
+    manager = mp.Manager()
+    id_queue = manager.Queue()
+
+    def init(queue):
+        global rank
+        rank = queue.get()
+
+    for i in range(NUM_PROC):
+        id_queue.put(i)
+
+    pool = mp.Pool(NUM_PROC, init, (id_queue,))
+
+    def wrapper(example):
+        global rank
+        return map_fn(example, rank)
+
+    # Tensor slices reference the entire memory of the original tensor, and everything would be pickled and stored
+    # in cache, so we do this.
+    def recursive_clone_tensors(obj):
+        if torch.is_tensor(obj):
+            return obj.clone()
+        elif isinstance(obj, dict):
+            for k, v in obj.items():
+                obj[k] = recursive_clone_tensors(v)
+            return obj
+        elif isinstance(obj, (list, tuple)):
+            return [recursive_clone_tensors(x) for x in obj]
+        else:
+            return obj
+
+    def unbatch_iter(batch):
+        length = len(next(iter(batch.values())))
+        for i in range(length):
+            result = {}
+            for key in batch:
+                result[key] = batch[key][i]
+            yield recursive_clone_tensors(result)
+
+    completed_batches = cache_size // caching_batch_size
+    total_batches = dataset_size // caching_batch_size
+
+    map_iter = pool.imap(wrapper, dataset.iter(batch_size=caching_batch_size))
+    for batch in tqdm(map_iter, initial=completed_batches, total=total_batches):
+        for example in unbatch_iter(batch):
+            cache.add(example)
+
+    pool.close()
+    cache.finalize_current_shard()
+    return cache
 
 
 class TextEmbeddingDataset:
-    def __init__(self, te_dataset):
+    def __init__(self, te_dataset, flattened_captions):
         self.te_dataset = te_dataset
+        self.flattened_captions = flattened_captions
         self.image_spec_to_te_idx = defaultdict(list)
         # TODO: maybe make this use Dataset object like the latents. But, you won't be caching text embeddings
         # when training on very large datasets, so perhaps it doesn't really matter.
-        for i, image_spec in enumerate(te_dataset['image_spec']):
+        for i, image_spec in enumerate(flattened_captions['image_spec']):
             self.image_spec_to_te_idx[tuple(image_spec)].append(i)
 
     def get_text_embeddings(self, image_spec, caption_number):
@@ -154,7 +193,8 @@ def _cache_text_embeddings(metadata_dataset, map_fn, i, cache_dir, regenerate_ca
         regenerate_cache=regenerate_cache,
         caching_batch_size=caching_batch_size,
     )
-    return TextEmbeddingDataset(te_dataset)
+    assert len(te_dataset) == len(flattened_captions)
+    return TextEmbeddingDataset(te_dataset, flattened_captions)
 
 
 # The smallest unit of a dataset. Represents a single size bucket from a single folder of images
@@ -191,6 +231,7 @@ class SizeBucketDataset:
             regenerate_cache=regenerate_cache,
             caching_batch_size=caching_batch_size,
         )
+        assert len(self.latent_dataset) == len(self.metadata_dataset)
 
         iteration_order_cache_dir = self.cache_dir / 'iteration_order'
 
@@ -198,21 +239,42 @@ class SizeBucketDataset:
             print('Building iteration order')
             image_spec_to_latents_idx = {
                 tuple(image_spec): i
-                for i, image_spec in enumerate(self.latent_dataset['image_spec'])
+                for i, image_spec in enumerate(self.metadata_dataset['image_spec'])
             }
 
-            iteration_order_list = []
-            for example in self.metadata_dataset.select_columns(['image_spec', 'caption']):
-                image_spec = example['image_spec']
-                captions = example['caption']
-                latents_idx = image_spec_to_latents_idx[tuple(image_spec)]
-                for i, caption in enumerate(captions):
-                    iteration_order_list.append((image_spec, latents_idx, caption, i))
+            equal_num_captions = True
+            num_captions = None
+            for example in self.metadata_dataset.select_columns(['caption']):
+                n = len(example['caption'])
+                if num_captions is not None and n != num_captions:
+                    equal_num_captions = False
+                    break
+                num_captions = n
 
-            # Shuffle again, since one media file can produce multiple training examples. E.g. video, or maybe
-            # in the future data augmentation. Don't need to shuffle text embeddings since those are looked
-            # up by image file name.
-            shuffle_with_seed(iteration_order_list, 42)
+            if equal_num_captions:
+                # If all images have the same number of captions, set things up so we read (mostly) sequentially off disk. The metadata was already shuffled in the beginning.
+                iteration_order_by_caption_num = [[] for _ in range(num_captions)]
+                seed = 0
+                for example in self.metadata_dataset.select_columns(['image_spec', 'caption']):
+                    image_spec = example['image_spec']
+                    captions = example['caption']
+                    shuffle_with_seed(captions, seed)
+                    seed += 1
+                    latents_idx = image_spec_to_latents_idx[tuple(image_spec)]
+                    for i, caption in enumerate(captions):
+                        iteration_order_by_caption_num[i].append((image_spec, latents_idx, caption, i))
+                iteration_order_list = []
+                for l in iteration_order_by_caption_num:
+                    iteration_order_list.extend(l)
+            else:
+                iteration_order_list = []
+                for example in self.metadata_dataset.select_columns(['image_spec', 'caption']):
+                    image_spec = example['image_spec']
+                    captions = example['caption']
+                    latents_idx = image_spec_to_latents_idx[tuple(image_spec)]
+                    for i, caption in enumerate(captions):
+                        iteration_order_list.append((image_spec, latents_idx, caption, i))
+                shuffle_with_seed(iteration_order_list, 42)
 
             iteration_order_dict = defaultdict(list)
             for image_spec, latents_idx, caption, caption_number in iteration_order_list:
@@ -260,7 +322,9 @@ class ConcatenatedBatchedDataset:
         self.datasets = datasets
         self.post_init_called = False
 
-    def post_init(self, batch_size, batch_size_image):
+    def post_init(self, global_batch_size: dict, global_batch_size_image: dict, data_parallel_rank: int, data_parallel_world_size: int):
+        self.data_parallel_rank = data_parallel_rank
+        self.data_parallel_world_size = data_parallel_world_size
         iteration_order = []
         size_bucket = self.datasets[0].size_bucket
         for i, ds in enumerate(self.datasets):
@@ -272,19 +336,36 @@ class ConcatenatedBatchedDataset:
             iteration_order[k] = (dataset_idx, cumulative_sums[dataset_idx])
             cumulative_sums[dataset_idx] += 1
         self.iteration_order = np.array(iteration_order)
-        self.batch_size = batch_size_image if size_bucket[-1] == 1 else batch_size
-        self._make_divisible_by(self.batch_size)
+
+        # size_bucket could be [ar, w, h, frame] or [w, h, frames]
+        global_batch_size_dict = global_batch_size_image if size_bucket[-1] == 1 else global_batch_size
+        if None in global_batch_size_dict:
+            # single value
+            self.global_batch_size = global_batch_size_dict[None]
+        else:
+            # per image size batch size
+            bucket_size = math.sqrt(size_bucket[-2] * size_bucket[-3])
+            min_diff = float('inf')
+            for size, bs in global_batch_size_dict.items():
+                diff = abs(size - bucket_size)
+                if diff < min_diff:
+                    min_diff = diff
+                    self.global_batch_size = bs
+
+        assert self.global_batch_size % self.data_parallel_world_size == 0
+        self._make_divisible_by(self.global_batch_size)
+        self.batch_size = self.global_batch_size // self.data_parallel_world_size
         self.post_init_called = True
 
     def __len__(self):
         assert self.post_init_called
-        return len(self.iteration_order) // self.batch_size
+        return len(self.iteration_order) // self.global_batch_size
 
     def __getitem__(self, idx):
         assert self.post_init_called
-        start = idx * self.batch_size
-        end = start + self.batch_size
-        return [self.datasets[i.item()][j.item()] for i, j in self.iteration_order[start:end]]
+        start_idx = idx * self.global_batch_size + self.data_parallel_rank * self.batch_size
+        end_idx = start_idx + self.batch_size
+        return [self.datasets[i.item()][j.item()] for i, j in self.iteration_order[start_idx : end_idx]]
 
     def _make_divisible_by(self, n):
         new_length = (len(self.iteration_order) // n) * n
@@ -294,7 +375,7 @@ class ConcatenatedBatchedDataset:
 
 
 class ARBucketDataset:
-    def __init__(self, ar_frames, resolutions, metadata_dataset, directory_config, cache_base):
+    def __init__(self, ar_frames, resolutions, metadata_dataset, directory_config, cache_base, round_to_multiple):
         self.ar_frames = ar_frames
         self.resolutions = resolutions
         self.metadata_dataset = metadata_dataset
@@ -303,6 +384,7 @@ class ARBucketDataset:
         self.path = Path(directory_config['path'])
         self.cache_base = cache_base
         self.cache_dir = cache_base / f'ar_frames_{bucket_suffix(self.ar_frames)}'
+        self.round_to_multiple = round_to_multiple
         os.makedirs(self.cache_dir, exist_ok=True)
 
     def get_size_bucket_datasets(self):
@@ -315,8 +397,8 @@ class ARBucketDataset:
             area = res**2
             w = math.sqrt(area * self.ar_frames[0])
             h = area / w
-            w = round_to_nearest_multiple(w, IMAGE_SIZE_ROUND_TO_MULTIPLE)
-            h = round_to_nearest_multiple(h, IMAGE_SIZE_ROUND_TO_MULTIPLE)
+            w = round_to_nearest_multiple(w, self.round_to_multiple)
+            h = round_to_nearest_multiple(h, self.round_to_multiple)
             size_bucket = (w, h, self.ar_frames[1])
             # to make sure the directory has a unique name
             naming_size_bucket = (self.ar_frames[0],) + size_bucket
@@ -341,7 +423,7 @@ class ARBucketDataset:
 
 
 class DirectoryDataset:
-    def __init__(self, directory_config, dataset_config, model_name, framerate=None, skip_dataset_validation=False):
+    def __init__(self, directory_config, dataset_config, model_name, framerate=None, round_to_multiple=32, skip_dataset_validation=False):
         self._set_defaults(directory_config, dataset_config)
         self.directory_config = directory_config
         self.dataset_config = dataset_config
@@ -349,6 +431,7 @@ class DirectoryDataset:
             self.validate()
         self.model_name = model_name
         self.framerate = framerate
+        self.round_to_multiple = round_to_multiple
         self.enable_ar_bucket = directory_config.get('enable_ar_bucket', dataset_config.get('enable_ar_bucket', False))
         # Configure directly from user-specified size buckets.
         self.size_buckets = directory_config.get('size_buckets', dataset_config.get('size_buckets', None))
@@ -369,15 +452,7 @@ class DirectoryDataset:
         self.shuffle_delimiter = directory_config.get('cache_shuffle_delimiter', dataset_config.get('cache_shuffle_delimiter', ", "))
         self.path = Path(self.directory_config['path'])
         self.mask_path = Path(self.directory_config['mask_path']) if 'mask_path' in self.directory_config else None
-        if 'control_paths' in self.directory_config:
-            self.control_paths = [Path(p) for p in self.directory_config['control_paths']]
-            self.control_path = None
-        elif 'control_path' in self.directory_config:
-            self.control_path = Path(self.directory_config['control_path'])
-            self.control_paths = None
-        else:
-            self.control_path = None
-            self.control_paths = None
+        self.control_path = Path(self.directory_config['control_path']) if 'control_path' in self.directory_config else None
         # For testing. Default if a mask is missing.
         self.default_mask_file = Path(self.directory_config['default_mask_file']) if 'default_mask_file' in self.directory_config else None
         self.cache_dir = self.path / 'cache' / self.model_name
@@ -389,10 +464,6 @@ class DirectoryDataset:
             raise RuntimeError(f'Invalid mask_path: {self.mask_path}')
         if self.control_path is not None and (not self.control_path.exists() or not self.control_path.is_dir()):
             raise RuntimeError(f'Invalid control_path: {self.control_path}')
-        if self.control_paths is not None:
-            for idx, cp in enumerate(self.control_paths):
-                if not cp.exists() or not cp.is_dir():
-                    raise RuntimeError(f'Invalid control_paths[{idx}]: {cp}')
         if self.default_mask_file is not None and (not self.default_mask_file.exists() or not self.default_mask_file.is_file()):
             raise RuntimeError(f'Invalid default_mask_file: {self.default_mask_file}')
 
@@ -475,6 +546,7 @@ class DirectoryDataset:
                         metadata,
                         self.directory_config,
                         self.cache_dir,
+                        self.round_to_multiple,
                     )
                 )
 
@@ -524,7 +596,6 @@ class DirectoryDataset:
             # Mask can have any extension, it just needs to have the same stem as the image.
             mask_file_stems = {path.stem: path for path in self.mask_path.glob('*') if path.is_file()} if self.mask_path is not None else {}
             control_file_stems = {path.stem: path for path in self.control_path.glob('*') if path.is_file()} if self.control_path is not None else {}
-            control_paths_stems = [{path.stem: path for path in cp.glob('*') if path.is_file()} for cp in self.control_paths] if self.control_paths is not None else None
 
             def process_file(file):
                 if file.suffix != '.tar':
@@ -558,21 +629,15 @@ class DirectoryDataset:
                         if self.mask_path is not None:
                             logger.warning(f'No mask file was found for image {image_file}, not using mask.')
                         mask_files.append(None)
-                    if self.control_paths:
-                        control_file_list = []
-                        for idx, stems in enumerate(control_paths_stems):
-                            if image_file.stem not in stems:
-                                raise RuntimeError(f'No control file in control_paths[{idx}] for {image_file}')
-                            control_file_list.append(str(stems[image_file.stem]))
-                        control_files.append(control_file_list)
-                    elif self.control_path:
+                    # control (e.g. Flux Kontext)
+                    if self.control_path:
                         if image_file.stem not in control_file_stems:
                             raise RuntimeError(f'No control file exists for image {image_file}')
                         control_files.append(str(control_file_stems[image_file.stem]))
             assert len(image_specs) > 0, f'Directory {self.path} had no images/videos!'
 
             d = {'image_spec': image_specs, 'caption_file': caption_files, 'mask_file': mask_files}
-            if self.control_path or self.control_paths:
+            if self.control_path:
                 d['control_file'] = control_files
             metadata_dataset = datasets.Dataset.from_dict(d)
 
@@ -662,7 +727,9 @@ class DirectoryDataset:
                 filepath_or_file = str(image_file)
             else:
                 tar_filename = image_spec[0]
-                tar_f = tarfile_map.setdefault(tar_filename, tarfile.TarFile(tar_filename))
+                if tar_filename not in tarfile_map:
+                    tarfile_map[tar_filename] = tarfile.TarFile(tar_filename)
+                tar_f = tarfile_map[tar_filename]
                 filepath_or_file = tar_f.extractfile(str(image_file))
 
             if image_file.suffix == '.webp':
@@ -835,17 +902,16 @@ class Dataset:
                 dataset_config,
                 self.model_name,
                 framerate=model.framerate,
+                round_to_multiple=model.pixels_round_to_multiple,
                 skip_dataset_validation=skip_dataset_validation,
             )
             self.directory_datasets.append(directory_dataset)
 
-    def post_init(self, data_parallel_rank, data_parallel_world_size, per_device_batch_size, gradient_accumulation_steps, per_device_batch_size_image):
+    def post_init(self, data_parallel_rank, data_parallel_world_size, per_device_batch_size: dict, gradient_accumulation_steps, per_device_batch_size_image: dict):
         self.data_parallel_rank = data_parallel_rank
         self.data_parallel_world_size = data_parallel_world_size
-        self.batch_size = per_device_batch_size * gradient_accumulation_steps
-        self.batch_size_image = per_device_batch_size_image * gradient_accumulation_steps
-        self.global_batch_size = self.data_parallel_world_size * self.batch_size
-        self.global_batch_size_image = self.data_parallel_world_size * self.batch_size_image
+        global_batch_size = {size: bs * gradient_accumulation_steps * self.data_parallel_world_size for size, bs in per_device_batch_size.items()}
+        global_batch_size_image = {size: bs * gradient_accumulation_steps * self.data_parallel_world_size for size, bs in per_device_batch_size_image.items()}
 
         # group same size_bucket together
         datasets_by_size_bucket = defaultdict(list)
@@ -857,7 +923,7 @@ class Dataset:
             self.buckets.append(ConcatenatedBatchedDataset(datasets))
 
         for bucket in self.buckets:
-            bucket.post_init(self.global_batch_size, self.global_batch_size_image)
+            bucket.post_init(global_batch_size, global_batch_size_image, data_parallel_rank, data_parallel_world_size)
 
         iteration_order = []
         for i, bucket in enumerate(self.buckets):
@@ -887,11 +953,7 @@ class Dataset:
     def __getitem__(self, idx):
         assert self.post_init_called
         i, j = self.iteration_order[idx]
-        examples = self.buckets[i][j]
-        start_idx = self.data_parallel_rank*self.batch_size
-        examples_for_this_dp_rank = examples[start_idx:start_idx+self.batch_size]
-        if DEBUG:
-            print((start_idx, start_idx+self.batch_size))
+        examples_for_this_dp_rank = self.buckets[i][j]
         batch = self._collate(examples_for_this_dp_rank)
         return batch
 
@@ -973,19 +1035,10 @@ def _cache_fn(datasets, queue, preprocess_media_file_fn, num_text_encoders, rege
             captions.extend([caption] * len(items))
             if is_edit_dataset:
                 control_file = example['control_file'][i]
-                if isinstance(control_file, list):
-                    multi_control = []
-                    for cf in control_file:
-                        control_items = preprocess_media_file_fn((None, cf), None, size_bucket)
-                        assert len(control_items) == 1
-                        multi_control.append(control_items[0])
-                    assert len(items) == 1
-                    control_tensors_and_masks.append(multi_control)
-                else:
-                    control_items = preprocess_media_file_fn((None, control_file), None, size_bucket)
-                    assert len(control_items) == 1
-                    assert len(items) == 1
-                    control_tensors_and_masks.append(control_items[0])
+                control_items = preprocess_media_file_fn((None, control_file), None, size_bucket)
+                assert len(control_items) == 1
+                assert len(items) == 1
+                control_tensors_and_masks.append(control_items[0])
             else:
                 control_tensors_and_masks.append(None)
 
@@ -997,17 +1050,12 @@ def _cache_fn(datasets, queue, preprocess_media_file_fn, num_text_encoders, rege
         results = defaultdict(list)
         for i in range(0, len(tensors_and_masks), caching_batch_size):
             tensor = torch.stack([t[0] for t in tensors_and_masks[i:i+caching_batch_size]])
-            if is_edit_dataset:
-                first_control = control_tensors_and_masks[i]
-                if isinstance(first_control, list):
-                    c_tensor = [torch.stack([ct[j][0] for ct in control_tensors_and_masks[i:i+caching_batch_size]]) for j in range(len(first_control))]
-                else:
-                    c_tensor = torch.stack([t[0] for t in control_tensors_and_masks[i:i+caching_batch_size]])
-            else:
-                c_tensor = None
-            parent_conn, child_conn = pipes.setdefault(rank, mp.Pipe(duplex=False))
+            c_tensor = torch.stack([t[0] for t in control_tensors_and_masks[i:i+caching_batch_size]]) if is_edit_dataset else None
+            if rank not in pipes:
+                pipes[rank] = mp.Pipe(duplex=False)
+            parent_conn, child_conn = pipes[rank]
             queue.put((0, tensor, c_tensor, child_conn))
-            result = parent_conn.recv()
+            result = parent_conn.recv()  # dict
             for k, v in result.items():
                 results[k].append(v)
         # concatenate the list of tensors at each key into one batched tensor
@@ -1023,7 +1071,9 @@ def _cache_fn(datasets, queue, preprocess_media_file_fn, num_text_encoders, rege
 
     for text_encoder_idx in range(num_text_encoders):
         def text_embedding_map_fn(example, rank):
-            parent_conn, child_conn = pipes.setdefault(rank, mp.Pipe(duplex=False))
+            if rank not in pipes:
+                pipes[rank] = mp.Pipe(duplex=False)
+            parent_conn, child_conn = pipes[rank]
             control_file = example['control_file'] if 'control_file' in example else None
             queue.put((text_encoder_idx+1, example['caption'], example['is_video'], control_file, child_conn))
             result = parent_conn.recv()  # dict
@@ -1157,11 +1207,10 @@ class DatasetManager:
         # I think this is because HF Datasets uses the multiprocess library (different from Python multiprocessing!) so it will always use fork.
         cpu_results = {}
         for k, v in results.items():
-            # Cast all floats to float16 because Arrow files don't support bfloat16, so it would end up float32 on disk. Cuts size in half.
             if isinstance(v, (list, tuple)):
-                cpu_results[k] = [x.to('cpu', torch.float16 if torch.is_floating_point(x) else x.dtype) for x in v]
+                cpu_results[k] = [x.to('cpu') for x in v]
             else:
-                cpu_results[k] = v.to('cpu', torch.float16 if torch.is_floating_point(v) else v.dtype)
+                cpu_results[k] = v.to('cpu')
         pipe.send(cpu_results)
 
 
