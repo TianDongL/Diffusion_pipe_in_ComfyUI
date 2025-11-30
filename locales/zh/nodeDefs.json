@@ -1,4 +1,52 @@
 {
+  "ZImageModelNode": {
+    "display_name": "Z-Image 模型",
+    "description": "Z-Image 模型加载节点",
+    "inputs": {
+      "merge_adapters": {
+        "name": "合并适配器",
+        "tooltip": "Merge Adapter 模型文件夹的完整路径。训练 turbo 时这个模型是必须的，否则会破坏模型梯度，导致效果崩塌。你可以在 https://huggingface.co/ostris/zimage_turbo_training_adapter/resolve/main/zimage_turbo_training_adapter_v1.safetensors?download=true 找到"
+      },
+      "checkpoint_path": {
+        "name": "检查点路径",
+        "tooltip": "Z-Image-Turbo 模型文件夹的完整路径。这里可以使用 diffusers 官方模型，但是使用了 diffusers 格式的模型，下面三种路径需要保持为空"
+      },
+      "diffusion_path": {
+        "name": "扩散模型路径",
+        "tooltip": "ComfyUI 格式模型文件夹的完整路径，需要加载 bf16 格式的模型"
+      },
+      "text_encoder_path": {
+        "name": "文本编码器路径",
+        "tooltip": "Text Encoder 模型文件夹的完整路径"
+      },
+      "vae_path": {
+        "name": "VAE 路径",
+        "tooltip": "VAE 模型文件夹的完整路径"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "模型路径",
+        "tooltip": "Z-Image 模型配置"
+      }
+    }
+  },
+  "Flux2ConfigNode": {
+    "display_name": "Flux2配置",
+    "description": "Flux2配置节点 - 配置Flux2模型路径",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers路径",
+        "tooltip": "Diffusers模型路径"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Flux2配置",
+        "tooltip": "返回Flux2配置"
+      }
+    }
+  },
   "MaskDatasetPathNode": {
     "display_name": "遮罩数据集路径",
     "description": "遮罩数据集路径节点 -用于遮罩训练",
@@ -19,7 +67,6 @@
       }
     }
   },
-
   "GeneralConfig": {
     "display_name": "通用训练配置",
     "description": "通用训练设置节点 - 配置训练过程中的通用参数",
@@ -248,7 +295,7 @@
       }
     }
   },
-    "LTXVideoModelNode": {
+  "LTXVideoModelNode": {
     "display_name": "LTX-Video模型",
     "description": "LTX-Video模型加载节点",
     "inputs": {
@@ -384,7 +431,6 @@
       }
     }
   },
-
   "AuraFlowModelNode": {
     "display_name": "AuraFlow模型",
     "description": "AuraFlow模型加载节点",
@@ -413,7 +459,6 @@
       }
     }
   },
-
   "ChromaModelNode": {
     "display_name": "Chroma模型",
     "description": "Chroma模型加载节点",
@@ -1106,4 +1151,4 @@
       }
     }
   }
-} 
+}

@@ -1,4 +1,52 @@
 {
+  "ZImageModelNode": {
+    "display_name": "Z-Image Model",
+    "description": "Z-Image model loading node",
+    "inputs": {
+      "merge_adapters": {
+        "name": "Merge Adapters",
+        "tooltip": "Full path to Merge Adapter model folder. Required when training turbo models to prevent gradient collapse. Can be found at https://huggingface.co/ostris/zimage_turbo_training_adapter/resolve/main/zimage_turbo_training_adapter_v1.safetensors?download=true"
+      },
+      "checkpoint_path": {
+        "name": "Checkpoint Path",
+        "tooltip": "Full path to Z-Image-Turbo model folder. You can use official diffusers model here, but if used, the three paths below must be empty."
+      },
+      "diffusion_path": {
+        "name": "Diffusion Path",
+        "tooltip": "Full path to ComfyUI format model folder. Requires bf16 format model."
+      },
+      "text_encoder_path": {
+        "name": "Text Encoder Path",
+        "tooltip": "Full path to Text Encoder model folder."
+      },
+      "vae_path": {
+        "name": "VAE Path",
+        "tooltip": "Full path to VAE model folder."
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Model Path",
+        "tooltip": "Z-Image model configuration"
+      }
+    }
+  },
+  "Flux2ConfigNode": {
+    "display_name": "Flux2 Config",
+    "description": "Configure Flux2 model path",
+    "inputs": {
+      "diffusers_path": {
+        "name": "Diffusers Path",
+        "tooltip": "Diffusers model path"
+      }
+    },
+    "outputs": {
+      "0": {
+        "name": "Diffusers Config",
+        "tooltip": "Return Diffusers model configuration"
+      }
+    }
+  },
   "MaskDatasetPathNode": {
     "display_name": "Mask Dataset Path",
     "description": "Configure mask dataset path",
@@ -163,7 +211,7 @@
       }
     }
   },
-    "SDXLModelNode": {
+  "SDXLModelNode": {
     "display_name": "SDXL Model",
     "description": "SDXL model loading node",
     "inputs": {
@@ -1075,4 +1123,4 @@
       }
     }
   }
-} 
+}

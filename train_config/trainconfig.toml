@@ -1,60 +1,43 @@
-eval_datasets = []
-epochs = 50
-micro_batch_size_per_gpu = 1
+eval_datasets = [{name = 'validation_set', config = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/evaldataset.toml'}]
+epochs = 100
+micro_batch_size_per_gpu = 2
 number_of_gpus = 1
 pipeline_stages = 1
-warmup_steps = 500
+warmup_steps = 100
 blocks_to_swap = 0
 activation_checkpointing = true
-save_dtype = "bfloat16"
+save_dtype = 'bfloat16'
 caching_batch_size = 1
-partition_method = "parameters"
-output_dir = "/home/TIANDONG/comfy/ComfyUI/output/2509test"
-disable_block_swap_for_eval = false
+partition_method = 'parameters'
+output_dir = '/home/TIANDONG/comfy/ComfyUI/output/zimage'
+disable_block_swap_for_eval = true
 gradient_accumulation_steps = 4
 gradient_clipping = 1.0
-eval_every_n_epochs = 10
+eval_every_n_epochs = 5
 eval_before_first_step = false
-eval_micro_batch_size_per_gpu = 1
-eval_gradient_accumulation_steps = 1
+eval_micro_batch_size_per_gpu = 2
+eval_gradient_accumulation_steps = 4
 save_every_n_epochs = 1
 checkpoint_every_n_minutes = 120
-dataset = "/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml"
-lr_scheduler = "linear"
+dataset = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml'
+lr_scheduler = 'linear'
 
 [optimizer]
-type = "AdamW8bitKahan"
-lr = 0.0001
-betas = [0.9, 0.99]
+type = 'AdamW8bitKahan'
+lr = 0.0002
+betas = [ 0.9, 0.99,]
 weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = "qwen_image"
-diffusers_path = "/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image"
-dtype = "bfloat16"
-timestep_sample_method = "logit_normal"
-transformer_dtype = "bfloat16"
-use_gradient_checkpointing = true
+type = 'z_image'
+merge_adapters = [ '/home/TIANDONG/comfy/ComfyUI/models/loras/zimage_turbo_training_adapter_v1.safetensors',]
+checkpoint_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Z-Image-Turbo'
+dtype = 'bfloat16'
+timestep_sample_method = 'logit_normal'
+transformer_dtype = 'bfloat16'
 
-# 简化DeepSpeed配置 - 使用字符串格式
-[deepspeed_config]
-config = '''
-{
-  "zero_optimization": {
-    "stage": 2,
-    "offload_optimizer": {
-      "device": "cpu"
-    }
-  },
-  "fp16": {
-    "enabled": true
-  },
-  "train_micro_batch_size_per_gpu": 1,
-  "gradient_accumulation_steps": 2
-}
-'''
-
-[mixed_precision]
-enabled = true
-dtype = "bf16"
+[adapter]
+type = 'lora'
+rank = 32
+dtype = 'bfloat16'

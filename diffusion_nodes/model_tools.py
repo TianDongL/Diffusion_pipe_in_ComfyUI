@@ -1013,6 +1013,41 @@ class AuraFlowModelNode:
         except Exception as e:
             return ({"error": str(e)},)            
 
+class Flux2ConfigNode:
+    
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "diffusers_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Flux2模型文件的完整路径（如/data2/imagegen_models/comfyui-models/flux2/flux2.safetensors）"
+                }),
+            }
+        }
+        
+    RETURN_TYPES = ("model_path",)
+    RETURN_NAMES = ("model_path",)
+    FUNCTION = "get_flux2_config"
+    CATEGORY = "Diffusion-Pipe/Model"
+
+    def get_flux2_config(self, diffusers_path: str) -> Tuple[dict]:
+        try:
+            if not diffusers_path.strip():
+                return ({"error": "diffusers_path不能为空"},)
+            
+            normalized_diffusers_path = normalize_wsl_path(diffusers_path.strip())
+            
+            config = {
+                "type": "flux2",
+                "diffusers_path": normalized_diffusers_path,
+            }
+            
+            return (config,)
+            
+        except Exception as e:
+            return ({"error": str(e)},) 
+
 
 class AdapterConfigNode:
     
@@ -1238,3 +1273,65 @@ class HunyuanImage21ModelNode:
         except Exception as e:
             return ({"error": str(e)},)
 
+
+class ZImageModelNode:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+            },
+            "optional": {
+                "merge_adapters": ("STRING", {
+                    "default": "",
+                    "tooltip": "Merge Adapter 模型文件夹的完整路径,训练turbo时这个模型是必须的，否则会破坏模型梯度，导致效果崩塌，你可以在https://huggingface.co/ostris/zimage_turbo_training_adapter/resolve/main/zimage_turbo_training_adapter_v1.safetensors?download=true找到"
+                }),
+                "checkpoint_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Z-Image-Turbo 模型文件夹的完整路径，这里可以使用diffusers官方模型，但是使用了diffusers格式的模型，下面三种路径需要保持为空"
+                }),
+                "diffusion_path": ("STRING", {
+                    "default": "",  
+                    "tooltip": "Comfyui格式模型文件夹的完整路径，需要加载bf16格式的模型"
+                }),
+                "text_encoder_path": ("STRING", {
+                    "default": "",  
+                    "tooltip": "Text Encoder 模型文件夹的完整路径，"
+                }),
+                "vae_path": ("STRING", {
+                    "default": "",  
+                    "tooltip": "VAE 模型文件夹的完整路径"
+                }),
+            }
+        }
+    RETURN_TYPES = ("model_path",)
+    RETURN_NAMES = ("model_path",)
+    FUNCTION = "get_z_image_config"
+    CATEGORY = "Diffusion-Pipe/Model"
+
+    def get_z_image_config(self, merge_adapters: str, checkpoint_path: str, diffusion_path: str, text_encoder_path: str, vae_path: str) -> Tuple[dict]:
+        config = {
+            "type": "z_image",
+        }
+
+        if merge_adapters.strip():
+            path = normalize_wsl_path(merge_adapters.strip())
+            config["merge_adapters"] = [path]
+
+        if diffusion_path.strip():
+            path = normalize_wsl_path(diffusion_path.strip())
+            config["diffusion_model"] = path
+            
+            if text_encoder_path.strip():
+                path = normalize_wsl_path(text_encoder_path.strip())
+                config["text_encoders"] = [
+                    {"path": path, "type": "lumina2"}
+                ]
+        
+            if vae_path.strip():
+                path = normalize_wsl_path(vae_path.strip())
+                config["vae"] = path
+                
+        elif checkpoint_path.strip():
+            config["checkpoint_path"] = normalize_wsl_path(checkpoint_path.strip())
+
+        return (config,)

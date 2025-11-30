@@ -22,3 +22,6 @@
 [submodule "submodules/OmniGen2"]
 	path = submodules/OmniGen2
 	url = https://github.com/VectorSpaceLab/OmniGen2
+[submodule "submodules/ComfyUI"]
+	path = submodules/ComfyUI
+	url = https://github.com/comfyanonymous/ComfyUI.git
