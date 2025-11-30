@@ -34,6 +34,7 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 # Quick Start
 
 ## update
+* 20251130:Z image support,support diffusers and comfy format models
 
 * 20251026:support eval 
 
@@ -169,7 +170,7 @@ This plugin supports over 20 latest Diffusion models, including:
 |Qwen-Image-Edit-2509 |✅    |✅              |✅                |
 |HunyuanImage-2.1|✅    |✅              |✅                |
 |AuraFlow        |✅    |❌              |✅                |
-
+|Z-Image         |✅    |✅              |❌                |
 
 ## License
 

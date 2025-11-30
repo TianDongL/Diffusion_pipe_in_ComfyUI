@@ -32,6 +32,8 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 ## 更新日志 
 
+* 20251130:Z图像支持、支持diffusers格式和Comfyui格式的模型
+
 * 20251026:评估支持
 
 * 20251030:支持aura模型训练
@@ -169,7 +171,7 @@ pip install -r requirements.txt
 |Qwen-Image-Edit-2509 |✅    |✅              |✅                |
 |HunyuanImage-2.1|✅    |✅              |✅                |
 |AuraFlow        |✅    |❌              |✅                |
-
+|Z-Image         |✅    |✅              |❌                |
 
 
 ## 许可证
