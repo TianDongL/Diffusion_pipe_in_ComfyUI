@@ -34,7 +34,26 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 # Quick Start
 
 ## update
-* 20251130:Z image support,support diffusers and comfy format models
+* 20251130: Z-Image support, supports both Diffusers and ComfyUI format models
+
+You need to download the latest diffusers development version to support training, e.g.:
+
+```bash
+ pip install git+https://github.com/huggingface/diffusers
+```
+***Z-Image-Turbo***
+
+merge_adapters = ['/data2/imagegen_models/comfyui-models/zimage_turbo_training_adapter_v1.safetensors']
+
+Model files support using the [ComfyUI version](https://huggingface.co/Comfy-Org/z_image_turbo).
+
+Also supports [diffusers](https://huggingface.co/Tongyi-MAI/Z-Image-Turbo)
+
+If training Z-Image-Turbo, make sure to merge the [adapter](https://huggingface.co/ostris/zimage_turbo_training_adapter).
+
+Credit to Ostris and [AI Toolkit](https://github.com/ostris/ai-toolkit) for making this adapter.
+
+Z-Image LoRAs are saved in ComfyUI format. This is different from Diffusers format.
 
 * 20251026:support eval 
 

@@ -20,7 +20,7 @@
 |Qwen-Image-Edit |✅    |✅              |✅                |
 |HunyuanImage-2.1|✅    |✅              |✅                |
 |AuraFlow        |✅    |❌              |✅                |
-
+|Z-Image         |✅    |✅              |❌                |
 
 ## SDXL
 ```

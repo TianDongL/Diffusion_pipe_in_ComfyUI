@@ -34,6 +34,26 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 * 20251130:Z图像支持、支持diffusers格式和Comfyui格式的模型
 
+你需要下载最新的diffusers开发版来支持训练,如
+
+```bash
+pip install git+https://github.com/huggingface/diffusers
+```
+
+***训练 Z-Image-Turbo 时使用***
+
+merge_adapters = ['/data2/imagegen_models/comfyui-models/zimage_turbo_training_adapter_v1.safetensors']
+
+模型文件支持使用 [ComfyUI 版本](https://huggingface.co/Comfy-Org/z_image_turbo)。
+
+同样支持 [diffusers](https://huggingface.co/Tongyi-MAI/Z-Image-Turbo)
+
+如果训练 Z-Image-Turbo，请确保合并 [adapter](https://huggingface.co/ostris/zimage_turbo_training_adapter)。
+
+感谢 Ostris 和 [AI Toolkit](https://github.com/ostris/ai-toolkit) 制作此 adapter。
+
+Z-Image LoRA 以 ComfyUI 格式保存。这与 Diffusers 格式不同。
+
 * 20251026:评估支持
 
 * 20251030:支持aura模型训练

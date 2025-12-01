@@ -30,16 +30,11 @@ weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = 'z_image'
-merge_adapters = [ '/home/TIANDONG/comfy/ComfyUI/models/loras/zimage_turbo_training_adapter_v1.safetensors',]
-diffusion_model = '/home/TIANDONG/comfy/ComfyUI/models/unet/z_image_turbo_bf16.safetensors'
-vae = '/home/TIANDONG/comfy/ComfyUI/models/vae/z_vae.safetensors'
+type = 'qwen_image'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'bfloat16'
-[[model.text_encoders]]
-path = '/home/TIANDONG/comfy/ComfyUI/models/clip/qwen_3_4b.safetensors'
-type = 'lumina2'
 
 [adapter]
 type = 'lora'
