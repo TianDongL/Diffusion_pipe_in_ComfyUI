@@ -149,11 +149,9 @@ class ZImageDiffusersPipeline(BasePipeline):
             )
             qwen_embeds = outputs.last_hidden_state  
             
-            # 提取有效 Token 并 Drop 头部
             split_embeds = self._extract_masked_hidden(qwen_embeds, attention_mask)
             split_embeds = [e[drop_idx:] for e in split_embeds]
             
-            # Pooled 仅作占位
             pooled = torch.stack([e.mean(dim=0) for e in split_embeds])
             
             return {'encoder_hidden_states': split_embeds, 'pooled_projections': pooled}
@@ -352,11 +350,105 @@ class ZImageDiffusersPipeline(BasePipeline):
             if fuse:
                 self.transformer.fuse_lora(lora_scale=fuse_weight)
 
+    def _convert_keys_to_comfyui_format(self, state_dict):
+        """
+        Convert LoRA keys from training format to ComfyUI format.
+        
+        Training format examples (from peft):
+            base_model.model.context_refiner.0.attention.to_q.lora_A.weight
+            transformer.context_refiner.0.attention.to_q.lora_A.weight
+            
+        ComfyUI format examples (target):
+            diffusion_model.context_refiner.0.attention.qkv.lora_A.weight
+            diffusion_model.context_refiner.0.attention.out.lora_A.weight
+        """
+        converted_dict = {}
+        qkv_groups = {}  
+        
+        for key, value in state_dict.items():
+            original_key = key
+            
+            if key.startswith("base_model.model."):
+                key = key[len("base_model.model."):]
+            elif key.startswith("transformer."):
+                key = key[len("transformer."):]
+            
+            if (".attention.to_q." in key or ".attention.to_k." in key or ".attention.to_v." in key):
+                if "lora_A" in key or "lora_B" in key:
+                    if ".attention.to_q." in key:
+                        qkv_type = "to_q"
+                        base_key = key.replace(".attention.to_q.", ".attention.qkv.")
+                    elif ".attention.to_k." in key:
+                        qkv_type = "to_k"
+                        base_key = key.replace(".attention.to_k.", ".attention.qkv.")
+                    else:  # to_v
+                        qkv_type = "to_v"
+                        base_key = key.replace(".attention.to_v.", ".attention.qkv.")
+                    
+                    base_key = "diffusion_model." + base_key
+                    
+                    if base_key not in qkv_groups:
+                        qkv_groups[base_key] = {}
+                    qkv_groups[base_key][qkv_type] = value
+                    continue
+                elif "alpha" in key:
+                    if ".attention.to_q." in key:
+                        key = key.replace(".attention.to_q.", ".attention.qkv.")
+                    elif ".attention.to_k." in key:
+                        key = key.replace(".attention.to_k.", ".attention.qkv.")
+                    elif ".attention.to_v." in key:
+                        key = key.replace(".attention.to_v.", ".attention.qkv.")
+            
+            if ".attention.to_out.0." in key:
+                key = key.replace(".attention.to_out.0.", ".attention.out.")
+            
+            if not key.startswith("diffusion_model."):
+                key = "diffusion_model." + key
+            
+            converted_dict[key] = value
+        
+        for base_key, qkv_dict in qkv_groups.items():
+            if len(qkv_dict) == 3:  
+
+                    q_weight = qkv_dict["to_q"]
+                    k_weight = qkv_dict["to_k"]
+                    v_weight = qkv_dict["to_v"]
+                    merged_weight = torch.cat([q_weight, k_weight, v_weight], dim=0)
+                    converted_dict[base_key] = merged_weight
+                elif "lora_B" in base_key:
+
+                    
+                    q_weight = qkv_dict["to_q"]
+                    k_weight = qkv_dict["to_k"]
+                    v_weight = qkv_dict["to_v"]
+                    
+                    out_dim, rank = q_weight.shape  
+                    device = q_weight.device
+                    dtype = q_weight.dtype
+                    
+                    merged_weight = torch.zeros(3 * out_dim, 3 * rank, device=device, dtype=dtype)
+                    merged_weight[0:out_dim, 0:rank] = q_weight
+                    merged_weight[out_dim:2*out_dim, rank:2*rank] = k_weight
+                    merged_weight[2*out_dim:3*out_dim, 2*rank:3*rank] = v_weight
+                    converted_dict[base_key] = merged_weight
+                else:
+                    print(f"Warning: Skipping unexpected key type: {base_key}")
+            else:
+                for qkv_type, weight in qkv_dict.items():
+                    converted_dict[base_key.replace(".qkv.", f".{qkv_type}.")] = weight
+        
+        return converted_dict
+
     def save_adapter(self, save_dir, peft_state_dict):
         from safetensors.torch import save_file
+        
+        # Convert keys to ComfyUI format
+        print("Converting LoRA keys to ComfyUI format...")
+        converted_state_dict = self._convert_keys_to_comfyui_format(peft_state_dict)
+        
         output_path = save_dir / "lora.safetensors"
         print(f"Saving adapter to {output_path}")
-        save_file(peft_state_dict, output_path, metadata={"format": "pt"})
+        save_file(converted_state_dict, output_path, metadata={"format": "pt"})
 
     def _manual_load_and_fuse_lora(self, state_dict, fuse_weight=1.0):
         print("Manually fusing LoRA weights...")
