@@ -30,8 +30,9 @@ weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = 'qwen_image'
-diffusers_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Qwen-Image'
+type = 'z_image'
+merge_adapters = [ '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/zimage_turbo_training_adapter_v1.safetensors',]
+checkpoint_path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/Z-Image-Turbo'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
 transformer_dtype = 'bfloat16'

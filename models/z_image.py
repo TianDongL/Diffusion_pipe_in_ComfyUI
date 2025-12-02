@@ -458,6 +458,10 @@ class ZImageDiffusersPipeline(BasePipeline):
             if 'lora' not in key:
                 continue      
             
+            # Identify base module name
+            # Pattern 1: ...lora.down.weight / ...lora.up.weight
+            # Pattern 2: ...lora_A.weight / ...lora_B.weight
+            
             if 'lora.down.weight' in key:
                 base_key = key.replace('.lora.down.weight', '')
                 type_ = 'down'
@@ -472,6 +476,12 @@ class ZImageDiffusersPipeline(BasePipeline):
                 type_ = 'up'
             else:
                 continue
+
+            # Remove prefixes
+            if base_key.startswith('diffusion_model.'):
+                base_key = base_key[len('diffusion_model.'):]
+            if base_key.startswith('transformer.'):
+                base_key = base_key[len('transformer.'):]
                 
             if base_key not in lora_groups:
                 lora_groups[base_key] = {}
@@ -486,14 +496,15 @@ class ZImageDiffusersPipeline(BasePipeline):
             # Find module
             module = self.transformer
             parts = base_key.split('.')
-            if parts[0] == 'transformer':
-                parts = parts[1:]
-                
+            
             try:
                 for part in parts:
+                    # Handle mapping from 'layers' to 'transformer_blocks' if needed
+                    if part == 'layers' and not hasattr(module, 'layers') and hasattr(module, 'transformer_blocks'):
+                        part = 'transformer_blocks'
                     module = getattr(module, part)
             except AttributeError:
-                print(f"Warning: Could not find module for key {base_key}, skipping.")
+                print(f"Warning: Could not find module for key {base_key} (part: {part}), skipping.")
                 continue
                 
             if not isinstance(module, (nn.Linear, nn.Conv2d)):
