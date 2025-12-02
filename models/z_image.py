@@ -455,17 +455,8 @@ class ZImageDiffusersPipeline(BasePipeline):
         # Group keys by module
         lora_groups = {}
         for key, value in state_dict.items():
-            # Handle Diffusers format: transformer.transformer_blocks.0.attn1.to_q.lora.down.weight
-            # Or: transformer.transformer_blocks.0.attn1.to_q.lora_A.weight
             if 'lora' not in key:
                 continue
-                
-            # Remove 'transformer.' prefix if present in key but not in model structure (or vice versa)
-            # We assume keys in state_dict match model structure roughly
-            
-            # Identify base module name
-            # Pattern 1: ...lora.down.weight / ...lora.up.weight
-            # Pattern 2: ...lora_A.weight / ...lora_B.weight
             
             if 'lora.down.weight' in key:
                 base_key = key.replace('.lora.down.weight', '')
