@@ -409,7 +409,7 @@ class ZImageDiffusersPipeline(BasePipeline):
         
         for base_key, qkv_dict in qkv_groups.items():
             if len(qkv_dict) == 3:  
-
+                if "lora_A" in base_key:
                     q_weight = qkv_dict["to_q"]
                     k_weight = qkv_dict["to_k"]
                     v_weight = qkv_dict["to_v"]
@@ -456,7 +456,7 @@ class ZImageDiffusersPipeline(BasePipeline):
         lora_groups = {}
         for key, value in state_dict.items():
             if 'lora' not in key:
-                continue
+                continue      
             
             if 'lora.down.weight' in key:
                 base_key = key.replace('.lora.down.weight', '')
