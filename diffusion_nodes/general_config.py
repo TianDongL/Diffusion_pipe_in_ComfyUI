@@ -168,6 +168,9 @@ class GeneralConfig:
                 "eval_dataset_config": ("EVAL_DATASET_CONFIG", {
                     "tooltip": "评估数据集配置（可选，来自EvalDatasetConfig节点）"
                 }),
+                "sampler_config": ("SAMPLER_CONFIG", {
+                    "tooltip": "训练采样器配置（可选，来自TrainingSamplerConfig节点）"
+                }),
             }
         }
     
@@ -184,7 +187,7 @@ class GeneralConfig:
                          eval_gradient_accumulation_steps: int = 1, save_every_n_epochs: int = 1,
                          checkpoint_every_n_minutes: int = 120, caching_batch_size: int = 1,
                          disable_block_swap_for_eval: bool = False, video_clip_mode: str = "none",
-                         adapter_config=None, advanced_config=None, eval_dataset_config=None) -> Tuple[str, str, str]:
+                         adapter_config=None, advanced_config=None, eval_dataset_config=None, sampler_config=None) -> Tuple[str, str, str]:
         try:
             comfyui_root = os.path.join(os.path.dirname(__file__), "..", "..", "..")
             comfyui_root = os.path.abspath(comfyui_root)
@@ -361,6 +364,25 @@ class GeneralConfig:
                     logging.warning(f"无法解析高级配置: {str(e)}")
             else:
                 logging.info("未提供高级配置，使用默认设置")
+            
+            # Process sampler_config
+            if sampler_config:
+                try:
+                    if isinstance(sampler_config, str):
+                        sampler_dict = json.loads(sampler_config)
+                    else:
+                        sampler_dict = sampler_config
+                    
+                    if isinstance(sampler_dict, dict) and sampler_dict:
+                        # Add as training_sampler section in config
+                        settings['training_sampler'] = sampler_dict
+                        logging.info(f"成功合并训练采样器配置: {sampler_dict}")
+                    else:
+                        logging.info("训练采样器配置为空，不启用采样")
+                except (json.JSONDecodeError, TypeError) as e:
+                    logging.warning(f"无法解析训练采样器配置: {str(e)}")
+            else:
+                logging.info("未提供训练采样器配置")
             
             settings = self._normalize_paths_in_dict(settings)
             

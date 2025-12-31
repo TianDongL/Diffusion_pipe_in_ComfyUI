@@ -81,6 +81,10 @@ class ZImageDiffusersPipeline(BasePipeline):
             trust_remote_code=True
         )
         
+        # Store paths for potential reloading (e.g., in TrainingSampler)
+        self.text_encoder_path = str(checkpoint_path_obj / "text_encoder") if hasattr(checkpoint_path_obj, '__truediv__') else f"{checkpoint_path_obj}/text_encoder"
+        self.checkpoint_path = str(checkpoint_path_obj)
+        
         self.transformer.train()
         self.text_encoder.train()
         
@@ -176,11 +180,8 @@ class ZImageDiffusersPipeline(BasePipeline):
             l = lengths[i]
             padded_embeds[i, :l] = e.to(device)
             
-        # 记录长度以便后续还原
         txt_lens = torch.tensor(lengths, dtype=torch.long, device=device)
-        # ================================================================
 
-        # Prepare img_ids
         img_ids = self._prepare_latent_image_ids(bs, h, w, device, dtype)
         if img_ids.ndim == 2:
             img_ids = img_ids.unsqueeze(0).repeat((bs, 1, 1))
@@ -223,7 +224,6 @@ class ZImageDiffusersPipeline(BasePipeline):
         img_seq_len = torch.tensor(x_t.shape[1], device=device).repeat((bs,))
         model_t = 1.0 - t
         
-        # 返回 padded_embeds 和 txt_lens
         return (x_t, padded_embeds, pooled_projections, model_t, img_ids, txt_ids, guidance_vec, img_seq_len, txt_lens), (target, mask)
 
     def _prepare_latent_image_ids(self, batch_size, height, width, device, dtype):
@@ -443,7 +443,7 @@ class ZImageDiffusersPipeline(BasePipeline):
         from safetensors.torch import save_file
         
         # Convert keys to ComfyUI format
-        print("Converting LoRA keys to ComfyUI format...")
+        #print("Converting LoRA keys to ComfyUI format...")
         converted_state_dict = self._convert_keys_to_comfyui_format(peft_state_dict)
         
         output_path = save_dir / "lora.safetensors"
@@ -506,10 +506,20 @@ class ZImageDiffusersPipeline(BasePipeline):
             except AttributeError:
                 print(f"Warning: Could not find module for key {base_key} (part: {part}), skipping.")
                 continue
+            
+            # Unwrap PEFT layer if present
+            if hasattr(module, 'base_layer'):
+                module = module.base_layer
                 
             if not isinstance(module, (nn.Linear, nn.Conv2d)):
-                print(f"Warning: Module {base_key} is not Linear or Conv2d, skipping.")
-                continue
+                # Fallback for quantized or custom layers that look like Linear
+                if hasattr(module, 'weight') and module.weight.ndim == 2:
+                     pass # Treat as Linear
+                elif hasattr(module, 'weight') and module.weight.ndim == 4:
+                     pass # Treat as Conv2d
+                else:
+                    print(f"Warning: Module {base_key} (Type: {type(module)}) is not Linear or Conv2d, skipping.")
+                    continue
                 
             # Calculate delta
             down = weights['down'].float().to(module.weight.device)
@@ -518,12 +528,8 @@ class ZImageDiffusersPipeline(BasePipeline):
             # Rank check
             rank = down.shape[0]
             
-            # Alpha check (optional, usually baked in or separate key)
-            # For simplicity, we use fuse_weight as scale if alpha not found
-            # In many safetensors, alpha is not stored or stored as .alpha
-            # We assume scale = fuse_weight for now (or 1.0)
             
-            if isinstance(module, nn.Conv2d):
+            if isinstance(module, nn.Conv2d) or (hasattr(module, 'weight') and module.weight.ndim == 4):
                 delta = torch.mm(up.flatten(1), down.flatten(1)).reshape(module.weight.shape)
             else:
                 delta = torch.mm(up, down)

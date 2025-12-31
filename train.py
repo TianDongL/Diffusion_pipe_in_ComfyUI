@@ -106,7 +106,9 @@ def set_config_defaults(config):
     model_dtype_str = model_config['dtype']
     model_config['dtype'] = DTYPE_MAP[model_dtype_str]
     if transformer_dtype := model_config.get('transformer_dtype', None):
-        model_config['transformer_dtype'] = DTYPE_MAP.get(transformer_dtype, transformer_dtype)
+        model_config['transformer_dtype'] = DTYPE_MAP[transformer_dtype]
+    if diffusion_model_dtype := model_config.get('diffusion_model_dtype', None):
+        model_config['diffusion_model_dtype'] = DTYPE_MAP[diffusion_model_dtype]
     model_config.setdefault('guidance', 1.0)
 
     if 'adapter' in config:
@@ -346,6 +348,9 @@ if __name__ == '__main__':
     elif model_type == 'z_image':
         from models import z_image
         model = z_image.ZImagePipeline(config)
+    elif model_type == 'hunyuan_video_15':
+        from models import hunyuan_video_15
+        model = hunyuan_video_15.HunyuanVideo15Pipeline(config)
     else:
         raise NotImplementedError(f'Model type {model_type} is not implemented')
 
@@ -702,6 +707,7 @@ if __name__ == '__main__':
             return gradient_release.GradientReleaseOptimizerWrapper(list(optimizer_dict.values()))
         elif optim_type_lower == 'genericoptim':
             kwargs['compile'] = config['compile']
+            kwargs['mpu'] = pipeline_model.mpu()
             new_param_groups = []
             param_groups = model.get_param_groups(model_parameters)
             for pg in param_groups:
@@ -842,8 +848,12 @@ if __name__ == '__main__':
 
         if is_main_process() and step % config['logging_steps'] == 0:
             tb_writer.add_scalar(f'train/loss', loss, x_axis)
+            if hasattr(optimizer, '_grad_norm'):
+                tb_writer.add_scalar(f'train/grad_norm', optimizer._grad_norm, x_axis)
             if wandb_enable:
                 wandb.log({'train/loss': loss, 'step': x_axis})
+                if hasattr(optimizer, '_grad_norm'):
+                    wandb.log({'train/grad_norm': optimizer._grad_norm, 'step': x_axis})
             if optimizer.__class__.__name__ == 'Prodigy':
                 prodigy_d = get_prodigy_d(optimizer)
                 tb_writer.add_scalar(f'train/prodigy_d', prodigy_d, x_axis)

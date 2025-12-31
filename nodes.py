@@ -1,6 +1,4 @@
-# 导入所有节点类
 try:
-    # 尝试相对导入 (在 ComfyUI 中作为包导入时)
     from .diffusion_nodes.GeneralDatasetConfig import GeneralDatasetConfig
     from .diffusion_nodes.EvalDatasetConfig import EvalDatasetConfig
     from .diffusion_nodes.dataset_tools import (
@@ -10,6 +8,7 @@ try:
     
     from .diffusion_nodes.general_config import GeneralConfig
     from .diffusion_nodes.advanced_train_config import AdvancedTrainConfig
+    from .diffusion_nodes.training_sampler import TrainingSamplerConfig
     from .diffusion_nodes.model_config import ModelConfig
     from .diffusion_nodes.dataset_tools import ArBucketsNode
     from .diffusion_nodes.model_tools import (
@@ -17,9 +16,9 @@ try:
         FluxKontextModelNode, QwenImageModelNode, CosmosPredict2ModelNode, OmniGen2ModelNode,
         FluxModelNode, SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,
         HiDreamModelNode, ChromaModelNode, CosmosModelNode, Lumina2ModelNode,
-        Wan21ModelNode, AuraFlowModelNode, Flux2ConfigNode, ZImageModelNode  
-    ) 
-    from .diffusion_nodes.model_tools import AdapterConfigNode, OptimizerConfigNode
+        Wan21ModelNode, AuraFlowModelNode, Flux2ConfigNode, ZImageModelNode,
+        hunyuanvideo15ModelNode, AdapterConfigNode, OptimizerConfigNode
+    )
     from .diffusion_nodes.start import Train
     from .diffusion_nodes.train_monitor import TensorBoardMonitor
     from .diffusion_nodes.output_dir_passthrough import OutputDirPassthrough
@@ -38,6 +37,7 @@ except ImportError:
     )
     from diffusion_nodes.general_config import GeneralConfig
     from diffusion_nodes.advanced_train_config import AdvancedTrainConfig
+    from diffusion_nodes.training_sampler import TrainingSamplerConfig
     from diffusion_nodes.model_config import ModelConfig
     from diffusion_nodes.dataset_tools import ArBucketsNode
     from diffusion_nodes.model_tools import (
@@ -45,9 +45,9 @@ except ImportError:
         FluxKontextModelNode, QwenImageModelNode, CosmosPredict2ModelNode, OmniGen2ModelNode,
         FluxModelNode, SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,
         HiDreamModelNode, ChromaModelNode, CosmosModelNode, Lumina2ModelNode,
-        Wan21ModelNode, AuraFlowModelNode, Flux2ConfigNode, ZImageModelNode
-    ) 
-    from diffusion_nodes.model_tools import AdapterConfigNode, OptimizerConfigNode
+        Wan21ModelNode, AuraFlowModelNode, Flux2ConfigNode, ZImageModelNode,
+        hunyuanvideo15ModelNode, AdapterConfigNode, OptimizerConfigNode
+    )
     from diffusion_nodes.start import Train
     from diffusion_nodes.train_monitor import TensorBoardMonitor
     from diffusion_nodes.output_dir_passthrough import OutputDirPassthrough
@@ -85,10 +85,12 @@ NODE_CLASS_MAPPINGS = {
     "HunyuanImage21ModelNode": HunyuanImage21ModelNode,
     "ZImageModelNode": ZImageModelNode,
     "AuraFlowModelNode": AuraFlowModelNode,
-    "Flux2ConfigNode": Flux2ConfigNode, 
+    "Flux2ConfigNode": Flux2ConfigNode,
+    "hunyuanvideo15ModelNode": hunyuanvideo15ModelNode, 
     # 配置生成节点
     "GeneralConfig": GeneralConfig,
     "AdvancedTrainConfig": AdvancedTrainConfig,
+    "TrainingSamplerConfig": TrainingSamplerConfig,
     "ModelConfig": ModelConfig,
     "AdapterConfigNode": AdapterConfigNode,
     "OptimizerConfigNode": OptimizerConfigNode,
@@ -134,10 +136,12 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "HunyuanImage21ModelNode": "混元Image 2.1模型配置",
     "ZImageModelNode": "Z-Image模型配置",
     "AuraFlowModelNode": "AuraFlow模型配置器",
-    "Flux2ConfigNode": "Flux2模型配置器",   
+    "Flux2ConfigNode": "Flux2模型配置器",
+    "hunyuanvideo15ModelNode": "混元Video 1.5模型配置器", 
     # 配置生成节点
     "GeneralConfig": "通用训练设置",
     "AdvancedTrainConfig": "高级训练配置",
+    "TrainingSamplerConfig": "训练采样器配置(开发版)",
     "ModelConfig": "模型配置",
     "AdapterConfigNode": "适配器配置",
     "OptimizerConfigNode": "优化器配置",

@@ -1335,3 +1335,66 @@ class ZImageModelNode:
             config["checkpoint_path"] = normalize_wsl_path(checkpoint_path.strip())
 
         return (config,)
+
+class hunyuanvideo15ModelNode:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "diffusion_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "Diffusion模型文件的完整路径（如：/data/imagegen_models/comfyui-models/hunyuan_video_1.5.safetensors）"
+                }),
+                "vae_path": ("STRING", {
+                    "default": "",
+                    "tooltip": "VAE文件的完整路径（如：/data/imagegen_models/comfyui-models/hunyuan_video_1.5_vae_fp16.safetensors）"
+                }),
+                "Text_Encoder": ("STRING", {
+                    "default": "",
+                    "tooltip": "Text Encoder文件的完整路径（如：/data/imagegen_models/comfyui-models/qwen_2.5_vl_7b.safetensors）"
+                }),
+                "ByT5": ("STRING", {
+                    "default": "",
+                    "tooltip": "ByT5文件的完整路径（如：/data/imagegen_models/comfyui-models/byt5_small_glyphxl_fp16.safetensors）"
+                }),
+                "shift":("INT",{
+                    "default": 1,
+                    "tooltip": "更高的偏移可能会提升视频训练效果。"
+                })
+            }
+        }
+    RETURN_TYPES = ("model_path",)
+    RETURN_NAMES = ("model_path",)
+    FUNCTION = "get_hunyuan_video_15_config"
+    CATEGORY = "Diffusion-Pipe/Model"
+
+    def get_hunyuan_video_15_config(self, diffusion_path: str, vae_path: str, Text_Encoder: str, ByT5: str, shift: int) -> Tuple[dict]:
+        try:
+            config = {
+                "type": "hunyuan_video_15",
+            }
+            
+            if diffusion_path.strip():
+                config["diffusion_model"] = normalize_wsl_path(diffusion_path.strip())
+            else:
+                return ({"error": "Diffusion路径不能为空"},)
+            
+            if vae_path.strip():
+                config["vae"] = normalize_wsl_path(vae_path.strip())
+            else:
+                return ({"error": "VAE路径不能为空"},)
+            
+            config["text_encoders"] = [
+                {
+                    "paths": [
+                        normalize_wsl_path(Text_Encoder.strip()),
+                        normalize_wsl_path(ByT5.strip())
+                    ],
+                    "type": "hunyuan_video_15"
+                }
+            ]            
+            config["shift"] = shift            
+            return (config,)
+            
+        except Exception as e:
+            return ({"error": str(e)},)
