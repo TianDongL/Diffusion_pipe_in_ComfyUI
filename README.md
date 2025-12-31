@@ -34,6 +34,9 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 # Quick Start
 
 ## update
+
+* 20251231, Zimage FP8 Comfy format training, supported by hunyuan-video_15 model.
+
 * 20251130: Z-Image support, supports both Diffusers and ComfyUI format models
 
 You need to download the latest diffusers development version to support training, e.g.:
@@ -190,6 +193,7 @@ This plugin supports over 20 latest Diffusion models, including:
 |HunyuanImage-2.1|✅    |✅              |✅                |
 |AuraFlow        |✅    |❌              |✅                |
 |Z-Image         |✅    |✅              |❌                |
+|HunyuanVideo-1.5|✅    |✅              |✅                |
 
 ## License
 
