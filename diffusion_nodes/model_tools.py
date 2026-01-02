@@ -863,6 +863,11 @@ class QwenImageModelNode:
     @classmethod
     def INPUT_TYPES(cls):
         return {
+            "required":{
+                "qwen_2511": ("BOOLEAN", {
+                    "default": False,
+                })
+            },
             "optional": {
                 "diffusers_path": ("STRING", {
                     "default": "",
@@ -888,11 +893,11 @@ class QwenImageModelNode:
     FUNCTION = "get_qwen_image_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_qwen_image_config(self, transformer_path: str = "", text_encoder_path: str = "", 
+    def get_qwen_image_config(self, qwen_2511: bool, transformer_path: str = "", text_encoder_path: str = "", 
                              vae_path: str = "", diffusers_path: str = "") -> Tuple[dict]:
         try:
             config = {
-                "type": "qwen_image",
+                "type": "qwen2511" if qwen_2511 else "qwen_image",
             }
             
             if diffusers_path.strip():
@@ -1065,7 +1070,7 @@ class AdapterConfigNode:
                     "default": 32,
                     "min": 16,
                     "max": 1024,
-                    "step": 16,
+                    "step": 2,
                     "tooltip": "LoRA的秩（rank），控制LoRA的参数量和表达能力，必须是16的倍数"
                 }),
                 "dtype": (["bfloat16", "float16", "float32"], {

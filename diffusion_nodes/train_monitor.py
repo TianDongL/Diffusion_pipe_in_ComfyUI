@@ -107,15 +107,11 @@ class TensorBoardMonitor:
                     "default": "localhost",
                     "tooltip": "TensorBoard服务主机地址"
                 }),
-                "is_new_training": ("BOOLEAN", {
-                    "default": True,
-                    "tooltip": "是否开启新训练（开启时会延迟30秒等待训练文件生成）"
-                })
             },
             "optional": {
-                "action": (["start", "stop", "status", "kill_port"], {
+                "action": (["start", "status", "kill_port"], {
                     "default": "start",
-                    "tooltip": "操作类型：启动/停止/查看状态/强制清理端口"
+                    "tooltip": "操作类型：启动/查看状态/强制清理端口"
                 })
             }
         }
@@ -125,24 +121,18 @@ class TensorBoardMonitor:
     FUNCTION = "execute"
     CATEGORY = "Diffusion-Pipe/Monitor"
     
-    def execute(self, output_dir, port=6006, host="localhost", is_new_training=True, action="start"):
+    def execute(self, output_dir, port=6006, host="localhost", action="start"):
         """执行TensorBoard监控操作"""
         print("\n" + "="*80)
         print(f"[TensorBoard Monitor] 执行操作: {action}")
         print("="*80)
         
         if action == "start":
-            url_result = self.start_tensorboard(output_dir, port, host, is_new_training)
+            url_result = self.start_tensorboard(output_dir, port, host)
             status = self.get_current_status()
             url = url_result[0] if url_result and len(url_result) > 0 else ""
             print("="*80 + "\n")
             return (url, status)
-        elif action == "stop":
-            result_tuple = self.stop_tensorboard()
-            status = self.get_current_status()
-            result = result_tuple[0] if result_tuple and len(result_tuple) > 0 else ""
-            print("="*80 + "\n")
-            return (result, status)
         elif action == "status":
             status = self.get_current_status()
             url = f"http://{host}:{port}" if self.is_running else ""
@@ -195,7 +185,7 @@ class TensorBoardMonitor:
                 print(f"检测到端口{port}被占用，正在清理...")
                 if self.process_manager.kill_process_on_port(port):
                     print(f"成功清理端口{port}")
-                    time.sleep(2)  # 等待端口释放
+                    time.sleep(2)  
                 else:
                     print(f"清理端口{port}失败")
                     return ("",)
@@ -207,15 +197,9 @@ class TensorBoardMonitor:
             output_dir = self.normalize_path(output_dir)
             
             if not os.path.exists(output_dir):
-                print(f"输出目录不存在: {output_dir}，正在自动创建")
+                print(f"输出目录不存在: {output_dir}")
                 return ("",)
             
-            if is_new_training:
-                print("开始新训练模式：等待新训练文件生成（30秒延迟）...")
-                time.sleep(30)
-                print("等待完成，开始监控训练目录")
-            
-            # 直接使用传入的 output_dir 作为监控目录
             final_logdir = output_dir
             print(f"使用训练日志目录: {final_logdir}")
             

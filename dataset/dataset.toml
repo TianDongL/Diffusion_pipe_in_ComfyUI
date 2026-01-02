@@ -4,5 +4,6 @@ min_ar = 0.5
 max_ar = 2.0
 num_ar_buckets = 10
 [[directory]]
-path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/eval'
+path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test'
+control_path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/test1'
 num_repeats = 1

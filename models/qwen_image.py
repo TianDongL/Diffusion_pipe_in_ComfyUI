@@ -195,7 +195,6 @@ class QwenImagePipeline(BasePipeline):
 
         self.preprocess_media_file_fn = PreprocessMediaFile(self.config, support_video=True, framerate=1)
 
-        # 获取当前文件的目录，然后构建配置路径
         current_dir = Path(__file__).parent.parent
         configs_dir = current_dir / 'configs' / 'qwen_image'
         
@@ -257,7 +256,6 @@ class QwenImagePipeline(BasePipeline):
         else:
             transformer_path = Path(self.model_config['diffusers_path']) / 'transformer'
         
-        # 获取当前文件的目录，然后构建配置路径
         current_dir = Path(__file__).parent.parent
         configs_dir = current_dir / 'configs' / 'qwen_image'
         

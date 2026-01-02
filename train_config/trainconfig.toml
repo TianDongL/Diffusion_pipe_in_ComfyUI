@@ -1,17 +1,17 @@
-eval_datasets = [{name = 'validation_set', config = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/evaldataset.toml'}]
+eval_datasets = []
 epochs = 100
-micro_batch_size_per_gpu = 3
+micro_batch_size_per_gpu = 1
 number_of_gpus = 1
 pipeline_stages = 1
 warmup_steps = 100
-blocks_to_swap = 0
+blocks_to_swap = 20
 activation_checkpointing = true
 save_dtype = 'bfloat16'
 caching_batch_size = 1
 partition_method = 'parameters'
-output_dir = '/home/TIANDONG/comfy/ComfyUI/output/12'
+output_dir = '/home/TIANDONG/comfy/ComfyUI/output/123'
 disable_block_swap_for_eval = true
-gradient_accumulation_steps = 4
+gradient_accumulation_steps = 2
 gradient_clipping = 1.0
 eval_every_n_epochs = 5
 eval_before_first_step = false
@@ -21,6 +21,7 @@ save_every_n_epochs = 1
 checkpoint_every_n_minutes = 120
 dataset = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/dataset.toml'
 lr_scheduler = 'linear'
+compile = true
 
 [optimizer]
 type = 'AdamW8bitKahan'
@@ -30,12 +31,11 @@ weight_decay = 0.01
 gradient_release = false
 
 [model]
-type = 'z_image'
-merge_adapters = [ '/home/TIANDONG/comfy/ComfyUI/models/loras/zimage_turbo_training_adapter_v1.safetensors',]
-checkpoint_path = '/home/TIANDONG/comfy/ComfyUI/models/unet/Z-Image-Turbo'
+type = 'qwen2511'
+diffusers_path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/Qwen-Image-Edit-2511'
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
-diffusion_model_dtype = 'bfloat16'
+transformer_dtype = 'bfloat16'
 
 [adapter]
 type = 'lora'

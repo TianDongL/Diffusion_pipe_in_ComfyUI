@@ -351,6 +351,9 @@ if __name__ == '__main__':
     elif model_type == 'hunyuan_video_15':
         from models import hunyuan_video_15
         model = hunyuan_video_15.HunyuanVideo15Pipeline(config)
+    elif model_type == 'qwen2511':
+        from models import qwen2511
+        model = qwen2511.Qwen2511Pipeline(config)
     else:
         raise NotImplementedError(f'Model type {model_type} is not implemented')
 
