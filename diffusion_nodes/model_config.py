@@ -12,9 +12,9 @@ class ModelConfig:
                 "model_path": ("model_path", {
                     "tooltip": "模型路径，根据不同的模型，选择不同的模型路径，具体查看注释"
                 }),
-                "model_type": (["diffusion", "transformers"], {
+                "model_type": (["diffusion", "transformer"], {
                     "default": "diffusion",
-                    "tooltip": "选择模型格式类型 (diffusion / transformers)"
+                    "tooltip": "选择模型格式类型 (diffusion / transformer)"
                 }),
                 "dtype": (["bfloat16", "float16", "float32"], {
                     "default": "bfloat16",

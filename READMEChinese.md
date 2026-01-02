@@ -25,12 +25,16 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 ***视频演示：https://www.bilibili.com/video/BV1CRk9BYErw/?vd_source=7fd137e57a445e84bd9ffea9b632c98d***
 
-***[📋 查看支持的模型](./docs/supported_models.md)***
 
+# 请在开始前仔细查看示例工作流中的说明
+![说明](./img/notice.png)
+ 
 
 # 快速开始
 
 ## 更新日志 
+
+* 20260102:qwen2511支持，支持diffusers和comfyui格式的模型
 
 * 20251231,zimage fp8 comfy格式训练，hunyuan_video_15模型支持。
 
@@ -195,7 +199,7 @@ pip install -r requirements.txt
 |AuraFlow        |✅    |❌              |✅                |
 |Z-Image         |✅    |✅              |❌                |
 |HunyuanVideo-1.5|✅    |✅              |✅                |
-
+|Qwen-Image-Edit-2511 |✅    |✅              |✅                |
 
 ## 许可证
 
