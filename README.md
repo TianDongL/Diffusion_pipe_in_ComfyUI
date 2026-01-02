@@ -4,10 +4,10 @@
 # Diffusion-Pipe In ComfyUI Custom Nodes
 
 
-# Attention! This is the Linux(wsl2) version ❗❗❗❗
-# If you use this custom node on Windows, you will not be able to train ❗❗❗❗
-# 注意！此处为Linux(wsl2)版本❗❗❗❗
-# 如果你在windows上使用了这个插件，你将无法训练❗❗❗❗
+# Attention! This is the Linux(wsl2) version 
+# If you use this custom node on Windows, you will not be able to train 
+# 注意！此处为Linux(wsl2)版本
+# 如果你在windows上使用了这个插件，你将无法训练
 
 
 <div align="center">
@@ -31,7 +31,7 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 
 # Please read the notice in the workflow before training
 ![notice](./img/notice.png)
- 
+
 
 
 # Quick Start

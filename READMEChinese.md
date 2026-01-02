@@ -3,10 +3,10 @@
  # Diffusion-Pipe In ComfyUI 自定义节点
 
 
-# Attention! This is the Linux(wsl2) version ❗❗❗❗
-# If you use this custom node on Windows, you will not be able to train ❗❗❗❗
-# 注意！此处为Linux(wsl2)版本❗❗❗❗
-# 如果你在windows上使用了这个插件，你将无法训练❗❗❗❗
+# Attention! This is the Linux(wsl2) version 
+# If you use this custom node on Windows, you will not be able to train 
+# 注意！此处为Linux(wsl2)版本
+# 如果你在windows上使用了这个插件，你将无法训练
 
  <div align="center">
 
@@ -28,7 +28,7 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 
 # 请在开始前仔细查看示例工作流中的说明
 ![说明](./img/notice.png)
- 
+
 
 # 快速开始
 
