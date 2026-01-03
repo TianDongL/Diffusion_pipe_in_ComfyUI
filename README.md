@@ -37,6 +37,7 @@ Diffusion-Pipe In ComfyUI custom nodes is a powerful extension plugin that provi
 # Quick Start
 
 ## update
+* 20260103: add qwen2512 support, same as qwen_image
 
 * 20260102: qwen2511 support, supports both Diffusers and ComfyUI format models
 

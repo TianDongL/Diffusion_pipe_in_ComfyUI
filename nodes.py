@@ -12,7 +12,7 @@ try:
     from .diffusion_nodes.model_config import ModelConfig
     from .diffusion_nodes.dataset_tools import ArBucketsNode
     from .diffusion_nodes.model_tools import (
-        SDXLModelNode, Wan22ModelNode, HunyuanImage21ModelNode, QwenImageEditModelNode,
+        SDXLModelNode, Wan22ModelNode, HunyuanImage21ModelNode, 
         FluxKontextModelNode, QwenImageModelNode, CosmosPredict2ModelNode, OmniGen2ModelNode,
         FluxModelNode, SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,
         HiDreamModelNode, ChromaModelNode, CosmosModelNode, Lumina2ModelNode,
@@ -41,7 +41,7 @@ except ImportError:
     from diffusion_nodes.model_config import ModelConfig
     from diffusion_nodes.dataset_tools import ArBucketsNode
     from diffusion_nodes.model_tools import (
-        SDXLModelNode, Wan22ModelNode, HunyuanImage21ModelNode, QwenImageEditModelNode,
+        SDXLModelNode, Wan22ModelNode, HunyuanImage21ModelNode, 
         FluxKontextModelNode, QwenImageModelNode, CosmosPredict2ModelNode, OmniGen2ModelNode,
         FluxModelNode, SD3ModelNode, LTXVideoModelNode, HunyuanVideoModelNode,
         HiDreamModelNode, ChromaModelNode, CosmosModelNode, Lumina2ModelNode,
@@ -68,7 +68,6 @@ NODE_CLASS_MAPPINGS = {
     # 模型工具节点
     "SDXLModelNode": SDXLModelNode,
     "Wan22ModelNode": Wan22ModelNode,
-    "QwenImageEditModelNode": QwenImageEditModelNode,
     "FluxModelNode": FluxModelNode,
     "SD3ModelNode": SD3ModelNode,
     "CosmosPredict2ModelNode": CosmosPredict2ModelNode,
@@ -124,7 +123,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "CosmosPredict2ModelNode": "Cosmos Predict2模型配置器",
     "OmniGen2ModelNode": "OmniGen2模型配置器",
     "QwenImageModelNode": "Qwen-Image模型配置器",
-    "QwenImageEditModelNode": "Qwen-Image-Edit模型配置器",
     "FluxKontextModelNode": "Flux Kontext模型配置器",
     "LTXVideoModelNode": "LTX-Video模型配置器",
     "HunyuanVideoModelNode": "HunyuanVideo模型配置器",

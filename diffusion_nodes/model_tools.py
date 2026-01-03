@@ -864,8 +864,9 @@ class QwenImageModelNode:
     def INPUT_TYPES(cls):
         return {
             "required":{
-                "qwen_2511": ("BOOLEAN", {
-                    "default": False,
+                "model_version": (["qwen_image", "qwen_edit_2511", "qwen2512", "qwen_edit_2509", "qwen_edit"], {
+                    "default": "qwen_image",
+                    "tooltip": "选择Qwen模型版本：qwen_image、qwen_edit、qwen_edit_2511、qwen2512或qwen_edit_2509"
                 })
             },
             "optional": {
@@ -893,11 +894,16 @@ class QwenImageModelNode:
     FUNCTION = "get_qwen_image_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_qwen_image_config(self, qwen_2511: bool, transformer_path: str = "", text_encoder_path: str = "", 
+    def get_qwen_image_config(self, model_version: str, transformer_path: str = "", text_encoder_path: str = "", 
                              vae_path: str = "", diffusers_path: str = "") -> Tuple[dict]:
         try:
+            if model_version == "qwen_edit_2511":
+                model_type = "qwen2511"
+            else: 
+                model_type = "qwen_image"
+            
             config = {
-                "type": "qwen2511" if qwen_2511 else "qwen_image",
+                "type": model_type,
             }
             
             if diffusers_path.strip():
@@ -919,49 +925,6 @@ class QwenImageModelNode:
             return ({"error": str(e)},)
 
 
-class QwenImageEditModelNode:
-    
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "diffusers_path": ("STRING", {
-                    "default": "",
-                    "tooltip": "Qwen-Image或Qwen-Image-Edit diffusers模型文件夹的完整路径（如：/data/models/Qwen-Image-Edit）"
-                }),
-            },
-            "optional": {
-                "transformer_path": ("STRING", {
-                    "default": "",
-                    "tooltip": "Transformer模型文件的完整路径（如：/data/imagegen_models/comfyui-models/qwen_image_edit_bf16.safetensors），仅在使用Qwen-Image diffusers文件夹时需要填写"
-                }),
-            }
-        }
-    
-    RETURN_TYPES = ("model_path",)
-    RETURN_NAMES = ("model_path",)
-    FUNCTION = "get_qwen_image_edit_config"
-    CATEGORY = "Diffusion-Pipe/Model"
-
-    def get_qwen_image_edit_config(self, diffusers_path: str, transformer_path: str = "") -> Tuple[dict]:
-        try:
-            if not diffusers_path.strip():
-                return ({"error": "diffusers_path不能为空"},)
-            
-            normalized_diffusers_path = normalize_wsl_path(diffusers_path.strip())
-            
-            config = {
-                "type": "qwen_image",
-                "diffusers_path": normalized_diffusers_path,
-            }
-            
-            if transformer_path.strip():
-                config["transformer_path"] = normalize_wsl_path(transformer_path.strip())
-            
-            return (config,)
-            
-        except Exception as e:
-            return ({"error": str(e)},)
 
             
 class AuraFlowModelNode:
@@ -1067,11 +1030,11 @@ class AdapterConfigNode:
             },
             "optional": {
                 "rank": ("INT", {
-                    "default": 32,
-                    "min": 16,
+                    "default": 16,
+                    "min": 4,
                     "max": 1024,
                     "step": 2,
-                    "tooltip": "LoRA的秩（rank），控制LoRA的参数量和表达能力，必须是16的倍数"
+                    "tooltip": "LoRA的秩（rank），控制LoRA的参数量和表达能力"
                 }),
                 "dtype": (["bfloat16", "float16", "float32"], {
                     "default": "bfloat16",
