@@ -1,8 +1,6 @@
-resolutions = [768]
-enable_ar_bucket = true
-min_ar = 0.5
-max_ar = 2.0
-num_ar_buckets = 7
+resolutions = [480]
+enable_ar_bucket = false
+frame_buckets = [92]
 [[directory]]
-path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/eval'
+path = '/home/TIANDONG/comfy/ComfyUI/input/eval'
 num_repeats = 3

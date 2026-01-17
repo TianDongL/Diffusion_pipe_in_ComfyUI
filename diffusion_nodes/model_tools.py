@@ -987,9 +987,24 @@ class Flux2ConfigNode:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "diffusers_path": ("STRING", {
+                "diffusion_model": ("STRING", {
                     "default": "",
-                    "tooltip": "Flux2模型文件的完整路径（如/data2/imagegen_models/comfyui-models/flux2/flux2.safetensors）"
+                    "tooltip": "Flux2模型文件的完整路径（如：flux2/flux2.safetensors）"
+                }),
+                "vae": ("STRING", {
+                    "default": "",
+                    "tooltip": "VAE模型文件的完整路径（如：vae/vae.safetensors）"
+                }),
+                "text_encoder": ("STRING", {
+                    "default": "",
+                    "tooltip": "Text Encoder模型文件的完整路径（如：text_encoder/text_encoder.safetensors）"
+                }),
+                "shift": ("INT", {
+                    "default": 3,
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "tooltip": "shift参数"
                 }),
             }
         }
@@ -999,16 +1014,29 @@ class Flux2ConfigNode:
     FUNCTION = "get_flux2_config"
     CATEGORY = "Diffusion-Pipe/Model"
 
-    def get_flux2_config(self, diffusers_path: str) -> Tuple[dict]:
+    def get_flux2_config(self, diffusion_model: str, vae: str, text_encoder: str, shift: int = 0) -> Tuple[dict]:
         try:
-            if not diffusers_path.strip():
-                return ({"error": "diffusers_path不能为空"},)
+            if not diffusion_model.strip():
+                return ({"error": "diffusion_model不能为空"},)
             
-            normalized_diffusers_path = normalize_wsl_path(diffusers_path.strip())
+            if not vae.strip():
+                return ({"error": "vae不能为空"},)
+            
+            if not text_encoder.strip():
+                return ({"error": "text_encoder不能为空"},)
+            
+            normalized_diffusion_model = normalize_wsl_path(diffusion_model.strip())
+            normalized_vae = normalize_wsl_path(vae.strip())
+            normalized_text_encoder = normalize_wsl_path(text_encoder.strip())
             
             config = {
                 "type": "flux2",
-                "diffusers_path": normalized_diffusers_path,
+                "diffusion_model": normalized_diffusion_model,
+                "vae": normalized_vae,
+                "shift": shift,
+                "text_encoders": [
+                    {"path": normalized_text_encoder, "type": "flux2"}
+                ],
             }
             
             return (config,)

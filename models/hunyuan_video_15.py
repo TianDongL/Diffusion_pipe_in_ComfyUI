@@ -274,6 +274,7 @@ class InitialLayer(nn.Module):
 
         ids = torch.cat((img_ids, txt_ids), dim=1)
         pe = self.pe_embedder(ids)
+        pe.requires_grad_(True)
 
         img_len = img.shape[1]
 
@@ -328,4 +329,3 @@ class FinalLayer(nn.Module):
         else:
             img = img.permute(0, 3, 1, 4, 2, 5)
             img = img.reshape(initial_shape[0], self.out_channels, initial_shape[2], initial_shape[3])
-        return img

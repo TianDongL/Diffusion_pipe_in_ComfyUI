@@ -33,6 +33,8 @@ Diffusion-Pipe In ComfyUI 自定义节点是一个强大的扩展插件，为 Co
 # 快速开始
 
 ## 更新日志 
+* 20260117: flux2支持，以及跟进原项目的超级一大堆更新,deepspeed更新，comfyui子模块更新
+
 * 20260103: qwen2512支持，与qwen_image一样
 
 * 20260102:qwen2511支持，支持diffusers和comfyui格式的模型
@@ -201,6 +203,7 @@ pip install -r requirements.txt
 |Z-Image         |✅    |✅              |❌                |
 |HunyuanVideo-1.5|✅    |✅              |✅                |
 |Qwen-Image-Edit-2511 |✅    |✅              |✅                |
+|Flux 2（both dev and klein）          |✅    |✅              |✅                |
 
 ## 许可证
 

@@ -268,6 +268,10 @@ def _get_automagic_lrs(optimizer):
 
 
 if __name__ == '__main__':
+    deepspeed.utils.set_log_level_from_string('info')
+    # With multiple GPUs / large batch sizes, the dataloader can trigger "too many open files" errors unless we do this.
+    torch.multiprocessing.set_sharing_strategy('file_system')
+    deepspeed.utils.set_log_level_from_string('info')
     apply_patches()
 
     with open(args.config) as f:
@@ -354,6 +358,9 @@ if __name__ == '__main__':
     elif model_type == 'qwen2511':
         from models import qwen2511
         model = qwen2511.Qwen2511Pipeline(config)
+    elif model_type == 'flux2':
+        from models import flux2
+        model = flux2.Flux2Pipeline(config)
     else:
         raise NotImplementedError(f'Model type {model_type} is not implemented')
 
@@ -588,6 +595,10 @@ if __name__ == '__main__':
         model=pipeline_model,
         config=ds_config,
     )
+    # Newer Deepspeed versions fail when pipeline_stages>1 because of a check on this field which defaults to False. But, pipeline
+    # parallelism has always relied on "Torch-style" backward(), so I think this is an oversight by Deepspeed devs and it's safe
+    # to force this to True to get it to work.
+    model_engine._support_torch_style_backward = True
     global_batch_size = model_engine.train_micro_batch_size_per_gpu() * model_engine.gradient_accumulation_steps() * model_engine.grid.get_data_parallel_world_size()
     print(f'Global batch size = {global_batch_size}')
 
