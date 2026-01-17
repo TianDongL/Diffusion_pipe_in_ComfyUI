@@ -1,18 +1,17 @@
 eval_datasets = [{name = 'validation_set', config = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/dataset/evaldataset.toml'}]
 epochs = 100
-micro_batch_size_per_gpu = 1
+micro_batch_size_per_gpu = 2
 number_of_gpus = 1
 pipeline_stages = 1
 warmup_steps = 100
-blocks_to_swap = 25
+blocks_to_swap = 0
 activation_checkpointing = true
 save_dtype = 'bfloat16'
 caching_batch_size = 1
 partition_method = 'parameters'
-output_dir = '/home/TIANDONG/comfy/ComfyUI/output/123'
+output_dir = '/home/TIANDONG/comfy/ComfyUI/output/zhuyin'
 disable_block_swap_for_eval = false
-video_clip_mode = 'single_beginning'
-gradient_accumulation_steps = 2
+gradient_accumulation_steps = 4
 gradient_clipping = 1.0
 eval_every_n_epochs = 2
 eval_before_first_step = false
@@ -25,17 +24,22 @@ lr_scheduler = 'linear'
 
 [optimizer]
 type = 'adamw_optimi'
-lr = 2e-5
+lr = 5e-5
 betas = [ 0.9, 0.99,]
 weight_decay = 0.01
 eps = 1e-8
 
 [model]
-type = 'wan'
-ckpt_path = '/home/TIANDONG/comfy/ComfyUI/models/diffusers/Wan2.1-I2V-14B-720P'
+type = 'flux2'
+diffusion_model = '/home/TIANDONG/comfy/ComfyUI/models/flux2/flux-2-klein-base-9b.safetensors'
+vae = '/home/TIANDONG/comfy/ComfyUI/models/flux2/flux2-vae.safetensors'
+shift = 3
 dtype = 'bfloat16'
 timestep_sample_method = 'logit_normal'
-transformer_dtype = 'bfloat16'
+diffusion_model_dtype = 'bfloat16'
+[[model.text_encoders]]
+path = '/home/TIANDONG/comfy/ComfyUI/models/flux2/qwen_3_8b.safetensors'
+type = 'flux2'
 
 [adapter]
 type = 'lora'

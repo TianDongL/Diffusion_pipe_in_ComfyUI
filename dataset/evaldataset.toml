@@ -1,6 +1,5 @@
-resolutions = [480]
+resolutions = [512]
 enable_ar_bucket = false
-frame_buckets = [92]
 [[directory]]
-path = '/home/TIANDONG/comfy/ComfyUI/input/eval'
+path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/zhuyineval'
 num_repeats = 3

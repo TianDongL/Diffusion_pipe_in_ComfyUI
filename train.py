@@ -1,6 +1,8 @@
 import argparse
 import os
 import wandb
+import sys
+sys.modules["comfy_kitchen"] = None
 from datetime import datetime, timezone
 import shutil
 import glob
@@ -268,7 +270,6 @@ def _get_automagic_lrs(optimizer):
 
 
 if __name__ == '__main__':
-    deepspeed.utils.set_log_level_from_string('info')
     # With multiple GPUs / large batch sizes, the dataloader can trigger "too many open files" errors unless we do this.
     torch.multiprocessing.set_sharing_strategy('file_system')
     deepspeed.utils.set_log_level_from_string('info')

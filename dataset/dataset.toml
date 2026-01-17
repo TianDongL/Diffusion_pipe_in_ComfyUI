@@ -2,8 +2,7 @@ resolutions = [512]
 enable_ar_bucket = true
 min_ar = 0.5
 max_ar = 2.0
-num_ar_buckets = 7
-frame_buckets = [60, 81]
+num_ar_buckets = 5
 [[directory]]
-path = '/home/TIANDONG/comfy/ComfyUI/input/zhuanchang'
+path = '/home/TIANDONG/comfy/ComfyUI/custom_nodes/Diffusion_pipe_in_ComfyUI/input/Zhuyin'
 num_repeats = 3
